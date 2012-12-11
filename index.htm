@@ -60,6 +60,31 @@
             <div class="span9" id="auth">
               <h2>Authentication</h2>
               <p>Some text goes here, this is just placeholder</p>
+              <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Fibonacci&lt;/title&gt;
+    &lt;script type='text/javascript'&gt;
+      /* calculate the nth fibonacci number */
+      function fib(n) {
+          if ( n &amp;lt; 2 )
+              return 1;
+          else
+              return fib(n-2) + fib(n-1);
+      }
+
+      $(document).ready(function() {
+        for(var i = 0; i &lt; 36; i++)
+          $("p#output").append("the " + i + "th fibonacci number is " + 
+            fib(i) + "\n");
+      });
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre id='output'&gt;&lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt; 
+</code></pre>
             </div>
           </div>
 
