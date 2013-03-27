@@ -721,7 +721,7 @@ h4,
 h5,
 h6 {
   margin: 10px 0;
-  font-family: "ubuntu", sans-serif;
+  font-family: inherit;
   font-weight: normal;
   line-height: 20px;
   color: inherit;
@@ -734,7 +734,6 @@ h3 small,
 h4 small,
 h5 small,
 h6 small {
-  font-family: "ubuntu", sans-serif;
   font-weight: normal;
   line-height: 1;
   color: #999999;
