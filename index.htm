@@ -123,9 +123,20 @@
   data: null
   error: null
 }</code></pre>
-              <p>This boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring: <code>/api/version/resource?disableBoiler=1</code>
-              <h3>JSONP</h3>
-              <p>By adding ?always200</p>
+              <p>This boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.
+              <h3>Callback using JSONP</h3>
+              <p>We support JSONP, and to achieve that 3 things are needed:
+                <ol>
+                  <li>The ability to wrap the returned JSON in a callback function.</li>
+                  <li>The ability to only ever return a HTTP 200 OK status.</li>
+                  <li>The ability to perform other HTTP verbs via HTTP POST.</li>
+                </ol>
+              </p>
+              <p>You can wrap the response in a callback function by adding <code>callback=funcName</code> to the querystring of your request.</p>
+              <p>You can overload the HTTP method using HTTP POST and then adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary. Note: If you are not using JSONP please don't do this, just use the correct HTTP verbs.</p>
+              <p>By adding <code>always200</code> to the querystring, the API will only ever return a HTTP 200 OK header, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code.</p>
+              <p>So for GET and POST, you merely have made a request to a resource similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have also added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary.
+              <p>Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate before handling the data.</p>
             </div>
           </div>
 
