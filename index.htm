@@ -33,6 +33,7 @@
           <ul class="nav nav-list docs-sidenav affix">
             <li class="nav-header">Conventions</li>
             <li><a href="#auth">Authentication</a></li>
+            <li><a href="#behave">Standard Behaviour</a></li>
             <li><a href="#error">Error Handling</a></li>
             <li><a href="#struct">Structure</a></li>
             <li><a href="#page">Pagination</a></li>
@@ -40,14 +41,12 @@
             <li><a href="#site">/site</a></li>
             <li><a href="#microcosm">/microcosms</a></li>
             <li><a href="#conv">/conversations</a></li>
-            <li><a href="#comment">/comments</a></li>
             <li><a href="#event">/events</a></li>
             <li><a href="#poll">/polls</a></li>
-            <li><a href="#active">/activity</a></li>
+            <li><a href="#comment">/comments</a></li>
             <li class="nav-header">Users</li>
+            <li><a href="#user">/profiles</a></li>
             <li><a href="#whoami">/whoami</a></li>
-            <li><a href="#user">/users</a></li>
-            <li><a href="#notify">/notifications</a></li>
           </ul>
         </div>
         <div class="span9">
@@ -109,6 +108,24 @@
     "error": null
 }
 </code></pre>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="span9" id="behave">
+              <h2>Standard Behaviour</h2>
+              <p>In general the API supports a basic set of functionality that allows you to control the way in which the API will respond to your requests.</p>
+              <h3>Skeleton</h3>
+              <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened.</p>
+              <pre><code>{
+  context: "",
+  status: 200,
+  data: null
+  error: null
+}</code></pre>
+              <p>This boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring: <code>/api/version/resource?disableBoiler=1</code>
+              <h3>JSONP</h3>
+              <p>By adding ?always200</p>
             </div>
           </div>
 
