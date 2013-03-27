@@ -115,7 +115,7 @@
             <div class="span9" id="behave">
               <h2>Standard Behaviour</h2>
               <p>In general the API supports a basic set of functionality that allows you to control the way in which the API will respond to your requests.</p>
-              <h3>Skeleton</h3>
+              <h3>Boiler Plate</h3>
               <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened.</p>
               <pre><code>{
   context: "",
@@ -137,6 +137,7 @@
               <p>By adding <code>always200</code> to the querystring, the API will only ever return a HTTP 200 OK header, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code.</p>
               <p>So for GET and POST, you merely have made a request to a resource similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have also added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary.
               <p>Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate before handling the data.</p>
+              <p>You can also provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
             </div>
           </div>
 
