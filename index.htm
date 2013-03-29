@@ -63,20 +63,20 @@
           <div class="row">
             <div class="span9" id="overview">
               <h2>The Microcosm API</h2>
-              <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you the developer. We've attempted to offer an API that has the best of REST without limiting the ways in which you, the developer, might implement a solution using our API.</p>
-              <p>We provide:
+              <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you, the developer, might implement a solution using our API.</p>
+              <p>What we give you:
                 <ul>
                   <li>A <a href="http://www.json.org/">JSON</a> interface of resources via the most common HTTP verbs.</li>
                   <li>Token-based authentication to identify the user and client accessing the API.</li>
-                  <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> descriptors to show the relation of a given resource to other resources, as well as a description of your user's permissions to help avoid making API calls that might result in a dead-end for the user (we describe the state transitions available).</li>
-                  <li>We allow HTTP methods to be overridden.</li>
-                  <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>).</li>
+                  <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> meta data to show the relation of a given resource to other resources, as well as a description of your user's permissions so that you know what state changing actions your user can perform.</li>
                 </ul>
               </p>
-              <p>What we don't support:
+              <p>Deviations from pure REST:
                 <ul>
+                  <li>We allow HTTP methods to be overridden.</li>
+                  <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>), which means that our responses include meta data in addition to the resource itself.</li>
                   <li>We haven't created unique content types for each resource, we just use <code>application/json</code> everywhere.</li>
-                  <li>We also put our API version in the URL rather than within HTTP headers.<li>
+                  <li>We put our API version in the URL rather than within HTTP headers.</li>
                 </ul>
               </p>
               <p>The best way to get to know an API is to use it, so let's begin...</p>
