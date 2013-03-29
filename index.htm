@@ -340,9 +340,8 @@
               <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
               <p>If an error has occurred we will additionally inform you, the developer, of the cause of the error by populating the <code>error</code> property of the <a href="boiler">boiler plate</a>. The <code>error</code> property holds an array of strings to help you, the developer, to fix the issue.</p>
               <p>Because the audience of the error text is you, the developer, you should take care not to send this message to the end user but instead handle it in some elegant way. The error text is not localised, will always be in English, and is designed to be understood by a developer and not an end user.</p>
-              <p>An example error (in this case for an invalid authentication access token:</p>
-              <pre><code>
-HTTP/1.1 403 Forbidden
+              <p>An example error (in this case for an invalid authentication access token):</p>
+              <pre><code>HTTP/1.1 403 Forbidden
 Content-Type: application/json
 
 {
@@ -354,7 +353,7 @@ Content-Type: application/json
   ]
 }
 </code></pre>
-              <p class="error-text">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
+              <p class="text-error">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
             </div>
           </div>
 
@@ -380,13 +379,6 @@ Content-Type: application/json
           </div>
           
           <div class="row">
-            <div class="span9" id="comment">
-              <h2>/comments</h2>
-              <p>Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
             <div class="span9" id="event">
               <h2>/events</h2>
               <p>Some text goes here, this is just placeholder</p>
@@ -401,8 +393,15 @@ Content-Type: application/json
           </div>
           
           <div class="row">
-            <div class="span9" id="active">
-              <h2>/activity</h2>
+            <div class="span9" id="comment">
+              <h2>/comments</h2>
+              <p>Some text goes here, this is just placeholder</p>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="span9" id="profile">
+              <h2>/profiles</h2>
               <p>Some text goes here, this is just placeholder</p>
             </div>
           </div>
@@ -410,20 +409,6 @@ Content-Type: application/json
           <div class="row">
             <div class="span9" id="whoami">
               <h2>/whoami</h2>
-              <p>Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="user">
-              <h2>/users</h2>
-              <p>Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="notify">
-              <h2>/notifications</h2>
               <p>Some text goes here, this is just placeholder</p>
             </div>
           </div>
