@@ -104,7 +104,7 @@
                   <li>error = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
                 </ul>
               </p>
-              <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</P.
+              <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
 
               <h3 id="http">HTTP Status Codes</h3>
               <p>We only return a few status codes that generally describe the state of a request, your application need only handle these status codes:</p>
@@ -131,11 +131,6 @@
                     <td>302</td>
                     <td>Temporarily Moved</td>
                     <td>The requested resource is now to be found at the location described in the HTTP Location header. After using POST to create a resource we will return a 301 to point you to the newly created resource. Your client should follow HTTP redirects.</td>
-                  </tr>
-                  <tr>
-                    <td>200</td>
-                    <td>Success</td>
-                    <td></td>
                   </tr>
                   <tr>
                     <td>400</td>
