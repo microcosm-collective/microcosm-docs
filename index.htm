@@ -34,7 +34,7 @@
         <div class="span3 docs-sidebar">
           <ul class="nav nav-list docs-sidenav affix">
             <li class="nav-header">Overview</li>
-            <li><a href="#overview">The Microcosm API</a></li>
+            <li><a href="#overview">Introduction</a></li>
             <li class="nav-header">Conventions</li>
             <li><a href="#boiler">Boiler Plate</a></li>
             <li><a href="#http">HTTP Status Codes</a></li>
@@ -68,7 +68,7 @@
 
           <div class="row">
             <div class="span9" id="overview">
-              <h2>The Microcosm API</h2>
+              <h2>Introduction</h2>
 
               <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you, the developer, might implement a solution using our API.</p>
               <p>What we give you:
@@ -198,7 +198,7 @@
             <div class="span9" id="urls">
               <h2>URL Patterns</h2>
 
-              <p>The base path of the API is <code>/api/v1</code>. All resources are children of that base path.</p>
+              <p>The base path of the API is <code>https://{siteKey}.microco.sm/api/v1</code>. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
               <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
               <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
               <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server.</p>
@@ -365,18 +365,86 @@ Content-Type: application/json
               <h2>API Flow</h2>
               
               <p>At the highest level you can imagine that the core flow through the API is this:
-                <img src="img/flow.png" />
+                <img src="img/flow.png" title="Image showing the high level flow through the API." />
               </p>
-
-              <p>Sites have Microcosms, Microcosms have types of content, that content may have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
-
+              <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+              <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
             </div>
           </div>
 
           <div class="row">
             <div class="span9" id="site">
               <h2>/site</h2>
-              
+
+              <h3>Get info about the current Site</h3>
+              <h4>Request</h4>
+
+              <p>A request made by an anonymous user (not logged in, a guest) for info on the site:</p>
+              <pre><code>curl https://{siteKey}microco.sm/api/v1/site</code></pre>
+              <p>Would return:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "siteId":1,
+    "title":"Site Title",
+    "description":"This is the demo Microcosm site",
+    "subdomainKey":"demo",
+    "domain":"demo.microcosm.cc",
+    "created":"2013-03-29T09:58:52.490145Z",
+    "createdBy":{
+      "id":1,
+      "userId":1,
+      "profileName":"Velocio",
+      "visible":true,
+      "created":"2013-03-29T09:58:52.499968Z",
+      "lastActive":"2013-03-29T09:58:52.499968Z",
+      "gravatar":"https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
+      "banned":false,
+      "moderator":false,
+      "admin":false,
+      "meta":{
+        "links":[
+          {"rel":"this", "href":"/api/v1/profiles/1"},
+          {"rel":"/api/v1/sites", "href":"/api/v1/site"}
+        ]
+      }
+    },
+    "ownedBy":{
+      "id":1,
+      "userId":1,
+      "profileName":"Velocio",
+      "visible":true,
+      "created":"2013-03-29T09:58:52.499968Z",
+      "lastActive":"2013-03-29T09:58:52.499968Z",
+      "gravatar":"https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
+      "banned":false,
+      "moderator":false,
+      "admin":false,
+      "meta":{
+        "links":[
+          {"rel":"this", "href":"/api/v1/profiles/1"},
+          {"rel":"/api/v1/sites", "href":"/api/v1/site"}
+        ]
+      }
+    },
+    "logoUrl":"http://example.org",
+    "meta":{
+      "links":[
+        {"rel":"this", "href":"/api/v1/site"}
+      ],
+      "permissions":{
+        "create":false,
+        "read":true,
+        "update":false,
+        "delete":false,
+        "guest":true,
+        "superUser":false
+      }
+    }
+  },
+  "error":null
+}</code></pre>
 
             </div>
           </div>
