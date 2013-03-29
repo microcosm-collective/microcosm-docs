@@ -34,12 +34,10 @@
             <li class="nav-header">Overview</li>
             <li><a href="#overview">The Microcosm API</a></li>
             <li class="nav-header">Conventions</li>
-            <li><a href="#behave">Standard Behaviour</a>
-              <ul>
-                <li><a href="#boiler">Boiler Plate</a>
-              </ul>
-            </li>
-            <li><a href="#struct">Structure</a></li>
+            <li><a href="#boiler">Boiler Plate</a></li>
+            <li><a href="#http">HTTP Status Codes</a></li>
+            <li><a href="#jsonp">Callbacks using JSONP</a></li>
+            <li><a href="#urls">URL Patterns</a></li>
             <li><a href="#page">Pagination</a></li>
             <li><a href="#auth">Authentication</a></li>
             <li><a href="#error">Error Handling</a></li>
@@ -60,6 +58,7 @@
           <div class="row">
             <div class="hero-unit">
               <h1>Microcosm</h1>
+
               <p>Welcome to the API documentation for Microcosm. On this single-page site we explain how to use the Microcosm API. Print this page or bookmark, just keep it handy.</p>
             </div>
           </div>
@@ -67,6 +66,7 @@
           <div class="row">
             <div class="span9" id="overview">
               <h2>The Microcosm API</h2>
+
               <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you, the developer, might implement a solution using our API.</p>
               <p>What we give you:
                 <ul>
@@ -88,10 +88,9 @@
           </div>
 
           <div class="row">
-            <div class="span9" id="behave">
-              <h2>Standard Behaviour</h2>
+            <div class="span9" id="boiler">
+              <h2>Boiler Plate</h2>
 
-              <h3 id="boiler">Boiler Plate</h3>
               <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
               <p>All responses are wrapped in this:</p>
               <pre><code>{
@@ -109,8 +108,13 @@
                 </ul>
               </p>
               <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
+            </div>
+          </div>
 
-              <h3 id="http">HTTP Status Codes</h3>
+          <div class="row">
+            <div class="span9" id="http">
+              <h2>HTTP Status Codes</h2>
+
               <p>We only return a few status codes that generally describe the state of a request, your application need only handle these status codes:</p>
               <table class="table table-hover">
                 <thead>
@@ -163,8 +167,13 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
 
-              <h3 id="jsonp">Callbacks using JSONP</h3>
+          <div class="row">
+            <div class="span9" id="jsonp">
+              <h2>Callbacks using JSONP</h2>
+
               <p>We support JSONP, and to achieve that 3 things are needed:
                 <ol>
                   <li>The ability to wrap the returned JSON in a callback function.</li>
@@ -179,8 +188,13 @@
               <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
               <p class="text-error">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
               <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
+            </div>
+          </div>
 
-              <h3>URLs</h3>
+          <div class="row">
+            <div class="span9" id="urls">
+              <h2>URL Patterns</h2>
+
               <p>The base path of the API is <code>/api/v1</code>. All resources are children of that base path.</p>
               <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
               <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
