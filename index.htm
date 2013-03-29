@@ -184,7 +184,7 @@
               <p>To fulfil the first requirement you can wrap the response in a callback function name you provide by adding <code>callback=funcName</code> to the querystring of your request.</p>
               <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring.</p>
               <p class="text-error">Note: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
-              <p>To fulfil the third requirement you may add <code>always200</code> to the querystring and this will force the API will only ever return a HTTP 200 OK header regardless of what happened, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
+              <p>To fulfil the third requirement you may add <code>always200</code> to the querystring and this will force the API to only ever return a HTTP 200 OK header regardless of what happened, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
               <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
               <p class="text-error">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
               <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
@@ -285,7 +285,6 @@
           <div class="row">
             <div class="span9" id="page">
               <h2>Pagination</h2>
-              <p>Many of our APIs return a collection of items, and not just the <code>/api/v1/things</code> collection of resources. For example you should expect that most items within a Microcosm are also able to return a collection of comments on that item.</p>
               <p>Pagination of collections is supported using the offset approach:
                 <ul>
                   <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
@@ -324,7 +323,7 @@
                   <li><code>items</code> = Contains the records being paginated.</li>
                 </ul>
               </p>
-              <p class="text-error">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a non-existant page in the collection.</p>
+              <p class="text-error">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
             </div>
           </div>
 
