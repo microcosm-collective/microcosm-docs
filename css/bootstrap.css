@@ -618,7 +618,7 @@ h5,
 h6 {
   margin: 12px 0;
   font-family: inherit;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 24px;
   color: inherit;
   text-rendering: optimizelegibility;
