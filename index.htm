@@ -6,6 +6,10 @@
     <title>Microcosm</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Source Sans Pro -->
+    <script type="text/javascript" src="//use.typekit.net/jvs2zbx.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/prettify.css" type="text/css" rel="stylesheet" />
@@ -364,9 +368,7 @@ Content-Type: application/json
   <li><a href="#profile">Python</a></li>
   <li><a href="#messages">Ruby</a></li>
   <li><a href="#settings">Go</a></li>
-</ul>
- 
-<div class="tab-content">
+</ul><div class="tab-content">
   <div class="tab-pane active" id="home">
     <pre><code>{
   "context": "",
@@ -384,12 +386,6 @@ Content-Type: application/json
   <div class="tab-pane" id="messages">...</div>
   <div class="tab-pane" id="settings">...</div>
 </div>
- 
-<script>
-  $(function () {
-    $('#myTab a:last').tab('show');
-  })
-</script>
 
             </div>
           </div>
@@ -454,10 +450,6 @@ Content-Type: application/json
 
     </div>
 
-    <!-- Source Sans Pro -->
-    <script type="text/javascript" src="http://use.typekit.net/jvs2zbx.js"></script>
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-
     <!-- jQuery and Bootstrap -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
@@ -473,6 +465,13 @@ Content-Type: application/json
         });
         if (prettify) {prettyPrint();}
     });
+    </script>
+
+    <!-- Tabs -->
+    <script>
+      $(function () {
+        $('#myTab a:last').tab('show');
+      })
     </script>
   </body>
 </html>
