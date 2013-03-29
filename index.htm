@@ -296,11 +296,21 @@
 }</code></pre>
               <p>Where:
                 <ul>
+                  <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
                   <li><code>total</code> = The total number of items in the collection.</li>
                   <li><code>limit</code> = The maximum number of items per page of the collection.</li>
                   <li><code>offset</code> = The current page in the collection.</li>
                   <li><code>pages</code> = The number of pages in the collection.</li>
                   <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": "next"</code> link, and likewise if you are on the first page you will not receive the <code>"rel": "prev"</code></li>
+                  <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
+                  <li><code>items</code> = Contains the records being paginated.</li>
+                </ul>
+              </p>
+              <p class="text-error">Note: A 400 Bad Request will be returned if:
+                <ul>
+                  <li><code>limit</code> is not divisible by 5.</li>
+                  <li><code>offset</code> is not a multiple of the limit.</li>
+                  <li>The use of <code>offset</code> would navigate to a non-existant page in the collection.</li>
                 </ul>
               </p>
             </div>
