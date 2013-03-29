@@ -184,7 +184,7 @@
               <p class="well well-small">Note: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
               <p>To fulfil the third requirement you may add <code>always200</code> to the querystring and this will force the API to only ever return a HTTP 200 OK header regardless of what happened, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
               <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
-              <p class="text-error">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
+              <p class="well well-small">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
               <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
             </div>
           </div>
@@ -276,7 +276,7 @@
                   </tr>
                 </tbody>
               </table>
-              <p class="text-error">Note: If you add trailing slashes then the API returns a 301 Permanently Moved response and you will need to make an additional HTTP request with the correct URL.</p>
+              <p class="well well-small">Note: If you add trailing slashes then the API returns a 301 Permanently Moved response and you will need to make an additional HTTP request with the correct URL.</p>
             </div>
           </div>
 
@@ -321,7 +321,7 @@
                   <li><code>items</code> = Contains the records being paginated.</li>
                 </ul>
               </p>
-              <p class="text-error">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
+              <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
             </div>
           </div>
 
@@ -351,7 +351,7 @@ Content-Type: application/json
   ]
 }
 </code></pre>
-              <p class="text-error">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
+              <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
             </div>
           </div>
 
