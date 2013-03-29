@@ -81,7 +81,7 @@
                   <li>We put our API version in the URL rather than within HTTP headers.</li>
                 </ul>
               </p>
-              <p>The best way to get to know an API is to use it, so let's begin...</p>
+              <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
             </div>
           </div>
 
@@ -358,7 +358,27 @@ Content-Type: application/json
           <div class="row">
             <div class="span9" id="site">
               <h2>/site</h2>
-              <p>TODO: Some text goes here, this is just placeholder</p>
+              
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#home">Home</a></li>
+  <li><a href="#profile">Profile</a></li>
+  <li><a href="#messages">Messages</a></li>
+  <li><a href="#settings">Settings</a></li>
+</ul>
+ 
+<div class="tab-content">
+  <div class="tab-pane active" id="home">...</div>
+  <div class="tab-pane" id="profile">...</div>
+  <div class="tab-pane" id="messages">...</div>
+  <div class="tab-pane" id="settings">...</div>
+</div>
+ 
+<script>
+  $(function () {
+    $('#myTab a:last').tab('show');
+  })
+</script>
+              
             </div>
           </div>
 
