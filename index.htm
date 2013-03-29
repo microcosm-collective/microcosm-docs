@@ -170,18 +170,94 @@
               </p>
               <p>To fulfil the first requirement you can wrap the response in a callback function name you provide by adding <code>callback=funcName</code> to the querystring of your request.</p>
               <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring.</p>
-              <p class="warning">Warning: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
+              <p class="text-error">Warning: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
               <p>To fulfil the third requirement you may add <code>always200</code> to the querystring and this will force the API will only ever return a HTTP 200 OK header regardless of what happened, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
               <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
               <p class="text-error">Warning: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
               <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="struct">
-              <h2>Structure</h2>
-              <p>Some text goes here, this is just placeholder</p>
+              <h3>URLs</h3>
+              <p>The base path of the API is <code>/api/v1</code>. All resources are children of that base path.</p>
+              <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections, and resources that are not pluralised represent a single resource.</p>
+              <p>URLs and actions for a resource collection:</p>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>HTTP Method</th>
+                    <th>URL Pattern</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>GET</td>
+                    <td>/api/v1/things</td>
+                    <td>Returns a collection of the resource called 'things'.</td>
+                  </tr>
+                  <tr>
+                    <td>PUT</td>
+                    <td>/api/v1/things</td>
+                    <td>Collection updating is largely forbidden, would return HTTP 403, please update individual items.</td>
+                  </tr>
+                  <tr>
+                    <td>DELETE</td>
+                    <td>/api/v1/things</td>
+                    <td>Collection deletion is largely forbidden, would return HTTP 403, please delete individual items.</td>
+                  </tr>
+                  <tr>
+                    <td>POST</td>
+                    <td>/api/v1/things</td>
+                    <td>Would create a new resource 'thing' and return a 301 to the GET method for the newly created 'thing'.</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/api/v1/things/{id}</td>
+                    <td>Would read a single 'thing' for the given {id}.</td>
+                  </tr>
+                  <tr>
+                    <td>PUT</td>
+                    <td>/api/v1/things{id}</td>
+                    <td>Would update a single 'thing' for the given {id}.</td>
+                  </tr>
+                  <tr>
+                    <td>DELETE</td>
+                    <td>/api/v1/things{id}</td>
+                    <td>Would delete a single 'thing' for the given {id}.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>URLs and actions for a resource collection:</p>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>HTTP Method</th>
+                    <th>URL Pattern</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>POST</td>
+                    <td>/api/v1/thing</td>
+                    <td>Create the resource. Likely to be forbidden in a single item resource as this tends to be a read-only resource.</td>
+                  </tr>
+                  <tr>
+                    <td>GET</td>
+                    <td>/api/v1/thing</td>
+                    <td>Read the resource.</td>
+                  </tr>
+                  <tr>
+                    <td>PUT</td>
+                    <td>/api/v1/thing</td>
+                    <td>Update the resource. Likely to be forbidden in a single item resource as this tends to be a read-only resource.</td>
+                  </tr>
+                  <tr>
+                    <td>DELETE</td>
+                    <td>/api/v1/thing</td>
+                    <td>Delete the resource. Likely to be forbidden in a single item resource as this tends to be a read-only resource.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
