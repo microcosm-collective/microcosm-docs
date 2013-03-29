@@ -86,16 +86,67 @@
           <div class="row">
             <div class="span9" id="behave">
               <h2>Standard Behaviour</h2>
-              <p>In general the API supports a basic set of functionality that allows you to control the way in which the API will respond to your requests.</p>
               <h3>Boiler Plate</h3>
-              <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened.</p>
+              <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
+              <p>All responses are wrapped in this:</p>
               <pre><code>{
   context: "",
   status: 200,
   data: null
   error: null
 }</code></pre>
+              <p>
+                <ul>
+                  <li>context = A value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to identify which request this is in response to.</li>
+                  <li>status = The HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
+                  <li>data = The actual JSON representation of the resource requested.</li>
+                  <li>error = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
+                </ul>
+              </p>
               <p>This boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.
+              <h3>HTTP Status Codes</h3>
+              <p>We only return a few status codes that generally describe the state of a request, your application need only handle these status codes:</p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Status</th>
+                    <th>Note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>200</td>
+                    <td>Success</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>400</td>
+                    <td>Bad Request</td>
+                    <td>The client has made a bad request, which includes requests with mal-formed JSON, or invalid data values (i.e. trying to create a resource and provided a 'created' value in the past).</td>
+                  </tr>
+                  <tr>
+                    <td>401</td>
+                    <td>Unauthorized</td>
+                    <td>You do not have permission to do what you were trying to do. But, if you are able to authenticate as a user with these privileges then you will be allowed to do this (i.e. if your user is not logged in, prompt them to login, or if your user is logged in then they may need a higher privileged user to perform the task).</td>
+                  </tr>
+                  <tr>
+                    <td>403</td>
+                    <td>Forbidden</td>
+                    <td>You aren't allowed to do what you were trying to do, and logging in is not going to help you (i.e. you are not allowed to delete a whole collection of resources).</td>
+                  </tr>
+                  <tr>
+                    <td>404</td>
+                    <td>Not Found</td>
+                    <td>We do not differentiate between items that never existed and ones that once existed but are now deleted... if we can't return it to you, it is not found.</td>
+                  </tr>
+                  <tr>
+                    <td>500</td>
+                    <td>Server Error</td>
+                    <td>Something bad has happened at our end and it's not your fault. You made a good request, but we've failed you. Please try again later, or send us a bug report: <a href="mailto:hello@microcosm.cc">hello@microcosm.cc</a></td>
+                  </tr>
+                </tbody>
+              </table>
               <h3>Callback using JSONP</h3>
               <p>We support JSONP, and to achieve that 3 things are needed:
                 <ol>
