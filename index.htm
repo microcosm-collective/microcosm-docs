@@ -306,13 +306,7 @@
                   <li><code>items</code> = Contains the records being paginated.</li>
                 </ul>
               </p>
-              <p class="text-error">Note: A 400 Bad Request will be returned if:
-                <ul>
-                  <li><code>limit</code> is not divisible by 5.</li>
-                  <li><code>offset</code> is not a multiple of the limit.</li>
-                  <li>The use of <code>offset</code> would navigate to a non-existant page in the collection.</li>
-                </ul>
-              </p>
+              <p class="text-error">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a non-existant page in the collection.</p>
             </div>
           </div>
 
