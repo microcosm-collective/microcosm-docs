@@ -34,11 +34,11 @@
             <li class="nav-header">Overview</li>
             <li><a href="#overview">The Microcosm API</a></li>
             <li class="nav-header">Conventions</li>
-            <li><a href="#auth">Authentication</a></li>
             <li><a href="#behave">Standard Behaviour</a></li>
-            <li><a href="#error">Error Handling</a></li>
             <li><a href="#struct">Structure</a></li>
             <li><a href="#page">Pagination</a></li>
+            <li><a href="#auth">Authentication</a></li>
+            <li><a href="#error">Error Handling</a></li>
             <li class="nav-header">Site and Microcosms</li>
             <li><a href="#site">/site</a></li>
             <li><a href="#microcosm">/microcosms</a></li>
@@ -63,14 +63,10 @@
           <div class="row">
             <div class="span9" id="overview">
               <h2>The Microcosm API</h2>
-              <p>Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="span9" id="auth">
-              <h2>Authentication</h2>
-              <p>Some text goes here, this is just placeholder</p>
+              <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you the developer. We've attempted to offer an API that has the best of REST without limiting the ways in which you, the developer, might implement a solution using our API.</p>
+              <p>What we support: A <a href="http://www.json.org/">JSON</a> interface of resources via the most common HTTP verbs, with token-based authentication to identify the user and client accessing the API. We also include <a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> descriptors to show the relation of a given resource to other resources, as well as a description of your user's permissions to help avoid making API calls that might result in a dead-end for the user. We allow HTTP methods to be overridden and we include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>).</p>
+              <p>What we don't support: We haven't created unique content types for each resource, we just use <code>application/json</code> everywhere. As a consequence of that we also put our API version in the URL rather than within HTTP headers.</p>
+              <p>The best way to get to know an API is to use it, so let's begin...</p>
             </div>
           </div>
 
@@ -105,13 +101,6 @@
           </div>
 
           <div class="row">
-            <div class="span9" id="error">
-              <h2>Error Handling</h2>
-              <p>Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-
-          <div class="row">
             <div class="span9" id="struct">
               <h2>Structure</h2>
               <p>Some text goes here, this is just placeholder</p>
@@ -121,6 +110,20 @@
           <div class="row">
             <div class="span9" id="page">
               <h2>Pagination</h2>
+              <p>Some text goes here, this is just placeholder</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="span9" id="auth">
+              <h2>Authentication</h2>
+              <p>Some text goes here, this is just placeholder</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="span9" id="error">
+              <h2>Error Handling</h2>
               <p>Some text goes here, this is just placeholder</p>
             </div>
           </div>
