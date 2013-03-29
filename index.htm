@@ -43,7 +43,8 @@
             <li><a href="#page">Pagination</a></li>
             <li><a href="#auth">Authentication</a></li>
             <li><a href="#error">Error Handling</a></li>
-            <li class="nav-header">Site and Microcosms</li>
+            <li class="nav-header">The Microcosm API</li>
+            <li><a href="#flow">API Flow</a></li>
             <li><a href="#site">/site</a></li>
             <li><a href="#microcosm">/microcosms</a></li>
             <li><a href="#conv">/conversations</a></li>
@@ -360,6 +361,19 @@ Content-Type: application/json
           </div>
 
           <div class="row">
+            <div class="span9" id="flow">
+              <h2>API Flow</h2>
+              
+              <p>At the highest level you can imagine that the core flow through the API is this:
+                <img src="img/flow.png" />
+              </p>
+
+              <p>Sites have Microcosms, Microcosms have types of content, that content may have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+
+            </div>
+          </div>
+
+          <div class="row">
             <div class="span9" id="site">
               <h2>/site</h2>
               
@@ -422,7 +436,7 @@ Content-Type: application/json
       <hr>
 
       <footer>
-        <p>&copy; Microcosm CC Ltd 2012</p>
+        <p>&copy; Microcosm CC Ltd</p>
       </footer>
 
     </div>
