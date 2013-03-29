@@ -179,6 +179,8 @@
               <h3>URLs</h3>
               <p>The base path of the API is <code>/api/v1</code>. All resources are children of that base path.</p>
               <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections, and resources that are not pluralised represent a single resource.</p>
+              <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
+              <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server. Note that if you add trailing slashes then the API returns a 301 Permanently Moved respond and you will need to make an additional HTTP request to get to the resource.</p>
               <p>URLs and actions for a resource collection:</p>
               <table class="table table-hover">
                 <thead>
@@ -197,12 +199,12 @@
                   <tr>
                     <td>PUT</td>
                     <td>/api/v1/things</td>
-                    <td>Collection updating is largely forbidden, would return HTTP 403, please update individual items.</td>
+                    <td>Collection updating is largely forbidden, would return HTTP 403. Please update individual items.</td>
                   </tr>
                   <tr>
                     <td>DELETE</td>
                     <td>/api/v1/things</td>
-                    <td>Collection deletion is largely forbidden, would return HTTP 403, please delete individual items.</td>
+                    <td>Collection deletion is largely forbidden, would return HTTP 403. Please delete individual items.</td>
                   </tr>
                   <tr>
                     <td>POST</td>
@@ -216,17 +218,17 @@
                   </tr>
                   <tr>
                     <td>PUT</td>
-                    <td>/api/v1/things{id}</td>
+                    <td>/api/v1/things/{id}</td>
                     <td>Would update a single 'thing' for the given {id}.</td>
                   </tr>
                   <tr>
                     <td>DELETE</td>
-                    <td>/api/v1/things{id}</td>
+                    <td>/api/v1/things/{id}</td>
                     <td>Would delete a single 'thing' for the given {id}.</td>
                   </tr>
                 </tbody>
               </table>
-              <p>URLs and actions for a resource collection:</p>
+              <p>URLs and actions for a single resource:</p>
               <table class="table table-hover">
                 <thead>
                   <tr>
