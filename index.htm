@@ -109,33 +109,40 @@
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>HTTP Status</th>
+                    <th>HTTP</th>
+                    <th>Status</th>
                     <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>200 Success</td>
+                    <td>200</td>
+                    <td>Success</td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td>400 Bad Request</td>
+                    <td>400</td>
+                    <td>Bad Request</td>
                     <td>The client has made a bad request, which includes requests with malformed JSON, or invalid data values as well as requests in which the URL contains incorrect values (such as providing a string for an ID when an integer is expected).</td>
                   </tr>
                   <tr>
-                    <td>401 Unauthorized</td>
+                    <td>401</td>
+                    <td>Unauthorized</td>
                     <td>You lack the permission to do whatever you were trying to do. But, if you are able to authenticate as a user with that permission then you will be allowed to do this. That is, if your user is not logged in then prompt them to login, or if your user is logged in then they may need a different user or a higher privileged user to perform the task for them (such as editing content owned by someone else).</td>
                   </tr>
                   <tr>
-                    <td>403 Forbidden</td>
+                    <td>403</td>
+                    <td>Forbidden</td>
                     <td>You aren't allowed to do what you were trying to do, and logging in is not going to help you. For example, you are not allowed to delete a whole collection of resources.</td>
                   </tr>
                   <tr>
-                    <td>404 Not Found</td>
+                    <td>404</td>
+                    <td>Not Found</td>
                     <td>We cannot find what you requested, though the request looks good. Note that we do not differentiate between items that have never existed and ones that once existed but are now deleted... if we can't return it to you, then we return 'not found'.</td>
                   </tr>
                   <tr>
-                    <td>500 Server Error</td>
+                    <td>500</td>
+                    <td>Server Error</td>
                     <td>Something bad has happened at our end and it's not your fault. You made a good request, but we've failed you. Please try again later, or send us a bug report: <a href="mailto:hello@microcosm.cc">hello@microcosm.cc</a> with an example of both the request and response and we will definitely look into it.</td>
                   </tr>
                 </tbody>
