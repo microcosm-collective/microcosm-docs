@@ -91,17 +91,17 @@
               <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
               <p>All responses are wrapped in this:</p>
               <pre><code>{
-  context: "",
-  status: 200,
-  data: null
-  error: null
+  "context": "",
+  "status": 200,
+  "data": null
+  "error": null
 }</code></pre>
               <p>
                 <ul>
-                  <li>context = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to identify which request this response relates to.</li>
-                  <li>status = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
-                  <li>data = The actual JSON representation of the resource requested.</li>
-                  <li>error = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
+                  <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to identify which request this response relates to.</li>
+                  <li><code>status</code> = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
+                  <li><code>data</code> = The actual JSON representation of the resource requested.</li>
+                  <li><code>error</code> = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
                 </ul>
               </p>
               <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
@@ -178,7 +178,7 @@
 
               <h3>URLs</h3>
               <p>The base path of the API is <code>/api/v1</code>. All resources are children of that base path.</p>
-              <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections, and resources that are not pluralised represent a single resource.</p>
+              <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
               <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
               <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server.</p>
               <p>URLs and actions for a resource collection:</p>
@@ -267,7 +267,42 @@
           <div class="row">
             <div class="span9" id="page">
               <h2>Pagination</h2>
-              <p>Some text goes here, this is just placeholder</p>
+              <p>Many of our APIs return a collection of items, and not just the <code>/api/v1/things</code> collection of resources. For example you should expect that most items within a Microcosm are also able to return a collection of comments on that item.</p>
+              <p>Pagination of collections is supported using the offset approach:
+                <ul>
+                  <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
+                  <li><code>offset</code> = <code>/api/v1/things?offset=50</code> would return up to the default number of 'things' starting at the 50th record.</li>
+                  <li><code>limit</code> with <code>offset</code> = <code>/api/v1/things?limit=10&amp;offset=30</code> would return up to 10 'things' starting at the 30th record.</li>
+                </ul>
+              </p>
+              <p>The default value for <code>limit</code> is 25, and the default value for <code>offset</code> is 0. Meaning that if you do nothing, then you will get up to 25 records at the beginning of the collection.</p>
+              <p>The format of our collections is consistent, all resources that return a collection of items will do so using this structure:</p>
+              <pre><code>"collectionName": {
+  "total": 861,
+  "limit": 10,
+  "offset": 100,
+  "pages": 87,
+  "links": [
+    {"rel": "first", "href": "/api/v1/things?limit=10"},
+    {"rel": "prev", "href": "/api/v1/things?limit=10&offset=90"},
+    {"rel": "this", "href": "/api/v1/things?limit=10&offset=100"},
+    {"rel": "next", "href": "/api/v1/things?limit=10&offset=110"},
+    {"rel": "last", "href": "/api/v1/things?limit=10&offset=860"},
+  ],
+  "type": "/api/v1/things",
+  "items": [
+    ...
+  ]
+}</code></pre>
+              <p>Where:
+                <ul>
+                  <li><code>total</code> = The total number of items in the collection.</li>
+                  <li><code>limit</code> = The maximum number of items per page of the collection.</li>
+                  <li><code>offset</code> = The current page in the collection.</li>
+                  <li><code>pages</code> = The number of pages in the collection.</li>
+                  <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": "next"</code> link, and likewise if you are on the first page you will not receive the <code>"rel": "prev"</code></li>
+                </ul>
+              </p>
             </div>
           </div>
 
