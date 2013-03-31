@@ -8,4 +8,5 @@ digraph ApiFlow{
 	Conversations -> Comments;
 	Events -> Comments;
 	Polls -> Comments;
+	WhoAmI -> Profiles;
 }
