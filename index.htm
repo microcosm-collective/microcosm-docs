@@ -84,8 +84,10 @@
                   <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>), which means that our responses include meta data in addition to the resource itself.</li>
                   <li>We haven't created unique content types for each resource, we just use <code>application/json</code> everywhere.</li>
                   <li>We put our API version in the URL rather than within HTTP headers.</li>
+                  <li>We only server JSON.</li>
                 </ul>
               </p>
+              <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
               <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
             </div>
           </div>
@@ -281,7 +283,7 @@
                   </tr>
                 </tbody>
               </table>
-              <p class="well well-small">Note: If you add trailing slashes then the API returns a 301 Permanently Moved response and you will need to make an additional HTTP request with the correct URL.</p>
+              <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
             </div>
           </div>
 
@@ -303,11 +305,11 @@
   "offset": 100,
   "pages": 87,
   "links": [
-    {"rel": "first", "href": "/api/v1/things?limit=10"},
-    {"rel": "prev", "href": "/api/v1/things?limit=10&offset=90"},
-    {"rel": "this", "href": "/api/v1/things?limit=10&offset=100"},
-    {"rel": "next", "href": "/api/v1/things?limit=10&offset=110"},
-    {"rel": "last", "href": "/api/v1/things?limit=10&offset=860"},
+    {"rel": ["first"], "href": "/api/v1/things?limit=10"},
+    {"rel": ["prev"], "href": "/api/v1/things?limit=10&offset=90"},
+    {"rel": ["self"], "href": "/api/v1/things?limit=10&offset=100"},
+    {"rel": ["next"], "href": "/api/v1/things?limit=10&offset=110"},
+    {"rel": ["last"], "href": "/api/v1/things?limit=10&offset=860"},
   ],
   "type": "/api/v1/things",
   "items": [
@@ -321,7 +323,7 @@
                   <li><code>limit</code> = The maximum number of items per page of the collection.</li>
                   <li><code>offset</code> = The current page in the collection.</li>
                   <li><code>pages</code> = The number of pages in the collection.</li>
-                  <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": "next"</code> link, and likewise if you are on the first page you will not receive the <code>"rel": "prev"</code></li>
+                  <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
                   <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
                   <li><code>items</code> = Contains the records being paginated.</li>
                 </ul>
@@ -405,8 +407,8 @@ Content-Type: application/json
       "admin":false,
       "meta":{
         "links":[
-          {"rel":"this", "href":"/api/v1/profiles/1"},
-          {"rel":"/api/v1/sites", "href":"/api/v1/site"}
+          {"rel":["self"], "href":"/api/v1/profiles/1"},
+          {"rel":["site", "/api/v1/site"], "href":"/api/v1/site"}
         ]
       }
     },
@@ -423,15 +425,15 @@ Content-Type: application/json
       "admin":false,
       "meta":{
         "links":[
-          {"rel":"this", "href":"/api/v1/profiles/1"},
-          {"rel":"/api/v1/sites", "href":"/api/v1/site"}
+          {"rel":["self"], "href":"/api/v1/profiles/1"},
+          {"rel":["site", "/api/v1/site"], "href":"/api/v1/site"}
         ]
       }
     },
     "logoUrl":"http://example.org",
     "meta":{
       "links":[
-        {"rel":"this", "href":"/api/v1/site"}
+        {"rel":["self"], "href":"/api/v1/site"}
       ],
       "permissions":{
         "create":false,
