@@ -46,7 +46,7 @@
             <p>Welcome to the API documentation for Microcosm. On this single-page site we explain how to use the Microcosm API. Print this page or bookmark, just keep it handy.</p>
           </div>
 
-          <h2>Introduction</h2>
+          <h1>Introduction</h1>
 
           <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you, the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you might implement a solution using our API.</p>
           <p>What we give you:
@@ -67,6 +67,8 @@
           </p>
           <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
           <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
+
+          <h1>Conventions</h1>
 
           <h2>Boiler Plate</h2>
 
@@ -310,6 +312,8 @@ Content-Type: application/json
 }
 </code></pre>
           <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
+
+          <h1>The API</h1>
 
           <h2>API Flow</h2>
           
