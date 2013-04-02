@@ -140,6 +140,7 @@
               </tr>
             </tbody>
           </table>
+          <p>It is possible to also generate other HTTP status codes, i.e. requesting an unsupported method such as PATCH would result in a 405 Method Not Supported response. However, if you follow this documentation only the above list of response codes will be encountered.</p>
 
           <h3>Callbacks using JSONP</h3>
 
@@ -160,7 +161,7 @@
 
           <h3>URL Patterns</h3>
 
-          <p>The base path of the API is <code>https://{siteKey}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
+          <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
           <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
           <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
           <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server.</p>
@@ -350,7 +351,7 @@ Content-Type: application/json
           
           <h5>Request</h5>
           
-          <pre><code>curl -i -X OPTIONS https://{siteKey}.microco.sm/api/v1/site</code></pre>
+          <pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/site</code></pre>
 
           <h5>Response</h5>
 
@@ -365,7 +366,7 @@ Connection: keep-alive</code></pre>
           <h4>GET</h4>
           <h5>Request</h5>
 
-          <pre><code>curl -X GET https://{siteKey}.microco.sm/api/v1/site</code></pre>
+          <pre><code>curl -X GET https://{subdomain}.microco.sm/api/v1/site</code></pre>
 
           <h5>Response</h5>
 <pre><code>{
