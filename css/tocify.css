@@ -33,7 +33,7 @@
 
 /* Makes the font smaller for all subheader elements. */
 .sub-header li {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 /* Further indents second level subheader elements. */
