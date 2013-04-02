@@ -321,10 +321,51 @@ Content-Type: application/json
 
           <h3>/site</h3>
 
+          <p>Provides information about the site that you are currently on: the name of the site, the site logo, who created the site, and who owns the site.</p>
+
+          <p>Valid URLs and options:</p>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/site</td>
+                <td>OPTIONS</td>
+                <td><code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/site</td>
+                <td>GET</td>
+                <td>Returns information about the current site.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>OPTIONS</h4>
+          
+          <h5>Request</h5>
+          
+          <pre><code>curl -i -X OPTIONS https://{siteKey}.microco.sm/api/v1/site</code></pre>
+
+          <h5>Response</h5>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: GET,OPTIONS
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Accept-Ranges: bytes
+Date: Tue, 02 Apr 2013 14:35:55 GMT
+Connection: keep-alive</code></pre>
+
           <h4>GET</h4>
           <h5>Request</h5>
 
-          <pre><code>curl https://{siteKey}.microco.sm/api/v1/site</code></pre>
+          <pre><code>curl -X GET https://{siteKey}.microco.sm/api/v1/site</code></pre>
 
           <h5>Response</h5>
 <pre><code>{
