@@ -337,7 +337,7 @@ Content-Type: application/json
               <tr>
                 <td>/api/v1/site</td>
                 <td>OPTIONS</td>
-                <td><code>Allow:</code> header lists the methods available.</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
               </tr>
               <tr>
                 <td>/api/v1/site</td>
@@ -350,7 +350,7 @@ Content-Type: application/json
           <h4>OPTIONS</h4>
           
           <h5>Request</h5>
-          
+
           <pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/site</code></pre>
 
           <h5>Response</h5>
@@ -364,6 +364,9 @@ Date: Tue, 02 Apr 2013 14:35:55 GMT
 Connection: keep-alive</code></pre>
 
           <h4>GET</h4>
+
+          <p>There are no query string paramaters, the response of this API call describes the basic properties of a web site.</p>
+
           <h5>Request</h5>
 
           <pre><code>curl -X GET https://{subdomain}.microco.sm/api/v1/site</code></pre>
