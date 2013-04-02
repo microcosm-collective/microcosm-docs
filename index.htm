@@ -412,7 +412,7 @@ Content-Type: application/json
 
               <h2>/profiles</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-              
+
               <h2>/whoami</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
             </div>
@@ -444,7 +444,7 @@ Content-Type: application/json
     <script>
     $(document).ready(function() {
         // Navigation wizardry
-        $("#toc").tocify();
+        var toc = $("#toc").tocify({ selectors: "h2, h3, h4" }).data("toc-tocify");
 
         // Source code prettiness
         var prettify = false;
