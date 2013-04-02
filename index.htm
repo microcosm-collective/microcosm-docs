@@ -288,6 +288,54 @@
           </p>
           <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
 
+          <h3>Links and Permissions</h3>
+          <p>Most of the API calls will return a JSON object called <code>meta</code> that looks like this:</p>
+<pre><code>"meta":{
+  "links":[
+    {"rel":["self"], "href":"/api/v1/site"},
+    {"rel":["microcosms","/api/v1/microcosms"], "href":"/api/v1/microcosms"},
+    {"rel":["profiles","/api/v1/profiles"], "href":"/api/v1/profiles"}
+  ],
+  "permissions":{
+    "create":false,
+    "read":true,
+    "update":false,
+    "delete":false,
+    "guest":true,
+    "superUser":false
+  }
+}</code></pre>
+
+          <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>. Further, it describes the Microcosms link as being of relation <code>microcosms</code>, and also gives the type URL which in this case is the same as the full HRef URL.</p>
+          <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request.</p>
+          <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the item in the current context. You should interpret permissions alone these lines:</p>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Permission</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>create</code></td>
+                <td>Whether you can perform a <code>POST</code> request in this context, and therefore whether you have permission to add items to a collection.</td>
+              </tr>
+              <tr>
+                <td><code>read</code></td>
+                <td>Whether you can perform a <code>GET</code> request in this context. This will always be <code>true</code>, as you will have received a 401 or 403 error if you did not have permission to read this item.</td>
+              </tr>
+              <tr>
+                <td><code>update</code></td>
+                <td>Whether you can perform a <code>PUT</code> request in this context. The general guideline is that you can only update your own content, unless you are authenticated as a super user.</td>
+              </tr>
+              <tr>
+                <td><code>delete</code></td>
+                <td>Whether you can perform a <code>DELETE</code> request in this context. In general, you can only delete your own content, unless you are authenticated as a super user.</td>
+              </tr>
+            </tbody>
+          </table>
+
           <h3>Authentication</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
@@ -421,7 +469,9 @@ Connection: keep-alive</code></pre>
     "logoUrl":"http://example.org",
     "meta":{
       "links":[
-        {"rel":["self"], "href":"/api/v1/site"}
+        {"rel":["self"], "href":"/api/v1/site"},
+        {"rel":["microcosms","/api/v1/microcosms"], "href":"/api/v1/microcosms"},
+        {"rel":["profiles","/api/v1/profiles"], "href":"/api/v1/profiles"}
       ],
       "permissions":{
         "create":false,
