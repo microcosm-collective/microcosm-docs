@@ -33,6 +33,7 @@
   <body>
     <div class="container">
       <div class="row">
+
         <div class="span3">
           <div id="toc"></div>
         </div>
@@ -69,11 +70,7 @@
               </p>
               <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
               <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="boiler">
               <h2>Boiler Plate</h2>
 
               <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
@@ -93,11 +90,7 @@
                 </ul>
               </p>
               <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="http">
               <h2>HTTP Status Codes</h2>
 
               <p>We only return a few status codes that generally describe the state of a request, your application need only handle these status codes:</p>
@@ -152,11 +145,7 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="jsonp">
               <h2>Callbacks using JSONP</h2>
 
               <p>We support JSONP, and to achieve that 3 things are needed:
@@ -173,11 +162,7 @@
               <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
               <p class="well well-small">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
               <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="urls">
               <h2>URL Patterns</h2>
 
               <p>The base path of the API is <code>https://{siteKey}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
@@ -264,12 +249,9 @@
                 </tbody>
               </table>
               <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="page">
               <h2>Pagination</h2>
+
               <p>Pagination of collections is supported using the offset approach:
                 <ul>
                   <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
@@ -309,18 +291,10 @@
                 </ul>
               </p>
               <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="auth">
               <h2>Authentication</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="error">
               <h2>Error Handling</h2>
               <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
               <p>If an error has occurred we will additionally inform you, the developer, of the cause of the error by populating the <code>error</code> property of the <a href="boiler">boiler plate</a>. The <code>error</code> property holds an array of strings to help you, the developer, to fix the issue.</p>
@@ -339,11 +313,7 @@ Content-Type: application/json
 }
 </code></pre>
               <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="flow">
               <h2>API Flow</h2>
               
               <p>At the highest level you can imagine that the core flow through the API is this:
@@ -351,11 +321,7 @@ Content-Type: application/json
               </p>
               <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
               <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="site">
               <h2>/site</h2>
 
               <h3>Get info about the current Site</h3>
@@ -428,53 +394,25 @@ Content-Type: application/json
   "error":null
 }</code></pre>
 
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="span9" id="microcosm">
               <h2>/microcosms</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="conv">
+
               <h2>/conversations</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="event">
+
               <h2>/events</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="poll">
+
               <h2>/polls</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="comment">
+
               <h2>/comments</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="profile">
+
               <h2>/profiles</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="span9" id="whoami">
+              
               <h2>/whoami</h2>
               <p>TODO: Some text goes here, this is just placeholder</p>
             </div>
