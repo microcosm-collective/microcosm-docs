@@ -46,7 +46,7 @@
             <p>Welcome to the API documentation for Microcosm. On this single-page site we explain how to use the Microcosm API. Print this page or bookmark, just keep it handy.</p>
           </div>
 
-          <h1>Introduction</h1>
+          <h2>Introduction</h2>
 
           <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you, the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you might implement a solution using our API.</p>
           <p>What we give you:
@@ -68,9 +68,9 @@
           <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
           <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
 
-          <h1>Conventions</h1>
+          <h2>Conventions</h2>
 
-          <h2>Boiler Plate</h2>
+          <h3>Boiler Plate</h3>
 
           <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
           <p>All responses are wrapped in this:</p>
@@ -90,7 +90,7 @@
           </p>
           <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
 
-          <h2>HTTP Status Codes</h2>
+          <h3>HTTP Status Codes</h3>
 
           <p>We only return a few status codes that generally describe the state of a request, your application need only handle these status codes:</p>
           <table class="table table-hover">
@@ -145,7 +145,7 @@
             </tbody>
           </table>
 
-          <h2>Callbacks using JSONP</h2>
+          <h3>Callbacks using JSONP</h3>
 
           <p>We support JSONP, and to achieve that 3 things are needed:
             <ol>
@@ -162,7 +162,7 @@
           <p class="well well-small">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
           <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
 
-          <h2>URL Patterns</h2>
+          <h3>URL Patterns</h3>
 
           <p>The base path of the API is <code>https://{siteKey}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
           <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
@@ -249,7 +249,7 @@
           </table>
           <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
 
-          <h2>Pagination</h2>
+          <h3>Pagination</h3>
 
           <p>Pagination of collections is supported using the offset approach:
             <ul>
@@ -291,10 +291,10 @@
           </p>
           <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
 
-          <h2>Authentication</h2>
+          <h3>Authentication</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>Error Handling</h2>
+          <h3>Error Handling</h3>
           <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
           <p>If an error has occurred we will additionally inform you, the developer, of the cause of the error by populating the <code>error</code> property of the <a href="boiler">boiler plate</a>. The <code>error</code> property holds an array of strings to help you, the developer, to fix the issue.</p>
           <p class="well well-small">Note: The audience of the error string array is the developer implementing against the API. Please take care not to send error messages to the end user. Instead handle it in some elegant way in the UI that you present to the end user. To emphasise this: the error text is not localised, it will always be in English, it is designed to be understood by a developer and not an end user, it may change over time to be clearer to developers how to fix the error. Bottom line: Rely on HTTP status codes and nothing else.</p>
@@ -313,9 +313,9 @@ Content-Type: application/json
 </code></pre>
           <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
 
-          <h1>The API</h1>
+          <h2>The API</h2>
 
-          <h2>API Flow</h2>
+          <h3>API Flow</h3>
           
           <p>At the highest level you can imagine that the core flow through the API is this:
             <img src="img/flow.png" title="Image showing the high level flow through the API." />
@@ -323,14 +323,14 @@ Content-Type: application/json
           <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
           <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
 
-          <h2>/site</h2>
+          <h3>/site</h3>
 
-          <h3>GET</h3>
-          <h4>Request</h4>
+          <h4>GET</h4>
+          <h5>Request</h5>
 
           <pre><code>curl https://{siteKey}.microco.sm/api/v1/site</code></pre>
 
-          <h4>Response</h4>
+          <h5>Response</h5>
 <pre><code>{
   "context":"",
   "status":200,
@@ -395,25 +395,25 @@ Content-Type: application/json
   "error":null
 }</code></pre>
 
-          <h2>/microcosms</h2>
+          <h3>/microcosms</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>/conversations</h2>
+          <h3>/conversations</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>/events</h2>
+          <h3>/events</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>/polls</h2>
+          <h3>/polls</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>/comments</h2>
+          <h3>/comments</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>/profiles</h2>
+          <h3>/profiles</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
-          <h2>/whoami</h2>
+          <h3>/whoami</h3>
           <p>TODO: Some text goes here, this is just placeholder</p>
 
         </div>
