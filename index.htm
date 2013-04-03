@@ -599,7 +599,56 @@ Connection: keep-alive</code></pre>
 
           <h3>/microcosms</h3>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <p>Provides information about the Microcosms that exist on a site and the items contained within them. Conceptually a Microcosm can be imagined as being like a 'forum' or 'sub-forum' on a traditional piece of forum software, it is the container for all conversations, polls, and other resources such as events.</p>
+
+          <h4>URLs and Methods</h4>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/microcosms</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms</td>
+                <td>POST</td>
+                <td>Creates a new Microcosm on the current site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms</td>
+                <td>GET</td>
+                <td>Returns information about the Microcosms that exist on the current site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns information about the Microcosm specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms/{id:[0-9]+}</td>
+                <td>PUT</td>
+                <td>Updates the Microcosm specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms/{id:[0-9]+}</td>
+                <td>DELETE</td>
+                <td>Deletes the Microcosm specified by the numeric identifier.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>/conversations</h3>
 
