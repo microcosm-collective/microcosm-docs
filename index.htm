@@ -599,7 +599,7 @@ Connection: keep-alive</code></pre>
 
           <h3>/microcosms</h3>
 
-          <p>Provides information about the Microcosms that exist on a site and the items contained within them. Conceptually a Microcosm can be imagined as being like a 'forum' or 'sub-forum' on a traditional piece of forum software, it is the container for all conversations, polls, and other resources such as events.</p>
+          <p>Provides an interface to the Microcosms that exist on a site and information on the items contained within them. Conceptually a Microcosm can be imagined as being like a 'forum' or 'sub-forum' on a traditional piece of forum software, it is the container for all conversations, polls, and other resources such as events.</p>
 
           <h4>URLs and Methods</h4>
 
@@ -635,7 +635,7 @@ Connection: keep-alive</code></pre>
               <tr>
                 <td>/api/v1/microcosms/{id:[0-9]+}</td>
                 <td>GET</td>
-                <td>Returns information about the Microcosm specified by the numeric identifier.</td>
+                <td>Returns information about the Microcosm specified by the numeric identifier and a collection of items related to this Microcosm.</td>
               </tr>
               <tr>
                 <td>/api/v1/microcosms/{id:[0-9]+}</td>
@@ -652,19 +652,215 @@ Connection: keep-alive</code></pre>
 
           <h3>/conversations</h3>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <p>Provides an interface to the conversations that exist on a site and the comments contained within them. A conversation is merely a titled (topical) collection of comments.</p>
+
+          <h4>URLs and Methods</h4>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/conversations</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations</td>
+                <td>POST</td>
+                <td>Creates a new conversation on the current site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations</td>
+                <td>GET</td>
+                <td>Returns information about the conversations that exist on the current site.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}</td>
+                <td>PUT</td>
+                <td>Updates the conversation specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}</td>
+                <td>DELETE</td>
+                <td>Deletes the conversation specified by the numeric identifier.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>/events</h3>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <p>Provides an interface to the events that exist on a site and the comments contained within them. An event describes some thing that happens some where at some time, and can be attended by some people. A collection of comments may be attached to an event.</p>
+
+          <h4>URLs and Methods</h4>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/events</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events</td>
+                <td>POST</td>
+                <td>Creates a new event on the current site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events</td>
+                <td>GET</td>
+                <td>Returns information about the events that exist on the current site.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns information about the event specified by the numeric identifier and a collection of comments related to this event.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}</td>
+                <td>PUT</td>
+                <td>Updates the event specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}</td>
+                <td>DELETE</td>
+                <td>Deletes the event specified by the numeric identifier.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>/polls</h3>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <p>Provides an interface to the polls that exist on a site and the comments contained within them. A poll describes a question with a set of answers that a person can vote on. A collection of comments may be attached to an poll.</p>
+
+          <h4>URLs and Methods</h4>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/polls</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls</td>
+                <td>POST</td>
+                <td>Creates a new poll on the current site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls</td>
+                <td>GET</td>
+                <td>Returns information about the polls that exist on the current site.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/polls/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns information about the poll specified by the numeric identifier and a collection of comments related to this poll.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}</td>
+                <td>PUT</td>
+                <td>Updates the poll specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}</td>
+                <td>DELETE</td>
+                <td>Deletes the poll specified by the numeric identifier.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>/comments</h3>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <p>Provides an interface to the comments that exist on a site and to which items they are related. A comment encapsulates the unstructured site content in the form of textual contributions formatted as <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> and to be rendered as HTML.</p>
+
+          <h4>URLs and Methods</h4>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/comments</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/comments</td>
+                <td>POST</td>
+                <td>Creates a new comment on the current site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/comments</td>
+                <td>GET</td>
+                <td>Returns information about the comments that exist on the current site.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/comments/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/comments/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns information about the comment specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/comments/{id:[0-9]+}</td>
+                <td>PUT</td>
+                <td>Updates the comment specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/comments/{id:[0-9]+}</td>
+                <td>DELETE</td>
+                <td>Deletes the comment specified by the numeric identifier.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>/profiles</h3>
 
@@ -672,7 +868,31 @@ Connection: keep-alive</code></pre>
 
           <h3>/whoami</h3>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <p>A convenience resource that will acts like the *nix <a href="http://linux.die.net/man/1/whoami">whoami</a> command by determining your identity from the authentication token and issuing a redirect to the <code>/api/v1/profiles</code> of the currently authenticated user.</p>
+
+          <h4>URLs and Methods</h4>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/whoami</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/whoami</td>
+                <td>GET</td>
+                <td>Given a valid authentication token, will redirect to the applicable <code>/api/v1/profiles</code> for the authenticated user profiles.</td>
+              </tr>
+            </tbody>
+          </table>
 
         </div>
       </div>
