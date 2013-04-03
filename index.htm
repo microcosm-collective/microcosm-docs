@@ -306,9 +306,9 @@
           <p>Most of the API calls will return a JSON object called <code>meta</code> that looks like this:</p>
 <pre><code>"meta":{
   "links":[
-    {"rel":["self"], "href":"/api/v1/site"},
-    {"rel":["microcosms","/api/v1/microcosms"], "href":"/api/v1/microcosms"},
-    {"rel":["profiles","/api/v1/profiles"], "href":"/api/v1/profiles"}
+    {"rel":"self"], "href":"/api/v1/site"},
+    {"rel":"microcosm", "href":"/api/v1/microcosms/1", title:"General Chatter"},
+    {"rel":"profile", "href":"/api/v1/profiles"}
   ],
   "permissions":{
     "create":false,
@@ -322,6 +322,66 @@
 
           <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>. Further, it describes the Microcosms link as being of relation <code>microcosms</code>, and also gives the type URL which in this case is the same as the full HRef URL.</p>
           <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request.</p>
+          <p>We currently support the following link relations:</p>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Relation</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>self</td>
+                <td>Indicates that the containing object contains a resource equivalent to the one found at the href URL. Basically: A link to itself.</td>
+              </tr>
+              <tr>
+                <td>first</td>
+                <td>In a pagination collection, refers to the resource furthest preceding the current resource.</td>
+              </tr>
+              <tr>
+                <td>prev</td>
+                <td>In a pagination collection, refers to the resource directly preceding the current resource.</td>
+              </tr>
+              <tr>
+                <td>next</td>
+                <td>In a pagination collection, refers to the resource directly following the current resource.</td>
+              </tr>
+              <tr>
+                <td>last</td>
+                <td>In a pagination collection, refers to the resource furthest following the current resource.</td>
+              </tr>
+              <tr>
+                <td>comment</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/comments</code> URL or it's child resources.</td>
+              </tr>
+              <tr>
+                <td>conversation</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/conversations</code> URL or it's child resources.</td>
+              </tr>
+              <tr>
+                <td>event</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/events</code> URL or it's child resources.</td>
+              </tr>
+              <tr>
+                <td>microcosm</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. Will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
+              </tr>
+              <tr>
+                <td>poll</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/polls</code> URL or it's child resources.</td>
+              </tr>
+              <tr>
+                <td>profile</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/profiles</code> URL or it's child resources.</td>
+              </tr>
+              <tr>
+                <td>site</td>
+                <td>Refers to the resource that represents the current site and that can be found at the <code>/api/v1/site</code> URL.</td>
+              </tr>
+            </tbody>
+          </table>
+
           <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the item in the current context. You should interpret permissions alone these lines:</p>
           <table class="table table-hover">
             <thead>
