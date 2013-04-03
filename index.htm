@@ -36,7 +36,7 @@
           <div id="toc"></div>
         </div>
 
-        <div class="span9">
+        <div id="docs" class="span9">
 
           <h1>Microcosm</h1>
 
@@ -558,8 +558,8 @@ Connection: keep-alive</code></pre>
       "admin":false,
       "meta":{
         "links":[
-          {"rel":["self"], "href":"/api/v1/profiles/1"},
-          {"rel":["site", "/api/v1/site"], "href":"/api/v1/site"}
+          {"rel":"self", "href":"/api/v1/profiles/1"},
+          {"rel":"site", "href":"/api/v1/site"}
         ]
       }
     },
@@ -576,8 +576,8 @@ Connection: keep-alive</code></pre>
       "admin":false,
       "meta":{
         "links":[
-          {"rel":["self"], "href":"/api/v1/profiles/1"},
-          {"rel":["site", "/api/v1/site"], "href":"/api/v1/site"}
+          {"rel":"self", "href":"/api/v1/profiles/1"},
+          {"rel":"site", "href":"/api/v1/site"}
         ]
       }
     },
@@ -649,7 +649,7 @@ Connection: keep-alive</code></pre>
     <script>
     $(document).ready(function() {
         // Navigation wizardry, builds navigation from the structure of the document
-        var toc = $("#toc").tocify({ selectors: "h2, h3, h4, h5" }).data("toc-tocify");
+        var toc = $("#toc").tocify({ context: "#docs", selectors: "h2, h3, h4, h5" }).data("toc-tocify");
 
         // Source code prettiness
         var prettify = false;
