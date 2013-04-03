@@ -88,7 +88,7 @@
 
           <h3>HTTP Status Codes</h3>
 
-          <p>We only return a few status codes that generally describe the state of a request, your application need only handle these status codes:</p>
+          <p>We only return a few <a href="http://www.ietf.org/rfc/rfc2616.txt" title="RFC 2616">HTTP status codes</a> that generally describe the state of a request, your application need only handle these status codes:</p>
           <table class="table table-hover">
             <thead>
               <tr>
@@ -100,18 +100,23 @@
             <tbody>
               <tr>
                 <td>200</td>
-                <td>Success</td>
-                <td></td>
+                <td>OK</td>
+                <td>Standard response for successful HTTP requests.</td>
               </tr>
               <tr>
                 <td>301</td>
                 <td>Permanently Moved</td>
-                <td>The requested resource is now to be found at the location described in the HTTP Location header.</td>
+                <td>The requested resource is now to be found at the location described in the HTTP Location header, all future requests should be sent to that URL.</td>
               </tr>
               <tr>
                 <td>302</td>
-                <td>Temporarily Moved</td>
-                <td>The requested resource is now to be found at the location described in the HTTP Location header. After using POST to create a resource we will return a 301 to point you to the newly created resource. Your client should follow HTTP redirects.</td>
+                <td>Found</td>
+                <td>The requested resource is now to be found at the location described in the HTTP Location header. After using a POST or UPDATE we may return a 302 to point you to the newly created resource. Your client should follow HTTP redirects, but future requests should not cache this redirect and should be sent to the original location.</td>
+              </tr>
+              <tr>
+                <td>303</td>
+                <td>See Other</td>
+                <td>The response to the request can be found under another URL using a separate GET method. When received in response to a POST (or PUT/DELETE), it should be assumed that the server has received the data OK and the new GET request starts a new request chain.</td>
               </tr>
               <tr>
                 <td>400</td>
@@ -134,13 +139,22 @@
                 <td>We cannot find what you requested, though the request looks good. Note that we do not differentiate between items that have never existed and ones that once existed but are now deleted... if we can't return it to you, then we return 'not found'.</td>
               </tr>
               <tr>
+                <td>405</td>
+                <td>Method Not Allowed</td>
+                <td>A request was made of a resource using a request method not supported by that resource; for example, using GET on a form which requires data to be presented via POST, or using PUT on a read-only resource.</td>
+              </tr>
+              <tr>
                 <td>500</td>
                 <td>Server Error</td>
                 <td>Something bad has happened at our end and it's not your fault. You made a good request, but we've failed you. Please try again later, or send us a bug report: <a href="mailto:hello@microcosm.cc">hello@microcosm.cc</a> with an example of both the request and response and we will definitely look into it.</td>
               </tr>
+              <tr>
+                <td>501</td>
+                <td>Not Implemented</td>
+                <td>The server either does not recognize the request method, or it lacks the ability to fulfill the request. This is a very rare event and should not happen in normal circumstances, but may happen if we add a basic functionality for a new feature and a request is made to some unimplemented part of that feature.</td>
+              </tr>
             </tbody>
           </table>
-          <p>It is possible to also generate other HTTP status codes, i.e. requesting an unsupported method such as PATCH would result in a 405 Method Not Supported response. However, if you follow this documentation only the above list of response codes will be encountered.</p>
 
           <h3>Callbacks using JSONP</h3>
 
@@ -358,7 +372,9 @@ Content-Type: application/json
 </code></pre>
           <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
 
-          <h2>The API</h2>
+          <h2>Tutorial</h2>
+
+          <h2>API Reference</h2>
 
           <h3>API Flow</h3>
           
