@@ -468,7 +468,7 @@ Content-Type: application/json
           <h3>API Flow</h3>
           
           <p>At the highest level you can imagine that the core flow through the API is this:
-            <img src="img/flow.png" title="Image showing the high level flow through the API." />
+            <img src="img/flow.png" alt="Image showing the high level flow through the API." />
           </p>
 
           <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
@@ -477,6 +477,7 @@ Content-Type: application/json
 
           <h3>/site</h3>
 
+<div>
           <p>Provides information about the site that you are currently on: the name of the site, the site logo, who created the site, and who owns the site.</p>
 
           <p>Valid URLs and options:</p>
@@ -599,6 +600,7 @@ Connection: keep-alive</code></pre>
   },
   "error":null
 }</code></pre>
+</div>
 
           <h3>/microcosms</h3>
 
