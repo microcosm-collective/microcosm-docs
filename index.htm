@@ -277,11 +277,11 @@
   "offset": 100,
   "pages": 87,
   "links": [
-    {"rel": ["first"], "href": "/api/v1/things?limit=10"},
-    {"rel": ["prev"], "href": "/api/v1/things?limit=10&offset=90"},
-    {"rel": ["self"], "href": "/api/v1/things?limit=10&offset=100"},
-    {"rel": ["next"], "href": "/api/v1/things?limit=10&offset=110"},
-    {"rel": ["last"], "href": "/api/v1/things?limit=10&offset=860"},
+    {"rel": "first", "href": "/api/v1/things?limit=10"},
+    {"rel": "prev", "href": "/api/v1/things?limit=10&offset=90"},
+    {"rel": "self", "href": "/api/v1/things?limit=10&offset=100"},
+    {"rel": "next", "href": "/api/v1/things?limit=10&offset=110"},
+    {"rel": "last", "href": "/api/v1/things?limit=10&offset=860"},
   ],
   "type": "/api/v1/things",
   "items": [
@@ -306,7 +306,7 @@
           <p>Most of the API calls will return a JSON object called <code>meta</code> that looks like this:</p>
 <pre><code>"meta":{
   "links":[
-    {"rel":"self"], "href":"/api/v1/site"},
+    {"rel":"self", "href":"/api/v1/site"},
     {"rel":"microcosm", "href":"/api/v1/microcosms/1", title:"General Chatter"},
     {"rel":"profile", "href":"/api/v1/profiles"}
   ],
@@ -365,7 +365,7 @@
               </tr>
               <tr>
                 <td>microcosm</td>
-                <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. Will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
+                <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microcosm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
               </tr>
               <tr>
                 <td>poll</td>
@@ -545,9 +545,9 @@ Connection: keep-alive</code></pre>
     "logoUrl":"http://example.org",
     "meta":{
       "links":[
-        {"rel":["self"], "href":"/api/v1/site"},
-        {"rel":["microcosms","/api/v1/microcosms"], "href":"/api/v1/microcosms"},
-        {"rel":["profiles","/api/v1/profiles"], "href":"/api/v1/profiles"}
+        {"rel":"self", "href":"/api/v1/site"},
+        {"rel":"microcosms", "href":"/api/v1/microcosms"},
+        {"rel":"profiles", "href":"/api/v1/profiles"}
       ],
       "permissions":{
         "create":false,
