@@ -136,7 +136,7 @@
               <tr>
                 <td>404</td>
                 <td>Not Found</td>
-                <td>We cannot find what you requested, though the request looks good. Note that we do not differentiate between items that have never existed and ones that once existed but are now deleted... if we can't return it to you, then we return 'not found'.</td>
+                <td>We cannot find what you requested, though the request looks good. Note that we do not differentiate between resources that have never existed and ones that once existed but are now deleted... if we can't return it to you, then we return 'not found'.</td>
               </tr>
               <tr>
                 <td>405</td>
@@ -197,12 +197,12 @@
               <tr>
                 <td>PUT</td>
                 <td>/api/v1/things</td>
-                <td>Collection updating is largely forbidden, would return HTTP 403. Please update individual items.</td>
+                <td>Collection updating is largely forbidden, would return HTTP 403. Please update individual resources.</td>
               </tr>
               <tr>
                 <td>DELETE</td>
                 <td>/api/v1/things</td>
-                <td>Collection deletion is largely forbidden, would return HTTP 403. Please delete individual items.</td>
+                <td>Collection deletion is largely forbidden, would return HTTP 403. Please delete individual resources.</td>
               </tr>
               <tr>
                 <td>POST</td>
@@ -239,7 +239,7 @@
               <tr>
                 <td>POST</td>
                 <td>/api/v1/thing</td>
-                <td>Create the resource. Likely to be forbidden in a single item resource as this tends to be a read-only resource.</td>
+                <td>Create the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource.</td>
               </tr>
               <tr>
                 <td>GET</td>
@@ -249,12 +249,12 @@
               <tr>
                 <td>PUT</td>
                 <td>/api/v1/thing</td>
-                <td>Update the resource. Likely to be forbidden in a single item resource as this tends to be a read-only resource.</td>
+                <td>Update the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource.</td>
               </tr>
               <tr>
                 <td>DELETE</td>
                 <td>/api/v1/thing</td>
-                <td>Delete the resource. Likely to be forbidden in a single item resource as this tends to be a read-only resource.</td>
+                <td>Delete the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource.</td>
               </tr>
             </tbody>
           </table>
@@ -270,7 +270,7 @@
             </ul>
           </p>
           <p>The default value for <code>limit</code> is 25, and the default value for <code>offset</code> is 0. Meaning that if you do nothing, then you will get up to 25 records at the beginning of the collection.</p>
-          <p>The format of our collections is consistent, all resources that return a collection of items will do so using this structure:</p>
+          <p>The format of our collections is consistent, all resources that return a collection of resources will do so using this structure:</p>
           <pre><code>"collectionName": {
   "total": 861,
   "limit": 10,
@@ -291,13 +291,13 @@
           <p>Where:
             <ul>
               <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
-              <li><code>total</code> = The total number of items in the collection.</li>
-              <li><code>limit</code> = The maximum number of items per page of the collection.</li>
+              <li><code>total</code> = The total number of resources in the collection.</li>
+              <li><code>limit</code> = The maximum number of resources per page of the collection.</li>
               <li><code>offset</code> = The current page in the collection.</li>
               <li><code>pages</code> = The number of pages in the collection.</li>
               <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
               <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
-              <li><code>items</code> = Contains the records being paginated.</li>
+              <li><code>items</code> = Contains the resources being paginated.</li>
             </ul>
           </p>
           <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
@@ -382,7 +382,7 @@
             </tbody>
           </table>
 
-          <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the item in the current context. You should interpret permissions alone these lines:</p>
+          <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the resource in the current context. You should interpret permissions alone these lines:</p>
           <table class="table table-hover">
             <thead>
               <tr>
@@ -393,11 +393,11 @@
             <tbody>
               <tr>
                 <td><code>create</code></td>
-                <td>Whether you can perform a <code>POST</code> request in this context, and therefore whether you have permission to add items to a collection.</td>
+                <td>Whether you can perform a <code>POST</code> request in this context, and therefore whether you have permission to add resources to a collection.</td>
               </tr>
               <tr>
                 <td><code>read</code></td>
-                <td>Whether you can perform a <code>GET</code> request in this context. This will always be <code>true</code>, as you will have received a 401 or 403 error if you did not have permission to read this item.</td>
+                <td>Whether you can perform a <code>GET</code> request in this context. This will always be <code>true</code>, as you will have received a 401 or 403 error if you did not have permission to read this resource.</td>
               </tr>
               <tr>
                 <td><code>update</code></td>
