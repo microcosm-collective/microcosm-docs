@@ -411,13 +411,19 @@
           </table>
 
           <h3>Authentication</h3>
+
           <p>TODO: Some text goes here, this is just placeholder</p>
 
           <h3>Error Handling</h3>
+
           <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
+
           <p>If an error has occurred we will additionally inform you, the developer, of the cause of the error by populating the <code>error</code> property of the <a href="boiler">boiler plate</a>. The <code>error</code> property holds an array of strings to help you, the developer, to fix the issue.</p>
+          
           <p class="well well-small">Note: The audience of the error string array is the developer implementing against the API. Please take care not to send error messages to the end user. Instead handle it in some elegant way in the UI that you present to the end user. To emphasise this: the error text is not localised, it will always be in English, it is designed to be understood by a developer and not an end user, it may change over time to be clearer to developers how to fix the error. Bottom line: Rely on HTTP status codes and nothing else.</p>
+          
           <p>An example error (in this case for an invalid authentication access token):</p>
+          
           <pre><code>HTTP/1.1 403 Forbidden
 Content-Type: application/json
 
@@ -502,6 +508,7 @@ Connection: keep-alive</code></pre>
           <pre><code>curl -X GET https://{subdomain}.microco.sm/api/v1/site</code></pre>
 
           <p>Response:</p>
+          
 <pre><code>{
   "context":"",
   "status":200,
