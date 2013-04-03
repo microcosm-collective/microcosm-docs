@@ -479,7 +479,8 @@ Content-Type: application/json
 
           <p>Provides information about the site that you are currently on: the name of the site, the site logo, who created the site, and who owns the site.</p>
 
-          <p>Valid URLs and options:</p>
+          <h4>URLs and Methods</h4>
+
           <table class="table table-hover">
             <thead>
               <tr>
@@ -502,8 +503,10 @@ Content-Type: application/json
             </tbody>
           </table>
 
-          <h4>/site OPTIONS</h4>
+          <h4>Single Resource</h4>
           
+          <h5>OPTIONS</h5>
+
           <p>Request:</p>
 
           <pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/site</code></pre>
@@ -518,7 +521,7 @@ Accept-Ranges: bytes
 Date: Tue, 02 Apr 2013 14:35:55 GMT
 Connection: keep-alive</code></pre>
 
-          <h4>/site GET</h4>
+          <h5>GET</h5>
 
           <p>There are no query string paramaters, the response of this API call describes the basic properties of a web site.</p>
 
@@ -578,8 +581,8 @@ Connection: keep-alive</code></pre>
     "meta":{
       "links":[
         {"rel":"self", "href":"/api/v1/site"},
-        {"rel":"microcosms", "href":"/api/v1/microcosms"},
-        {"rel":"profiles", "href":"/api/v1/profiles"}
+        {"rel":"microcosm", "href":"/api/v1/microcosms"},
+        {"rel":"profile", "href":"/api/v1/profiles"}
       ],
       "permissions":{
         "create":false,
