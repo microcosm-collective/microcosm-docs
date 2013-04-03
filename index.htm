@@ -45,23 +45,25 @@
           <h2>Introduction</h2>
 
           <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you, the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you might implement a solution using our API.</p>
-          <p>What we give you:
-            <ul>
-              <li>A <a href="http://www.json.org/">JSON</a> interface of resources that you can manipulate via the most common HTTP verbs.</li>
-              <li>Token-based authentication to identify the user and client accessing the API.</li>
-              <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> inspired meta data to show the relation of a given resource to other resources, as well as a description of your user's permissions so that you know what state changing actions your user can perform.</li>
-            </ul>
-          </p>
-          <p>Deviations from pure REST and HATEOAS:
-            <ul>
-              <li>We allow HTTP methods to be overridden.</li>
-              <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>), which means that our responses include meta data in addition to the resource itself.</li>
-              <li>We haven't created unique content types for each resource, we just use <code>application/json</code>.</li>
-              <li>We put our API version information in the URL rather than the HTTP headers.</li>
-              <li>We only serve JSON.</li>
-            </ul>
-          </p>
+
+          <p>What we give you:</p>
+          <ul>
+            <li>A <a href="http://www.json.org/">JSON</a> interface of resources that you can manipulate via the most common HTTP verbs.</li>
+            <li>Token-based authentication to identify the user and client accessing the API.</li>
+            <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> inspired meta data to show the relation of a given resource to other resources, as well as a description of your user's permissions so that you know what state changing actions your user can perform.</li>
+          </ul>
+
+          <p>Deviations from pure REST and HATEOAS:</p>
+          <ul>
+            <li>We allow HTTP methods to be overridden.</li>
+            <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>), which means that our responses include meta data in addition to the resource itself.</li>
+            <li>We haven't created unique content types for each resource, we just use <code>application/json</code>.</li>
+            <li>We put our API version information in the URL rather than the HTTP headers.</li>
+            <li>We only serve JSON.</li>
+          </ul>
+
           <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
+
           <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
 
           <h2>Conventions</h2>
@@ -69,26 +71,29 @@
           <h3>Boiler Plate</h3>
 
           <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
+
           <p>All responses are wrapped in this:</p>
+
           <pre><code>{
   "context": "",
   "status": 200,
   "data": null
   "error": null
 }</code></pre>
-          <p>
-            <ul>
-              <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to identify which request this response relates to.</li>
-              <li><code>status</code> = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
-              <li><code>data</code> = The actual JSON representation of the resource requested.</li>
-              <li><code>error</code> = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
-            </ul>
-          </p>
+
+          <ul>
+            <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to identify which request this response relates to.</li>
+            <li><code>status</code> = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
+            <li><code>data</code> = The actual JSON representation of the resource requested.</li>
+            <li><code>error</code> = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
+          </ul>
+
           <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
 
           <h3>HTTP Status Codes</h3>
 
           <p>We only return a few <a href="http://www.ietf.org/rfc/rfc2616.txt" title="RFC 2616">HTTP status codes</a> that generally describe the state of a request, your application need only handle these status codes:</p>
+
           <table class="table table-hover">
             <thead>
               <tr>
@@ -158,27 +163,37 @@
 
           <h3>Callbacks using JSONP</h3>
 
-          <p>We support JSONP, and to achieve that 3 things are needed:
-            <ol>
-              <li>The ability to wrap the returned JSON in a callback function.</li>
-              <li>The ability to override the HTTP method so that you can perform the action of HTTP PUT and HTTP DELETE via HTTP POST.</li>
-              <li>The ability to only ever return a HTTP 200 OK status.</li>
-            </ol>
-          </p>
+          <p>We support JSONP, and to achieve that 3 things are needed:</p>
+          <ol>
+            <li>The ability to wrap the returned JSON in a callback function.</li>
+            <li>The ability to override the HTTP method so that you can perform the action of HTTP PUT and HTTP DELETE via HTTP POST.</li>
+            <li>The ability to only ever return a HTTP 200 OK status.</li>
+          </ol>
+
           <p>To fulfil the first requirement you can wrap the response in a callback function name you provide by adding <code>callback=funcName</code> to the querystring of your request.</p>
+
           <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring.</p>
+
           <p class="well well-small">Note: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
+
           <p>To fulfil the third requirement you may add <code>always200</code> to the querystring and this will force the API to only ever return a HTTP 200 OK header regardless of what happened, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
+
           <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
+
           <p class="well well-small">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
+
           <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
 
           <h3>URL Patterns</h3>
 
           <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
+
           <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
+
           <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
+
           <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server.</p>
+
           <p>URLs and actions for a resource collection:</p>
           <table class="table table-hover">
             <thead>
@@ -258,19 +273,22 @@
               </tr>
             </tbody>
           </table>
+
           <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
 
           <h3>Pagination</h3>
 
-          <p>Pagination of collections is supported using the offset approach:
-            <ul>
-              <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
-              <li><code>offset</code> = <code>/api/v1/things?offset=50</code> would return up to the default number of 'things' starting at the 50th record.</li>
-              <li><code>limit</code> with <code>offset</code> = <code>/api/v1/things?limit=10&amp;offset=30</code> would return up to 10 'things' starting at the 30th record.</li>
-            </ul>
-          </p>
+          <p>Pagination of collections is supported using the offset approach:</p>
+          <ul>
+            <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
+            <li><code>offset</code> = <code>/api/v1/things?offset=50</code> would return up to the default number of 'things' starting at the 50th record.</li>
+            <li><code>limit</code> with <code>offset</code> = <code>/api/v1/things?limit=10&amp;offset=30</code> would return up to 10 'things' starting at the 30th record.</li>
+          </ul>
+
           <p>The default value for <code>limit</code> is 25, and the default value for <code>offset</code> is 0. Meaning that if you do nothing, then you will get up to 25 records at the beginning of the collection.</p>
+
           <p>The format of our collections is consistent, all resources that return a collection of resources will do so using this structure:</p>
+
           <pre><code>"collectionName": {
   "total": 861,
   "limit": 10,
@@ -288,21 +306,23 @@
     ...
   ]
 }</code></pre>
-          <p>Where:
-            <ul>
-              <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
-              <li><code>total</code> = The total number of resources in the collection.</li>
-              <li><code>limit</code> = The maximum number of resources per page of the collection.</li>
-              <li><code>offset</code> = The current page in the collection.</li>
-              <li><code>pages</code> = The number of pages in the collection.</li>
-              <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
-              <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
-              <li><code>items</code> = Contains the resources being paginated.</li>
-            </ul>
-          </p>
+
+          <p>Where:</p>
+          <ul>
+            <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
+            <li><code>total</code> = The total number of resources in the collection.</li>
+            <li><code>limit</code> = The maximum number of resources per page of the collection.</li>
+            <li><code>offset</code> = The current page in the collection.</li>
+            <li><code>pages</code> = The number of pages in the collection.</li>
+            <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
+            <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
+            <li><code>items</code> = Contains the resources being paginated.</li>
+          </ul>
+
           <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
 
           <h3>Links and Permissions</h3>
+
           <p>Most of the API calls will return a JSON object called <code>meta</code> that looks like this:</p>
 <pre><code>"meta":{
   "links":[
@@ -321,7 +341,9 @@
 }</code></pre>
 
           <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>. Further, it describes the Microcosms link as being of relation <code>microcosms</code>, and also gives the type URL which in this case is the same as the full HRef URL.</p>
+
           <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request.</p>
+
           <p>We currently support the following link relations:</p>
           <table class="table table-hover">
             <thead>
@@ -436,6 +458,7 @@ Content-Type: application/json
   ]
 }
 </code></pre>
+
           <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
 
           <h2>Tutorial</h2>
@@ -447,7 +470,9 @@ Content-Type: application/json
           <p>At the highest level you can imagine that the core flow through the API is this:
             <img src="img/flow.png" title="Image showing the high level flow through the API." />
           </p>
+
           <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+
           <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
 
           <h3>/site</h3>
@@ -508,7 +533,7 @@ Connection: keep-alive</code></pre>
           <pre><code>curl -X GET https://{subdomain}.microco.sm/api/v1/site</code></pre>
 
           <p>Response:</p>
-          
+
 <pre><code>{
   "context":"",
   "status":200,
