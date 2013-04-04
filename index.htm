@@ -727,34 +727,11 @@ Content-Length: 52
 
           <h5>GET</h5>
 
+          <p>Fetches a collection of Microcosms. If a valid <code>access_token</code> is provided then the collection may contain private Microcosms not visible to guests.</p>
+
           <p>Request:</p>
 
-          <p>The query string of the resource allows you to paginate the collection of Microcosms returned:</p>
-
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Query</th>
-                <th>Type</th>
-                <th>Optional?</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>limit</code></td>
-                <td>Integer</td>
-                <td>Optional</td>
-                <td>The number of Microcosms to return per request. Defaults to 25 and must be divisible by 5.</td>
-              </tr>
-              <tr>
-                <td><code>offset</code></td>
-                <td>Integer</td>
-                <td>Optional</td>
-                <td>The resource offset that indicates which page of Microcosms to return. Defaults to 0, but if supplied must be divisible by <code>limit</code> and not to exceed the total number of resources.</td>
-              </tr>
-            </tbody>
-          </table>
+          <p>The pagination query string parameters allow you to paginate the collection of Microcosms returned:</p>
 
           <p>Example request:</p>
 
@@ -826,6 +803,182 @@ Content-Length: 52
 
           <h4>Single Resource</h4>
 
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/microcosms/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,GET,PUT,DELETE
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>GET</h5>
+
+          <p>Fetches the detailed information about a single Microcosm, including a collection of items contained within the Microcosm. The pagination query string parameters allow to you traverse the collection of items. Items include conversations, events, polls, etc.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X GET https://{subdomain}.microco.sm/api/v1/microcosms/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+   "context":"",
+   "status":200,
+   "data":{
+      "id":1,
+      "visibility":"public",
+      "title":"General Chit-Chat",
+      "description":"A place to talk about anything and everything.",
+      "created":"2013-04-04T08:56:30.111523Z",
+      "createdBy":{
+         "id":1,
+         "userId":1,
+         "profileName":"motter",
+         "visible":true,
+         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+         "banned":false,
+         "moderator":false,
+         "admin":false,
+         "meta":{
+            "links":[
+               {"rel":"self", "href":"/api/v1/profiles/1"},
+               {"rel":"site", "href":"/api/v1/sites/1"}
+            ]
+         }
+      },
+      "moderators":null,
+      "open":true,
+      "deleted":false,
+      "moderated":false,
+      "visible":true,
+      "items":{
+         "total":2,
+         "limit":25,
+         "offset":0,
+         "pages":1,
+         "links":[
+            {"rel":"first", "href":"/api/v1/microcosms/1"},
+            {"rel":"self", "href":"/api/v1/microcosms/1"},
+            {"rel":"last", "href":"/api/v1/microcosms/1"}
+         ],
+         "type":"/api/v1/comments",
+         "items":[
+            {
+               "microcosmId":1,
+               "itemType":"poll",
+               "id":1,
+               "title":"Music poll",
+               "created":"2013-04-04T08:58:02.168527Z",
+               "createdBy":{
+                  "id":1,
+                  "userId":1,
+                  "profileName":"motter",
+                  "visible":true,
+                  "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                  "banned":false,
+                  "moderator":false,
+                  "admin":false,
+                  "meta":{
+                     "links":[
+                       {"rel":"self", "href":"/api/v1/profiles/1"},
+                       {"rel":"site", "href":"/api/v1/sites/1"}
+                     ]
+                  }
+               },
+               "comments":0,
+               "views":0,
+               "sticky":false,
+               "open":true,
+               "deleted":false,
+               "moderated":false,
+               "visible":true,
+               "lastCommentId":1,
+               "lastCommentCreatedBy":{
+                  "id":1,
+                  "userId":1,
+                  "profileName":"motter",
+                  "visible":true,
+                  "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                  "banned":false,
+                  "moderator":false,
+                  "admin":false,
+                  "meta":{
+                     "links":[
+                       {"rel":"self", "href":"/api/v1/profiles/1"},
+                       {"rel":"site", "href":"/api/v1/sites/1"}
+                     ]
+                  }
+               },
+               "lastCommentCreated":"2013-04-04T08:58:17.881349Z",
+               "meta":{
+                  "links":[
+                     {"rel":"self", "href":"/api/v1/polls/1"}
+                  ]
+               }
+            },
+            {
+               "microcosmId":1,
+               "itemType":"event",
+               "id":1,
+               "title":"Velodrome take 2",
+               "created":"2013-04-04T08:58:08.770606Z",
+               "createdBy":{
+                  "id":1,
+                  "userId":1,
+                  "profileName":"motter",
+                  "visible":true,
+                  "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                  "banned":false,
+                  "moderator":false,
+                  "admin":false,
+                  "meta":{
+                     "links":[
+                       {"rel":"self", "href":"/api/v1/profiles/1"},
+                       {"rel":"site", "href":"/api/v1/sites/1"}
+                     ]
+                  }
+               },
+               "comments":0,
+               "views":0,
+               "sticky":false,
+               "open":true,
+               "deleted":false,
+               "moderated":false,
+               "visible":true,
+               "meta":{
+                  "links":[
+                     {"rel":"self", "href":"/api/v1/events/1"}
+                  ]
+               }
+            }
+         ]
+      },
+      "meta":{
+         "links":[
+            {"rel":"self", "href":"/api/v1/microcosms/1"},
+            {"rel":"site", "href":"/api/v1/sites/1"}
+         ],
+         "permissions":{
+            "create":false,
+            "read":true,
+            "update":false,
+            "delete":false,
+            "guest":true,
+            "superUser":false
+         }
+      }
+   },
+   "error":null
+}</code></pre>
+  
+
+          <h5>PUT</h5>
+          <h5>DELETE</h5>
 
           <h3>/conversations</h3>
 
