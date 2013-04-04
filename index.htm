@@ -538,7 +538,7 @@ Content-Length: 0</code></pre>
       "title":"LFGSS",
       "description":"London Fixed-Gear and Single-Speed",
       "subdomainKey":"lfgss",
-      "domain":"esi01.dev.microcosm.cc",
+      "domain":"demo.microco.sm",
       "created":"2013-04-04T08:45:08.022807Z",
       "createdBy":{
          "id":1,
@@ -758,22 +758,71 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Content-Type: application/json" -X POST -d "{\"visibility\":\"public\", \"title\":\"General Chit-Chat\",\"description\":\"A place to talk about anything and everything.\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms?access_token=letmein"</code></pre>
+<pre><code>curl -X GET -g "https://{subdomain}.microco.sm/api/v1/microcosms"</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>HTTP/1.1 302 Found
-Content-Type: application/json
-Location: /api/v1/microcosms/2
-Content-Length: 52
-
-{
-  "context":"",
-  "status":302,
-  "data":null,
-  "error":null
+<pre><code>{
+   "context":"",
+   "status":200,
+   "data":{
+      "siteId":1,
+      "title":"LFGSS",
+      "description":"London Fixed-Gear and Single-Speed",
+      "subdomainKey":"lfgss",
+      "domain":"demo.microco.sm",
+      "created":"2013-04-04T08:45:08.022807Z",
+      "createdBy":{
+         "id":1,
+         "userId":1,
+         "profileName":"motter",
+         "visible":true,
+         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+         "banned":false,
+         "moderator":false,
+         "admin":false,
+         "meta":{
+            "links":[
+               {"rel":"self", "href":"/api/v1/profiles/1"},
+               {"rel":"site", "href":"/api/v1/sites/1"}
+            ]
+         }
+      },
+      "ownedBy":{
+         "id":1,
+         "userId":1,
+         "profileName":"motter",
+         "visible":true,
+         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+         "banned":false,
+         "moderator":false,
+         "admin":false,
+         "meta":{
+            "links":[
+               {"rel":"self", "href":"/api/v1/profiles/1"},
+               {"rel":"site", "href":"/api/v1/sites/1"}
+            ]
+         }
+      },
+      "logoUrl":"http://placekitten.com/300/150",
+      "meta":{
+         "links":[
+            {"rel":"self", "href":"/api/v1/sites/1"},
+            {"rel":"microcosm", "href":"/api/v1/microcosms"},
+            {"rel":"profile", "href":"/api/v1/profiles"}
+         ],
+         "permissions":{
+            "create":false,
+            "read":true,
+            "update":false,
+            "delete":false,
+            "guest":true,
+            "superUser":false
+         }
+      }
+   },
+   "error":null
 }</code></pre>
-
 
           <h4>Single Resource</h4>
 
