@@ -981,7 +981,6 @@ Content-Length: 0</code></pre>
           <p>Updates a Microcosm. The structure of the JSON to perform the update is:</p>
 
 <pre><code>{
-  "id": 1
   "visibility": "public",
   "title": "General Chit-Chat",
   "description": "A place to talk about anything and everything.",
@@ -1000,12 +999,6 @@ Content-Length: 0</code></pre>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><code>id</code></td>
-                <td>Integer</td>
-                <td>Required</td>
-                <td>Must be identifier of the resource to update, and must match the one provided in the resource URL.</td>
-              </tr>
               <tr>
                 <td><code>visibility</code></td>
                 <td>String</td>
@@ -1035,7 +1028,7 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Content-Type: application/json" -X PUT -d "{\"id\": 1, \"visibility\":\"public\", \"title\":\"General Chatter\",\"description\":\"A place to talk about anything and everything.\", \"editReason\":\"Updated the title\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms/1?access_token=letmein"</code></pre>
+<pre><code>curl -i -H "Content-Type: application/json" -X PUT -d "{\"visibility\":\"public\", \"title\":\"General Chatter\",\"description\":\"A place to talk about anything and everything.\", \"editReason\":\"Updated the title\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms/1?access_token=letmein"</code></pre>
 
           <p>Example response:</p>
 
