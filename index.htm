@@ -725,6 +725,56 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created Microcosm.</p>
 
+          <h5>GET</h5>
+
+          <p>Request:</p>
+
+          <p>The query string of the resource allows you to paginate the collection of Microcosms returned:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>limit</code></td>
+                <td>Integer</td>
+                <td>Optional</td>
+                <td>The number of Microcosms to return per request. Defaults to 25 and must be divisible by 5.</td>
+              </tr>
+              <tr>
+                <td><code>offset</code></td>
+                <td>Integer</td>
+                <td>Optional</td>
+                <td>The resource offset that indicates which page of Microcosms to return. Defaults to 0, but if supplied must be divisible by <code>limit</code> and not to exceed the total number of resources.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Content-Type: application/json" -X POST -d "{\"visibility\":\"public\", \"title\":\"General Chit-Chat\",\"description\":\"A place to talk about anything and everything.\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms?access_token=letmein"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/microcosms/2
+Content-Length: 52
+
+{
+  "context":"",
+  "status":302,
+  "data":null,
+  "error":null
+}</code></pre>
+
+
           <h4>Single Resource</h4>
 
 
