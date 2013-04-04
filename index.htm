@@ -648,6 +648,26 @@ Connection: keep-alive</code></pre>
             </tbody>
           </table>
 
+          <h4>Collection</h4>
+          
+          <h5>OPTIONS</h5>
+
+          <p>Request:</p>
+
+          <pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/microcosms</code></pre>
+
+          <p>Response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,POST,GET
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Accept-Ranges: bytes
+Connection: keep-alive</code></pre>
+
+          <h4>Single Resource</h4>
+
+
           <h3>/conversations</h3>
 
           <p>Provides an interface to the conversations that exist on a site and the comments contained within them. A conversation is merely a titled (topical) collection of comments.</p>
