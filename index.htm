@@ -709,7 +709,7 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Content-Type: application/json" -X POST -d "{\"visibility\":\"public\", \"title\":\"General Chit-Chat\",\"description\":\"A place to talk about anything and everything.\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms?access_token=letmein"</code></pre>
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X POST -d "{\"visibility\":\"public\", \"title\":\"General Chit-Chat\",\"description\":\"A place to talk about anything and everything.\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms"</code></pre>
 
           <p>Example response:</p>
 
@@ -1030,7 +1030,7 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Content-Type: application/json" -X PUT -d "{\"visibility\":\"public\", \"title\":\"General Chatter\",\"description\":\"A place to talk about anything and everything.\", \"editReason\":\"Updated the title\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms/1?access_token=letmein"</code></pre>
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PUT -d "{\"visibility\":\"public\", \"title\":\"General Chatter\",\"description\":\"A place to talk about anything and everything.\", \"editReason\":\"Updated the title\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms/1"</code></pre>
 
           <p>Example response:</p>
 
@@ -1046,7 +1046,7 @@ Content-Length: 52
   "error":null
 }</code></pre>
 
-          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created Microcosm.</p>
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated Microcosm.</p>
 
           <h5>DELETE</h5>
 
@@ -1054,7 +1054,7 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -i -X DELETE -g "https://{subdomain}.microco.sm/api/v1/microcosms/1?access_token=letmein"</code></pre>
+<pre><code>curl -i -H "Authorization: Bearer letmein" -X DELETE -g "https://{subdomain}.microco.sm/api/v1/microcosms/1"</code></pre>
 
           <p>Example response:</p>
 
@@ -1116,6 +1116,415 @@ Content-Length: 52
               </tr>
             </tbody>
           </table>
+
+          <h4>Collection</h4>
+          
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/conversations</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,POST,GET
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>POST</h5>
+
+          <p>Request:</p>
+
+          <p>The flow for creating a conversation is to create the conversation item, and then to create comments against the conversation. A conversation is simply an empty container for a list of comments.</p>
+
+          <p>The structure of the JSON to create a conversation is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Did anyone see the article on the news last night?"
+}</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>microcosmId</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>Identifies which Microcosm this conversation will reside in. This property is required as every conversation must reside in a single Microcosm.</td>
+              </tr>
+              <tr>
+                <td><code>title</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>A short textual description of the conversation that usually encapsulates the topic of the conversation. Should be as terse, yet descriptive as possible.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X POST -d "{\"microcosmId\":1, \"title\":\"Did anyone see the article on the news last night?\"}" -g "https://{subdomain}.microco.sm/api/v1/conversations"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/conversations/4
+Content-Length: 52
+
+{
+  "context":"",
+  "status":302,
+  "data":null,
+  "error":null
+}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created conversation.</p>
+
+          <h5>GET</h5>
+
+          <p>Fetches a collection of conversations across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain conversations that exist in private Microcosms not visible to guests.</p>
+
+          <p>Request:</p>
+
+          <p>The pagination query string parameters allow you to paginate the collection of conversations returned:</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -X GET -g "https://{subdomain}.microco.sm/api/v1/conversations"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "conversations":{
+      "total":2,
+      "limit":25,
+      "offset":0,
+      "pages":1,
+      "links":[
+        {"rel":"first", "href":"/api/v1/conversations"},
+        {"rel":"self", "href":"/api/v1/conversations"},
+        {"rel":"last", "href":"/api/v1/conversations"}
+      ],
+      "type":"/api/v1/conversations",
+      "items":[
+        {
+          "id":1,
+          "microcosmId":1,
+          "title":"Just some chatter",
+          "created":"2013-04-08T08:53:48.913599Z",
+          "createdBy":{
+            "id":1,
+            "userId":1,
+            "profileName":"motter",
+            "visible":true,
+            "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned":false,
+            "moderator":false,
+            "admin":false,
+            "meta":{
+              "links":[
+                {"rel":"self", "href":"/api/v1/profiles/1"},
+                {"rel":"site", "href":"/api/v1/sites/1"}
+              ]
+            }
+          },
+          "sticky":false,
+          "open":true,
+          "deleted":false,
+          "moderated":false,
+          "visible":true,
+          "meta":{
+            "links":[
+              {"rel":"self", "href":"/api/v1/conversations/1"},
+              {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chit-Chat"}
+            ]
+          }
+        },
+        {
+          "id":4,
+          "microcosmId":1,
+          "title":"Did anyone see the article on the news last night?",
+          "created":"2013-04-08T10:01:38.474536Z",
+          "createdBy":{
+            "id":1,
+            "userId":1,
+            "profileName":"motter",
+            "visible":true,
+            "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned":false,
+            "moderator":false,
+            "admin":false,
+            "meta":{
+              "links":[
+                {"rel":"self", "href":"/api/v1/profiles/1"},
+                {"rel":"site", "href":"/api/v1/sites/1"}
+              ]
+            }
+          },
+          "sticky":false,
+          "open":true,
+          "deleted":false,
+          "moderated":false,
+          "visible":true,
+          "meta":{
+            "links":[
+              {"rel":"self", "href":"/api/v1/conversations/4"},
+              {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chit-Chat"}
+            ]
+          }
+        }
+      ]
+    },
+    "meta":{
+      "links":[
+        {"rel":"self", "href":"/api/v1/conversations"}
+      ],
+      "permissions":{
+        "create":false,
+        "read":true,
+        "update":false,
+        "delete":false,
+        "guest":true,
+        "superUser":false
+      }
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <h4>Single Resource</h4>
+
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/conversations/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,GET,PUT,DELETE
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>GET</h5>
+
+          <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow to you traverse the collection of comments.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X GET https://{subdomain}.microco.sm/api/v1/conversations/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    "microcosmId":1,
+    "title":"Just some chatter",
+    "created":"2013-04-08T08:53:48.913599Z",
+    "createdBy":{
+      "id":1,
+      "userId":1,
+      "profileName":"motter",
+      "visible":true,
+      "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+      "banned":false,
+      "moderator":false,
+      "admin":false,
+      "meta":{
+        "links":[
+          {"rel":"self", "href":"/api/v1/profiles/1"},
+          {"rel":"site", "href":"/api/v1/sites/1"}
+        ]
+      }
+    },
+    "sticky":false,
+    "open":true,
+    "deleted":false,
+    "moderated":false,
+    "visible":true,
+    "comments":{
+      "total":1,
+      "limit":25,
+      "offset":0,
+      "pages":1,
+      "links":[
+        {"rel":"first", "href":"/api/v1/conversations/1"},
+        {"rel":"self", "href":"/api/v1/conversations/1"},
+        {"rel":"last", "href":"/api/v1/conversations/1"}
+      ],
+      "type":"/api/v1/comments",
+      "items":[
+        {
+          "id":2,
+          "itemType":"conversation",
+          "itemId":1,
+          "created":"2013-04-08T10:11:12.763561Z",
+          "createdBy":{
+            "id":1,
+            "userId":1,
+            "profileName":"motter",
+            "visible":true,
+            "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned":false,
+            "moderator":false,
+            "admin":false,
+            "meta":{
+              "links":[
+                {"rel":"self", "href":"/api/v1/profiles/1"},
+                {"rel":"site", "href":"/api/v1/sites/1"}
+              ]
+            }
+          },
+          "revisions":1,
+          "edited":"2013-04-08T10:11:12.763561Z",
+          "editedBy":{
+            "id":1,
+            "userId":1,
+            "profileName":"motter",
+            "visible":true,
+            "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned":false,
+            "moderator":false,
+            "admin":false,
+            "meta":{
+              "links":[
+                {"rel":"self", "href":"/api/v1/profiles/1"},
+                {"rel":"site", "href":"/api/v1/sites/1"}
+              ]
+            }
+          },
+          "deleted":false,
+          "moderated":false,
+          "visible":true,
+          "inReplyTo":0,
+          "attachments":0,
+          "firstLine":"",
+          "markdown":"A First Level Header\n====================\n\nA Second Level Header\n---------------------\n\nNow is the time for all good men +awesome_guy +blueprints to come to\nthe aid of their country. http://www.lfgss.com/ This is just a\nregular paragraph.\n\nThe quick brown [fox](http://www.google.com/?q=fox) jumped over the lazy\ndog's back.\n\n### Header 3\n\n\u003e This is a blockquote.\n\u003e \n\u003e This is the second paragraph in the blockquote.\n\u003e\n\u003e ## This is an H2 +Velocio @blueprints in a blockquote",
+          "html":"\u003ch1\u003eA First Level Header\u003c/h1\u003e\n\u003ch2\u003eA Second Level Header\u003c/h2\u003e\n\u003cp\u003eNow is the time for all good men +awesome_guy +blueprints to come to the aid of their country. \u003ca href=\"/jump/ub\"\u003ewww.lfgss.com/\u003c/a\u003e This is just a regular paragraph.\u003c/p\u003e\n\u003cp\u003eThe quick brown \u003ca href=\"/jump/jc\"\u003efox\u003c/a\u003e jumped over the lazy dog&#39;s back.\u003c/p\u003e\n\u003ch3\u003eHeader 3\u003c/h3\u003e\n\u003cblockquote\u003e\n\u003cp\u003eThis is a blockquote.\u003c/p\u003e\n\u003cp\u003eThis is the second paragraph in the blockquote.\u003c/p\u003e\n\u003ch2\u003eThis is an H2 \u003ca href=\"/profiles/2\"\u003e+Velocio\u003c/a\u003e @blueprints in a blockquote\u003c/h2\u003e\n\u003c/blockquote\u003e",
+          "meta":{
+            "links":[
+              {"rel":"self", "href":"/api/v1/comments/1"},
+              {"rel":"conversation", "href":"/api/v1/conversations/1"}
+            ]
+          }
+        }
+      ]
+    },
+    "meta":{
+      "links":[
+        {"rel":"self", "href":"/api/v1/conversations/1"},
+        {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chit-Chat"}
+      ],
+      "permissions":{
+        "create":false,
+        "read":true,
+        "update":false,
+        "delete":false,
+        "guest":true,
+        "superUser":false
+      }
+    }
+  },
+  "error":null
+}</code></pre>
+  
+          <h5>PUT</h5>
+
+          <p>Updates a conversation. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Sightings in the media",
+  "editReason": "Updated the title"
+}</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>microcosmId</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>Indicates which Microcosm this conversation belongs to, you can move a conversation from one Microcosm to another by changing this value. The move will work according to the user permissions against the destination Microcosm, and the visibility scope of the destination Microcosm. That is, you cannot move a conversation to a private Microcosm for which you do not have rights.</td>
+              </tr>
+              <tr>
+                <td><code>title</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>A short textual name for the conversation, displayed everywhere the conversation is mentioned. Should be as terse, yet descriptive as possible.</td>
+              </tr>
+              <tr>
+                <td><code>editReason</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>A single line of text that provides information on the reason for the update, this usually encapsulates a description of the change made.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PUT -d "{\"microcosmId\":1, \"title\":\"Sightings in the media\", \"editReason\":\"Updated the title\"}" -g "https://{subdomain}.microco.sm/api/v1/conversations/4"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/conversations/4
+Content-Length: 52
+
+{
+  "context":"",
+  "status":302,
+  "data":null,
+  "error":null
+}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated conversation.</p>
+
+          <h5>DELETE</h5>
+
+          <p>Deletes a conversation.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Authorization: Bearer letmein" -X DELETE -g "https://{subdomain}.microco.sm/api/v1/conversations/4"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 52
+
+{"context":"","status":200,"data":null,"error":null}</code></pre>
 
           <h3>/events</h3>
 
