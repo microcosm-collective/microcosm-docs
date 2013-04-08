@@ -1111,6 +1111,11 @@ Content-Length: 52
               </tr>
               <tr>
                 <td>/api/v1/conversations/{id:[0-9]+}</td>
+                <td>PATCH</td>
+                <td>Updates specific fragments of a conversation resource specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}</td>
                 <td>DELETE</td>
                 <td>Deletes the conversation specified by the numeric identifier.</td>
               </tr>
@@ -1509,6 +1514,25 @@ Content-Length: 52
 }</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated conversation.</p>
+
+          <h5>PATCH</h5>
+
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a conversation or a super user (Microcosm moderator or site admin) can delete a conversation, but only a super user can undelete a conversation.</p>
+
+          <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/sticky</code>, <code>/deleted</code>, <code>/moderated</code>, and <code>/open</code>.</p>
+
+          <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/sticky", "value": true},
+  {"op":"replace", "path":"/open", "value": true},
+  {"op":"replace", "path":"/moderated", "value": false},
+  {"op":"replace", "path":"/deleted", "value": false},
+]</code></pre>
+
+          <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
 
           <h5>DELETE</h5>
 
