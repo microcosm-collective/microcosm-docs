@@ -1767,11 +1767,503 @@ Content-Length: 52
               </tr>
               <tr>
                 <td>/api/v1/events/{id:[0-9]+}</td>
+                <td>PATCH</td>
+                <td>Updates specific fragments of a event resource specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}</td>
                 <td>DELETE</td>
                 <td>Deletes the event specified by the numeric identifier.</td>
               </tr>
             </tbody>
           </table>
+
+          <h4>Collection</h4>
+          
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X OPTIONS http://esi01.dev.microcosm.cc/api/v1/events</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,POST,GET
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>POST</h5>
+
+          <p>Request:</p>
+
+          <p>The flow for creating an event is to create the event item, and then to create comments against the event. An event is simply an empty container for a list of comments, but with additional structure to describe the event. An event generally is something that occurs at a moment in time, at some place in space... whilst a proposed event need no time or place, a confirmed event usually has a time and place.</p>
+
+          <p>The structure of the JSON to create an event is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Did anyone see the article on the news last night?",
+  "when": "2013-09-15T09:42:48.515233Z",
+  "duration": 180,
+  "where": "Herne Hill Velodrome",
+  "rsvpLimit": 38
+}</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>microcosmId</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>Identifies which Microcosm this event will reside in. This property is required as every event must reside in a single Microcosm.</td>
+              </tr>
+              <tr>
+                <td><code>title</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>A short textual description of the event that usually encapsulates the topic of the event. Should be as terse, yet descriptive as possible.</td>
+              </tr>
+              <tr>
+                <td><code>when</code></td>
+                <td>ISO8601 Datetime</td>
+                <td>Optional</td>
+                <td>The scheduled date for that the event occurs on.</td>
+              </tr>
+              <tr>
+                <td><code>duration</code></td>
+                <td>Integer</td>
+                <td>Optional</td>
+                <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 3 hours.</td>
+              </tr>
+              <tr>
+                <td><code>where</code></td>
+                <td>String</td>
+                <td>Optional</td>
+                <td>A short textual description of the location of the event. This may be an address, and this value will be mapped based on the first result from a Google maps search of this value.</td>
+              </tr>
+              <tr>
+                <td><code>rsvpLimit</code></td>
+                <td>Integer</td>
+                <td>Optional</td>
+                <td>For events that are space constrained, this is the maximum number of people that can attend the event.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X POST -d "{\"title\":\"Velodrome take 2\",\"microcosmId\":1,\"when\":\"2013-09-15T09:42:48.515233Z\",\"duration\":183473,\"where\":\"Herne Hill Velodrome\", \"rsvpLimit\":38}" -g "http://esi01.dev.microcosm.cc/api/v1/events"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/events/1
+Content-Length: 52
+
+{"context":"","status":302,"data":null,"error":null}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created event.</p>
+
+          <h5>GET</h5>
+
+          <p>Fetches a collection of events across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain events that exist in private Microcosms not visible to guests.</p>
+
+          <p>Request:</p>
+
+          <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -X GET -g "https://{subdomain}.microco.sm/api/v1/events"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "events":{
+      "total":1,
+      "limit":25,
+      "offset":0,
+      "pages":1,
+      "links":[
+        {"rel":"first", "href":"/api/v1/events"},
+        {"rel":"self", "href":"/api/v1/events"},
+        {"rel":"last", "href":"/api/v1/events"}
+      ],
+      "type":"/api/v1/events",
+      "items":[
+        {
+          "id":1,
+          "microcosmId":1,
+          "title":"Velodrome take 2",
+          "created":"2013-04-09T16:01:57.329572Z",
+          "createdBy":{
+            "id":1,
+            "userId":1,
+            "profileName":"motter",
+            "visible":true,
+            "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned":false,
+            "moderator":false,
+            "admin":false,
+            "meta":{
+              "links":[
+                {"rel":"self", "href":"/api/v1/profiles/1"},
+                {"rel":"site", "href":"/api/v1/sites/1"}
+              ]
+            }
+          },
+          "sticky":false,
+          "open":true,
+          "deleted":false,
+          "moderated":false,
+          "visible":true,
+          "when":"2013-09-15T09:42:48.515233Z",
+          "duration":183473,
+          "where":"Herne Hill Velodrome",
+          "lat":50.87,
+          "lon":0.03,
+          "status":"upcoming",
+          "meta":{
+            "links":[
+              {"rel":"self", "href":"/api/v1/events/1"},
+              {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chit-Chat"}
+            ]
+          }
+        }
+      ]
+    },
+    "meta":{
+      "links":[
+        {"rel":"self", "href":"/api/v1/events"}
+      ],
+      "permissions":{
+        "create":false,
+        "read":true,
+        "update":false,
+        "delete":false,
+        "guest":true,
+        "superUser":false
+      }
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <h4>Single Resource</h4>
+
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/events/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,GET,PUT,PATCH,DELETE
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>GET</h5>
+
+          <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow to you traverse the collection of comments.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X GET https://{subdomain}.microco.sm/api/v1/events/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    "microcosmId":1,
+    "title":"Velodrome take 2",
+    "created":"2013-04-09T16:01:57.329572Z",
+    "createdBy":{
+      "id":1,
+      "userId":1,
+      "profileName":"motter",
+      "visible":true,
+      "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+      "banned":false,
+      "moderator":false,
+      "admin":false,
+      "meta":{
+        "links":[
+          {"rel":"self", "href":"/api/v1/profiles/1"},
+          {"rel":"site", "href":"/api/v1/sites/1"}
+        ]
+      }
+    },
+    "sticky":false,
+    "open":true,
+    "deleted":false,
+    "moderated":false,
+    "visible":true,
+    "when":"2013-09-15T09:42:48.515233Z",
+    "duration":183473,
+    "where":"Herne Hill Velodrome",
+    "lat":50.87,
+    "lon":0.03,
+    "status":"upcoming",
+    "rsvpLimit":38,
+    "rsvpSpaces":38,
+    "comments":{
+      "total":0,
+      "limit":25,
+      "offset":0,
+      "pages":0,
+      "links":[
+        {"rel":"first", "href":"/api/v1/events/1"},
+        {"rel":"self", "href":"/api/v1/events/1"},
+        {"rel":"last", "href":"/api/v1/events/1"}
+      ],
+      "type":"/api/v1/comments",
+      "items":null
+    },
+    "meta":{
+      "links":[
+        {"rel":"self", "href":"/api/v1/events/1"},
+        {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chit-Chat"}
+      ],
+      "permissions":{
+        "create":false,
+        "read":true,
+        "update":false,
+        "delete":false,
+        "guest":true,
+        "superUser":false
+      }
+    }
+  },
+  "error":null
+}</code></pre>
+  
+          <h5>PUT</h5>
+
+          <p>Updates an event. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Velodrome take 2",
+  "when": "2013-09-15T09:42:48.515233Z",
+  "duration": 183473,
+  "where": "Herne Hill Velodrome",
+  "rsvpLimit": 60,
+  "status": "confirmed",
+  "editReason": "Moved to confirmed, increased attendee number"
+}</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>microcosmId</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>Identifies which Microcosm this event will reside in. This property is required as every event must reside in a single Microcosm.</td>
+              </tr>
+              <tr>
+                <td><code>title</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>A short textual description of the event that usually encapsulates the topic of the event. Should be as terse, yet descriptive as possible.</td>
+              </tr>
+              <tr>
+                <td><code>when</code></td>
+                <td>ISO8601 Datetime</td>
+                <td>Required</td>
+                <td>The scheduled date for that the event occurs on.</td>
+              </tr>
+              <tr>
+                <td><code>duration</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 3 hours.</td>
+              </tr>
+              <tr>
+                <td><code>where</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>A short textual description of the location of the event. This may be an address, and this value will be mapped based on the first result from a Google maps search of this value.</td>
+              </tr>
+              <tr>
+                <td><code>rsvpLimit</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>For events that are space constrained, this is the maximum number of people that can attend the event.</td>
+              </tr>
+              <tr>
+                <td><code>status</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>Either 'proposed' or 'confirmed'.</td>
+              </tr>
+              <tr>
+                <td><code>editReason</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>The reason the event is being updated.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PUT -d "{\"title\":\"Velodrome take 2\",\"microcosmId\":1,\"editReason\":\"test\",\"when\":\"2013-09-15T09:42:48.515233Z\",\"duration\":183473,\"where\":\"At the velodrome\", \"rsvpLimit\":38, \"status\":\"upcoming\"}" -g "http://esi01.dev.microcosm.cc/api/v1/events/1"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/events/1
+Content-Length: 52
+
+{
+  "context":"",
+  "status":302,
+  "data":null,
+  "error":null
+}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated event.</p>
+
+          <h5>PATCH</h5>
+
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of an event or a super user (Microcosm moderator or site admin) can delete an event, but only a super user can undelete an event.</p>
+
+          <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/sticky</code>, <code>/deleted</code>, <code>/moderated</code>, and <code>/open</code>.</p>
+
+          <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/sticky", "value": true},
+  {"op":"replace", "path":"/open", "value": true},
+  {"op":"replace", "path":"/moderated", "value": false},
+  {"op":"replace", "path":"/deleted", "value": false},
+]</code></pre>
+
+          <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+          <p>Example request:</p>
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PATCH -d "[{\"op\":\"replace\", \"path\":\"/sticky\", \"value\": true}]" -g "http://esi01.dev.microcosm.cc/api/v1/events/4"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Content-Length: 52
+Location: /api/v1/events/1
+
+{"context":"","status":302,"data":null,"error":null}</code></pre>
+
+          <p>That request will set the <code>sticky</code> property of an event to <code>true</code>. You will need to follow the redirect to GET the updated resource to see the change reflected.</p>
+
+          <p>Event fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    "microcosmId":1,
+    "title":"Just some chatter",
+    ...
+    "sticky":false,
+    "open":true,
+    "deleted":false,
+    "moderated":false,
+    "visible":true,
+    ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <p>Event fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    "microcosmId":1,
+    "title":"Just some chatter",
+    ...
+    "edited": "2013-04-09T11:25:48.715438Z",
+    "editedBy": {
+      "id": 1,
+      "userId": 1,
+      "profileName": "motter",
+      "visible": true,
+      "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+      "banned": false,
+      "moderator": false,
+      "admin": true,
+      "meta": {
+        "links": [
+          {rel: "self", href: "/api/v1/profiles/1"},
+          {rel: "site", href: "/api/v1/sites/1"}
+        ]
+      }
+    },
+    "editReason": "Set sticky to true",
+    ...
+    "sticky":true,
+    "open":true,
+    "deleted":false,
+    "moderated":false,
+    "visible":true,
+    ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
+
+          <h5>DELETE</h5>
+
+          <p>Deletes an event.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -H "Authorization: Bearer letmein" -X DELETE -g "https://{subdomain}.microco.sm/api/v1/events/1"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 52
+
+{"context":"","status":200,"data":null,"error":null}</code></pre>
 
           <h3>/polls</h3>
 
