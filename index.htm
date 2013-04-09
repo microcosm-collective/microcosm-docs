@@ -254,7 +254,7 @@
               <tr>
                 <td>POST</td>
                 <td>/api/v1/thing</td>
-                <td>Create the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource.</td>
+                <td>Create the resource. May be forbidden depending on the type of resource and the permissions derived from your access token.</td>
               </tr>
               <tr>
                 <td>GET</td>
@@ -264,12 +264,17 @@
               <tr>
                 <td>PUT</td>
                 <td>/api/v1/thing</td>
-                <td>Update the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource.</td>
+                <td>Update the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource unless you are the owner of the content.</td>
+              </tr>
+              <tr>
+                <td>PATCH</td>
+                <td>/api/v1/thing</td>
+                <td>Update part of the resource. Where this is available we use the format specified in <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a> to describe a list of operations that can modify the resource. We only support the <code>replace</code> operation, which allows you to make a request to replace a given value in the resource without needing knowledge of the whole resource.</td>
               </tr>
               <tr>
                 <td>DELETE</td>
                 <td>/api/v1/thing</td>
-                <td>Delete the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource.</td>
+                <td>Delete the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource unless you are the owner of the content.</td>
               </tr>
             </tbody>
           </table>
@@ -1533,6 +1538,81 @@ Content-Length: 52
 ]</code></pre>
 
           <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+          <p>Example request:</p>
+<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PATCH -d "[{\"op\":\"replace\", \"path\":\"/sticky\", \"value\": true}]" -g "http://esi01.dev.microcosm.cc/api/v1/conversations/4"</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Content-Length: 52
+Location: /api/v1/conversations/4
+
+{"context":"","status":302,"data":null,"error":null}</code></pre>
+
+          <p>That request will set the <code>sticky</code> property of a conversation to <code>sticky</code>. You will need to follow the redirect to GET the updated resource to see the change reflected.</p>
+
+          <p>Conversation fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    "microcosmId":1,
+    "title":"Just some chatter",
+    ...
+    "sticky":false,
+    "open":true,
+    "deleted":false,
+    "moderated":false,
+    "visible":true,
+    ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <p>Conversation fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    "microcosmId":1,
+    "title":"Just some chatter",
+    ...
+    "edited": "2013-04-09T11:25:48.715438Z",
+    "editedBy": {
+      "id": 1,
+      "userId": 1,
+      "profileName": "motter",
+      "visible": true,
+      "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+      "banned": false,
+      "moderator": false,
+      "admin": true,
+      "meta": {
+        "links": [
+          {rel: "self", href: "/api/v1/profiles/1"},
+          {rel: "site", href: "/api/v1/sites/1"}
+        ]
+      }
+    },
+    "editReason": "Set sticky to true",
+    ...
+    "sticky":true,
+    "open":true,
+    "deleted":false,
+    "moderated":false,
+    "visible":true,
+    ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
 
           <h5>DELETE</h5>
 
