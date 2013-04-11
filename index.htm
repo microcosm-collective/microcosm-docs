@@ -625,7 +625,10 @@ Content-Type: application/json
 
           <p>Example request:</p>
 
-<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/site</code></pre>
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/site
+</code></pre>
 
           <p>Example response:</p>
 
@@ -640,70 +643,87 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -X GET https://{subdomain}.microco.sm/api/v1/site</code></pre>
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/site
+</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>{
-   "context":"",
-   "status":200,
-   "data":{
-      "siteId":1,
-      "title":"LFGSS",
-      "description":"London Fixed-Gear and Single-Speed",
-      "subdomainKey":"lfgss",
-      "domain":"demo.microco.sm",
-      "created":"2013-04-04T08:45:08.022807Z",
-      "createdBy":{
-         "id":1,
-         "userId":1,
-         "profileName":"motter",
-         "visible":true,
-         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-         "banned":false,
-         "moderator":false,
-         "admin":false,
-         "meta":{
-            "links":[
-               {"rel":"self", "href":"/api/v1/profiles/1"},
-               {"rel":"site", "href":"/api/v1/sites/1"}
+   "context": "",
+   "status": 200,
+   "data": {
+      "siteId": 1,
+      "title": "LFGSS",
+      "description": "London Fixed-Gear and Single-Speed",
+      "subdomainKey": "lfgss",
+      "domain": "esi01.dev.microcosm.cc",
+      "ownedBy": {
+         "id": 1,
+         "userId": 1,
+         "profileName": "motter",
+         "visible": true,
+         "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+         "banned": false,
+         "moderator": false,
+         "admin": false,
+         "meta": {
+            "links": [{
+                  "rel": "self",
+                  "href": "/api/v1/profiles/1"
+               }, {
+                  "rel": "site",
+                  "href": "/api/v1/sites/1"
+               }
             ]
          }
       },
-      "ownedBy":{
-         "id":1,
-         "userId":1,
-         "profileName":"motter",
-         "visible":true,
-         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-         "banned":false,
-         "moderator":false,
-         "admin":false,
-         "meta":{
-            "links":[
-               {"rel":"self", "href":"/api/v1/profiles/1"},
-               {"rel":"site", "href":"/api/v1/sites/1"}
-            ]
-         }
-      },
-      "logoUrl":"http://placekitten.com/300/150",
-      "meta":{
-         "links":[
-            {"rel":"self", "href":"/api/v1/sites/1"},
-            {"rel":"microcosm", "href":"/api/v1/microcosms"},
-            {"rel":"profile", "href":"/api/v1/profiles"}
+      "logoUrl": "http://placekitten.com/300/150",
+      "meta": {
+         "created": "2013-04-11T17:07:53.078177Z",
+         "createdBy": {
+            "id": 1,
+            "userId": 1,
+            "profileName": "motter",
+            "visible": true,
+            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned": false,
+            "moderator": false,
+            "admin": false,
+            "meta": {
+               "links": [{
+                     "rel": "self",
+                     "href": "/api/v1/profiles/1"
+                  }, {
+                     "rel": "site",
+                     "href": "/api/v1/sites/1"
+                  }
+               ]
+            }
+         },
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/sites/1"
+            }, {
+               "rel": "microcosm",
+               "href": "/api/v1/microcosms"
+            }, {
+               "rel": "profile",
+               "href": "/api/v1/profiles"
+            }
          ],
-         "permissions":{
-            "create":false,
-            "read":true,
-            "update":false,
-            "delete":false,
-            "guest":true,
-            "superUser":false
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
          }
       }
    },
-   "error":null
+   "error": null
 }</code></pre>
 
           <h3>/microcosms</h3>
@@ -765,7 +785,9 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/microcosms</code></pre>
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -821,7 +843,12 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X POST -d "{\"visibility\":\"public\", \"title\":\"General Chit-Chat\",\"description\":\"A place to talk about anything and everything.\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms"</code></pre>
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"visibility":"public", "title":"General Chit-Chat","description":"A place to talk about anything and everything."}' \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -849,70 +876,121 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -X GET -g "https://{subdomain}.microco.sm/api/v1/microcosms"</code></pre>
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>{
-   "context":"",
-   "status":200,
-   "data":{
-      "siteId":1,
-      "title":"LFGSS",
-      "description":"London Fixed-Gear and Single-Speed",
-      "subdomainKey":"lfgss",
-      "domain":"demo.microco.sm",
-      "created":"2013-04-04T08:45:08.022807Z",
-      "createdBy":{
-         "id":1,
-         "userId":1,
-         "profileName":"motter",
-         "visible":true,
-         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-         "banned":false,
-         "moderator":false,
-         "admin":false,
-         "meta":{
-            "links":[
-               {"rel":"self", "href":"/api/v1/profiles/1"},
-               {"rel":"site", "href":"/api/v1/sites/1"}
-            ]
-         }
-      },
-      "ownedBy":{
-         "id":1,
-         "userId":1,
-         "profileName":"motter",
-         "visible":true,
-         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-         "banned":false,
-         "moderator":false,
-         "admin":false,
-         "meta":{
-            "links":[
-               {"rel":"self", "href":"/api/v1/profiles/1"},
-               {"rel":"site", "href":"/api/v1/sites/1"}
-            ]
-         }
-      },
-      "logoUrl":"http://placekitten.com/300/150",
-      "meta":{
-         "links":[
-            {"rel":"self", "href":"/api/v1/sites/1"},
-            {"rel":"microcosm", "href":"/api/v1/microcosms"},
-            {"rel":"profile", "href":"/api/v1/profiles"}
+   "context": "",
+   "status": 200,
+   "data": {
+      "microcosms": {
+         "total": 1,
+         "limit": 25,
+         "offset": 0,
+         "pages": 1,
+         "links": [{
+               "rel": "first",
+               "href": "/api/v1/microcosms"
+            }, {
+               "rel": "self",
+               "href": "/api/v1/microcosms"
+            }, {
+               "rel": "last",
+               "href": "/api/v1/microcosms"
+            }
          ],
-         "permissions":{
-            "create":false,
-            "read":true,
-            "update":false,
-            "delete":false,
-            "guest":true,
-            "superUser":false
+         "type": "/api/v1/microcosms",
+         "items": [{
+               "id": 1,
+               "visibility": "public",
+               "title": "General Chit-Chat",
+               "description": "A place to talk about anything and everything.",
+               "moderators": null,
+               "mostRecentUpdate": {
+                  "microcosmId": 1,
+                  "itemType": "event",
+                  "id": 2,
+                  "title": "Introduction to Track Riding",
+                  "comments": 0,
+                  "views": 0,
+                  "meta": {
+                     "created": "2013-04-11T17:08:40.436382Z",
+                     "createdBy": null,
+                     "flags": {
+                        "sticky": true,
+                        "open": true,
+                        "deleted": false,
+                        "moderated": false,
+                        "visible": true
+                     },
+                     "links": [{
+                           "rel": "self",
+                           "href": "/api/v1/events/2"
+                        }
+                     ]
+                  }
+               },
+               "meta": {
+                  "created": "2013-04-11T17:08:26.828928Z",
+                  "createdBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "flags": {
+                     "sticky": false,
+                     "open": true,
+                     "deleted": false,
+                     "moderated": false,
+                     "visible": false
+                  },
+                  "links": [{
+                        "rel": "self",
+                        "href": "/api/v1/microcosms/1"
+                     }, {
+                        "rel": "site",
+                        "href": "/api/v1/sites/1"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      "meta": {
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/microcosms"
+            }
+         ],
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
          }
       }
    },
-   "error":null
+   "error": null
 }</code></pre>
 
           <h4>Single Resource</h4>
@@ -921,7 +999,9 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/microcosms/1</code></pre>
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/microcosm/1</code></pre>
 
           <p>Example response:</p>
 
@@ -936,158 +1016,173 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -X GET https://{subdomain}.microco.sm/api/v1/microcosms/1</code></pre>
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>{
-   "context":"",
-   "status":200,
-   "data":{
-      "id":1,
-      "visibility":"public",
-      "title":"General Chit-Chat",
-      "description":"A place to talk about anything and everything.",
-      "created":"2013-04-04T08:56:30.111523Z",
-      "createdBy":{
-         "id":1,
-         "userId":1,
-         "profileName":"motter",
-         "visible":true,
-         "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-         "banned":false,
-         "moderator":false,
-         "admin":false,
-         "meta":{
-            "links":[
-               {"rel":"self", "href":"/api/v1/profiles/1"},
-               {"rel":"site", "href":"/api/v1/sites/1"}
-            ]
-         }
-      },
-      "moderators":null,
-      "open":true,
-      "deleted":false,
-      "moderated":false,
-      "visible":true,
-      "items":{
-         "total":2,
-         "limit":25,
-         "offset":0,
-         "pages":1,
-         "links":[
-            {"rel":"first", "href":"/api/v1/microcosms/1"},
-            {"rel":"self", "href":"/api/v1/microcosms/1"},
-            {"rel":"last", "href":"/api/v1/microcosms/1"}
+   "context": "",
+   "status": 200,
+   "data": {
+      "id": 1,
+      "visibility": "public",
+      "title": "General Chit-Chat",
+      "description": "A place to talk about anything and everything.",
+      "moderators": null,
+      "items": {
+         "total": 2,
+         "limit": 25,
+         "offset": 0,
+         "pages": 1,
+         "links": [{
+               "rel": "first",
+               "href": "/api/v1/microcosms/1"
+            }, {
+               "rel": "self",
+               "href": "/api/v1/microcosms/1"
+            }, {
+               "rel": "last",
+               "href": "/api/v1/microcosms/1"
+            }
          ],
-         "type":"/api/v1/comments",
-         "items":[
-            {
-               "microcosmId":1,
-               "itemType":"poll",
-               "id":1,
-               "title":"Music poll",
-               "created":"2013-04-04T08:58:02.168527Z",
-               "createdBy":{
-                  "id":1,
-                  "userId":1,
-                  "profileName":"motter",
-                  "visible":true,
-                  "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                  "banned":false,
-                  "moderator":false,
-                  "admin":false,
-                  "meta":{
-                     "links":[
-                       {"rel":"self", "href":"/api/v1/profiles/1"},
-                       {"rel":"site", "href":"/api/v1/sites/1"}
-                     ]
-                  }
-               },
-               "comments":0,
-               "views":0,
-               "sticky":false,
-               "open":true,
-               "deleted":false,
-               "moderated":false,
-               "visible":true,
-               "lastCommentId":1,
-               "lastCommentCreatedBy":{
-                  "id":1,
-                  "userId":1,
-                  "profileName":"motter",
-                  "visible":true,
-                  "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                  "banned":false,
-                  "moderator":false,
-                  "admin":false,
-                  "meta":{
-                     "links":[
-                       {"rel":"self", "href":"/api/v1/profiles/1"},
-                       {"rel":"site", "href":"/api/v1/sites/1"}
-                     ]
-                  }
-               },
-               "lastCommentCreated":"2013-04-04T08:58:17.881349Z",
-               "meta":{
-                  "links":[
-                     {"rel":"self", "href":"/api/v1/polls/1"}
+         "type": "/api/v1/comments",
+         "items": [{
+               "microcosmId": 1,
+               "itemType": "conversation",
+               "id": 1,
+               "title": "Just some chatter",
+               "comments": 0,
+               "views": 0,
+               "meta": {
+                  "created": "2013-04-11T17:08:31.12043Z",
+                  "createdBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "flags": {
+                     "sticky": false,
+                     "open": true,
+                     "deleted": false,
+                     "moderated": false,
+                     "visible": true
+                  },
+                  "links": [{
+                        "rel": "self",
+                        "href": "/api/v1/conversations/1"
+                     }
                   ]
                }
-            },
-            {
-               "microcosmId":1,
-               "itemType":"event",
-               "id":1,
-               "title":"Velodrome take 2",
-               "created":"2013-04-04T08:58:08.770606Z",
-               "createdBy":{
-                  "id":1,
-                  "userId":1,
-                  "profileName":"motter",
-                  "visible":true,
-                  "gravatar":"http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                  "banned":false,
-                  "moderator":false,
-                  "admin":false,
-                  "meta":{
-                     "links":[
-                       {"rel":"self", "href":"/api/v1/profiles/1"},
-                       {"rel":"site", "href":"/api/v1/sites/1"}
-                     ]
-                  }
-               },
-               "comments":0,
-               "views":0,
-               "sticky":false,
-               "open":true,
-               "deleted":false,
-               "moderated":false,
-               "visible":true,
-               "meta":{
-                  "links":[
-                     {"rel":"self", "href":"/api/v1/events/1"}
+            }, {
+               "microcosmId": 1,
+               "itemType": "event",
+               "id": 1,
+               "title": "Introduction to Track Riding",
+               "comments": 0,
+               "views": 0,
+               "meta": {
+                  "created": "2013-04-11T17:08:38.537299Z",
+                  "createdBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "flags": {
+                     "sticky": false,
+                     "open": true,
+                     "deleted": false,
+                     "moderated": false,
+                     "visible": true
+                  },
+                  "links": [{
+                        "rel": "self",
+                        "href": "/api/v1/events/1"
+                     }
                   ]
                }
             }
          ]
       },
-      "meta":{
-         "links":[
-            {"rel":"self", "href":"/api/v1/microcosms/1"},
-            {"rel":"site", "href":"/api/v1/sites/1"}
+      "meta": {
+         "created": "2013-04-11T17:08:26.828928Z",
+         "createdBy": {
+            "id": 1,
+            "userId": 1,
+            "profileName": "motter",
+            "visible": true,
+            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned": false,
+            "moderator": false,
+            "admin": false,
+            "meta": {
+               "links": [{
+                     "rel": "self",
+                     "href": "/api/v1/profiles/1"
+                  }, {
+                     "rel": "site",
+                     "href": "/api/v1/sites/1"
+                  }
+               ]
+            }
+         },
+         "flags": {
+            "sticky": false,
+            "open": true,
+            "deleted": false,
+            "moderated": false,
+            "visible": false
+         },
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/microcosms/1"
+            }, {
+               "rel": "site",
+               "href": "/api/v1/sites/1"
+            }
          ],
-         "permissions":{
-            "create":false,
-            "read":true,
-            "update":false,
-            "delete":false,
-            "guest":true,
-            "superUser":false
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
          }
       }
    },
-   "error":null
+   "error": null
 }</code></pre>
   
           <h5>PUT</h5>
@@ -1098,7 +1193,7 @@ Content-Length: 0</code></pre>
   "visibility": "public",
   "title": "General Chit-Chat",
   "description": "A place to talk about anything and everything.",
-  "editReason": "Updated the title"
+  "meta": {"editReason": "Updated the title"}
 }</code></pre>
 
           <p>Where:</p>
@@ -1142,7 +1237,12 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PUT -d "{\"visibility\":\"public\", \"title\":\"General Chatter\",\"description\":\"A place to talk about anything and everything.\", \"editReason\":\"Updated the title\"}" -g "https://{subdomain}.microco.sm/api/v1/microcosms/1"</code></pre>
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"visibility": "public","title": "General Chit-Chat","description": "A place to talk about anything and everything.","meta":{"editReason": "Updated the title"}}' \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1166,21 +1266,26 @@ Content-Length: 52
 
           <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
 
-          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/sticky</code>, <code>/deleted</code>, <code>/moderated</code>, and <code>/open</code>.</p>
+          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/sticky</code>, <code>/meta/flags/deleted</code>, <code>/meta/flags/moderated</code>, and <code>/meta/flags/open</code>.</p>
 
           <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
 
 <pre><code>[
-  {"op":"replace", "path":"/sticky", "value": true},
-  {"op":"replace", "path":"/open", "value": true},
-  {"op":"replace", "path":"/moderated", "value": false},
-  {"op":"replace", "path":"/deleted", "value": false},
+  {"op":"replace", "path":"/meta/flags/sticky", "value": true},
+  {"op":"replace", "path":"/meta/flags/open", "value": true},
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
 ]</code></pre>
 
           <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
 
           <p>Example request:</p>
-<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X PATCH -d "[{\"op\":\"replace\", \"path\":\"/sticky\", \"value\": true}]" -g "http://esi01.dev.microcosm.cc/api/v1/microcosms/1"</code></pre>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1200,12 +1305,16 @@ Location: /api/v1/microcosms/1
   "data":{
     "id":1,
     ...
-    "sticky":false,
-    "open":true,
-    "deleted":false,
-    "moderated":false,
-    "visible":true,
-    ...
+    "meta":{
+      ...
+      "flags":{
+        "sticky":false,
+        "open":true,
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+      }
+      ...
     }
   },
   "error":null
@@ -1218,31 +1327,34 @@ Location: /api/v1/microcosms/1
   "data":{
     "id":1,
     ...
-    "edited": "2013-04-09T11:25:48.715438Z",
-    "editedBy": {
-      "id": 1,
-      "userId": 1,
-      "profileName": "motter",
-      "visible": true,
-      "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-      "banned": false,
-      "moderator": false,
-      "admin": true,
-      "meta": {
-        "links": [
-          {rel: "self", href: "/api/v1/profiles/1"},
-          {rel: "site", href: "/api/v1/sites/1"}
-        ]
+    "meta":{
+      ...
+      "edited": "2013-04-09T11:25:48.715438Z",
+      "editedBy": {
+        "id": 1,
+        "userId": 1,
+        "profileName": "motter",
+        "visible": true,
+        "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+        "banned": false,
+        "moderator": false,
+        "admin": true,
+        "meta": {
+          "links": [
+            {rel: "self", href: "/api/v1/profiles/1"},
+            {rel: "site", href: "/api/v1/sites/1"}
+          ]
+        }
+      },
+      "editReason": "Set sticky to true",
+      "flags":{
+        "sticky":true,
+        "open":true,
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
       }
-    },
-    "editReason": "Set sticky to true",
-    ...
-    "sticky":true,
-    "open":true,
-    "deleted":false,
-    "moderated":false,
-    "visible":true,
-    ...
+      ...
     }
   },
   "error":null
@@ -1256,7 +1368,10 @@ Location: /api/v1/microcosms/1
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Authorization: Bearer letmein" -X DELETE -g "https://{subdomain}.microco.sm/api/v1/microcosms/1"</code></pre>
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1330,7 +1445,8 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -i -X OPTIONS https://{subdomain}.microco.sm/api/v1/conversations</code></pre>
+<pre><code>curl -i -X OPTIONS \
+  https://{subdomain}.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -1381,7 +1497,11 @@ Content-Length: 0</code></pre>
 
           <p>Example request:</p>
 
-<pre><code>curl -i -H "Authorization: Bearer letmein" -H "Content-Type: application/json" -X POST -d "{\"microcosmId\":1, \"title\":\"Did anyone see the article on the news last night?\"}" -g "https://{subdomain}.microco.sm/api/v1/conversations"</code></pre>
+<pre><code>curl -i -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d "{\"microcosmId\":1, \"title\":\"Did anyone see the article on the news last night?\"}" \
+  -g "https://{subdomain}.microco.sm/api/v1/conversations"</code></pre>
 
           <p>Example response:</p>
 
@@ -1409,7 +1529,8 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -X GET -g "https://{subdomain}.microco.sm/api/v1/conversations"</code></pre>
+<pre><code>curl -X GET \
+  -g "https://{subdomain}.microco.sm/api/v1/conversations"</code></pre>
 
           <p>Example response:</p>
 
