@@ -2428,6 +2428,7 @@ Content-Length: 52
         var prettify = false;
         $("pre code").parent().each(function() {
             $(this).addClass('prettyprint');
+            $(this).addClass('lang-js');
             prettify = true;
         });
         if (prettify) {prettyPrint();}
