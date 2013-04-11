@@ -2426,9 +2426,9 @@ Content-Length: 52
 
         // Source code prettiness
         var prettify = false;
-        $("pre code").parent().each(function() {
-            $(this).addClass('prettyprint');
-            $(this).addClass('lang-js');
+        $("pre code").each().addClass('lang-js')
+          .parent().addClass('prettyprint')
+          .each(function() {
             prettify = true;
         });
         if (prettify) {prettyPrint();}
