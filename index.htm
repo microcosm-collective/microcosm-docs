@@ -332,7 +332,7 @@
 
           <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
 
-          <h3>Metadata, Links and Permissions</h3>
+          <h3>Resource Metadata</h3>
 
           <p>Most of the API calls will return a JSON object called <code>meta</code>, as part of the <code>data</code> object, that looks like this:</p>
 
@@ -365,6 +365,8 @@
     "superUser":false
   }
 }</code></pre>
+
+          <h4>Author Information</h4>
 
           <p>Where applicable (single items), author information will be presented in the form of:</p>
 
@@ -405,6 +407,8 @@
             </tbody>
           </table>
 
+          <h4>Flags</h4>
+
           <p>Where applicable (single items), generic boolean flags will be presented in a <code>flags</code> object:</p>
 
           <table class="table table-hover">
@@ -444,6 +448,7 @@
             </tbody>
           </table>
 
+          <h4>Links</h4>
 
           <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>. Further, it describes the Microcosms link as being of relation <code>microcosms</code>, and also gives the type URL which in this case is the same as the full HRef URL.</p>
 
@@ -508,6 +513,8 @@
               </tr>
             </tbody>
           </table>
+
+          <h4>Permissions</h4>
 
           <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the resource in the current context. You should interpret permissions alone these lines:</p>
           <table class="table table-hover">
