@@ -12,7 +12,6 @@
     <!-- Le styles -->
     <link href="css/tocify.css"    rel="stylesheet" />
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <link href="css/prettify.css"  rel="stylesheet" />
     <style type="text/css">
       body {
         padding-top: 30px;
@@ -20,6 +19,9 @@
       }
       h1 {
         font-family: "ubuntu", sans-serif;
+      }
+      pre code {
+        overflow: auto;
       }
     </style>
 
@@ -2415,23 +2417,11 @@ Content-Length: 52
     <!-- Tocify -->
     <script src="/js/jquery.tocify.min.js"></script>
 
-    <!-- Prettify -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js" type="text/javascript"></script>
-
     <!-- Kick out the Jamms -->
     <script>
     $(document).ready(function() {
         // Navigation wizardry, builds navigation from the structure of the document
         var toc = $("#toc").tocify({ context: "#docs", selectors: "h2,h3,h4,h5" }).data("toc-tocify");
-
-        // Source code prettiness
-        var prettify = false;
-        $("pre code").each().addClass('lang-js')
-          .parent().addClass('prettyprint')
-          .each(function() {
-            prettify = true;
-        });
-        if (prettify) {prettyPrint();}
     });
     </script>
   </body>
