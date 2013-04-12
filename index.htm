@@ -2641,7 +2641,11 @@ Content-Length: 52
 
           <h3>/comments</h3>
 
-          <p>Provides an interface to the comments that exist on a site and to which items they are related. A comment encapsulates the unstructured site content in the form of textual contributions formatted as <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> and to be rendered as HTML.</p>
+          <p>Provides an interface to comments. These are the bread and butter of a community web site, each comment is a piece of content attached to some other item (a conversation, an event, a poll, etc) that discusses the item. Comments can be generally in response to the item, or specifically in response to another comment.</p>
+
+          <p>The format for the body of a comment is <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, with some minor additions to do things link recognising usernames when preceded with an @ or +, and embedding rich content about linked items where we are able to. There are also some restrictions on unsafe HTML such as the use of JavaScript and CSS.</p>
+
+          <p>General rule of thumb: Take text through a standard textbox or textarea and send it to us and we'll worry about formatting it.</p>
 
           <h4>URLs and Methods</h4>
 
@@ -2677,7 +2681,7 @@ Content-Length: 52
               <tr>
                 <td>/api/v1/comments/{id:[0-9]+}</td>
                 <td>GET</td>
-                <td>Returns information about the comment specified by the numeric identifier.</td>
+                <td>Returns information about the comment specified by the numeric identifier and the HTML to show when rendering the comment.</td>
               </tr>
               <tr>
                 <td>/api/v1/comments/{id:[0-9]+}</td>
@@ -2686,11 +2690,617 @@ Content-Length: 52
               </tr>
               <tr>
                 <td>/api/v1/comments/{id:[0-9]+}</td>
+                <td>PATCH</td>
+                <td>Updates specific fragments of a comment resource specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/comments/{id:[0-9]+}</td>
                 <td>DELETE</td>
                 <td>Deletes the comment specified by the numeric identifier.</td>
               </tr>
             </tbody>
           </table>
+
+          <h4>Collection</h4>
+          
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,POST,GET
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>POST</h5>
+
+          <p>Request:</p>
+
+          <p>The flow for creating a comment is that you must already have some other item created, and comments are a response to it. For this reason when you create a comment you also need to provide the <p>itemType</p> and <code>itemId</code> for the item that this comment will be attached to.</p>
+
+          <p>The structure of the JSON to create a comment is:</p>
+
+<pre><code>{
+   "itemType": "conversation",
+   "itemId": 1,
+   "markdown": "Some text and a link to [Google](http://www.google.com/)"
+}</code></pre>
+
+          <p>And if you were creating a comment that is a direct reply to another comment, then you should additionally provide the identifier of the comment you are replying to:</p>
+
+<pre><code>{
+   "itemType": "conversation",
+   "itemId": 1,
+   "inReplyTo": 1,
+   "markdown": "Some text and a link to [Google](http://www.google.com/)"
+}</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>itemType</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>Identifies the type of item that this comment is attached to. Must be one of: <code>conversation</code>, <code>event</code> or <code>poll</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemType</code> is <code>conversation</code>.</td>
+              </tr>
+              <tr>
+                <td><code>itemId</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>The identifier for the given type of item described by <code>itemType</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemId</code> is <code>1</code>.</td>
+              </tr>
+              <tr>
+                <td><code>inReplyTo</code></td>
+                <td>Integer</td>
+                <td>Optional</td>
+                <td>If the comment is an explicit response to an existing comment, then this is the identifier for that comment.</td>
+              </tr>
+              <tr>
+                <td><code>markdown</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>The textual content of the comment, markdown formatted.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"markdown": "A First Level Header\n====================\n\nA Second Level Header\n---------------------\n\nNow is the time for all good men (such as +awesome_guy +blueprints) to\ncome to the aid of their community: http://www.lfgss.com/ . This is just a\nregular paragraph.\n\nThe quick brown [fox](http://www.google.com/?q=fox) jumped over the lazy\ndogs back.\n\n### Header 3\n\n> This is a blockquote.\n> \n> This is the second paragraph in the blockquote.\n>\n> ## This is an H2 +Velocio @blueprints are mentioned in a blockquote"}' \
+  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/comments/1
+Content-Length: 52
+
+{
+  "context":"",
+  "status":302,
+  "data":null,
+  "error":null
+}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created comment.</p>
+
+          <h5>GET</h5>
+
+          <p>Fetches a collection of comments across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain comments that exist in private Microcosms, or attached to deleted items, not visible to guests.</p>
+
+          <p>Request:</p>
+
+          <p>The pagination query string parameters allow you to paginate the collection of comments returned:</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+   "context": "",
+   "status": 200,
+   "data": {
+      "comments": {
+         "total": 2,
+         "limit": 25,
+         "offset": 0,
+         "pages": 1,
+         "links": [{
+               "rel": "first",
+               "href": "/api/v1/comments"
+            }, {
+               "rel": "self",
+               "href": "/api/v1/comments"
+            }, {
+               "rel": "last",
+               "href": "/api/v1/comments"
+            }
+         ],
+         "type": "/api/v1/comments",
+         "items": [{
+               "id": 1,
+               "itemType": "conversation",
+               "itemId": 1,
+               "revisions": 2,
+               "inReplyTo": 0,
+               "attachments": 0,
+               "firstLine": "",
+               "markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)",
+               "html": "\u003cp\u003eSome text and a link to \u003ca href=\"/jump/2c\"\u003eYahoo\u003c/a\u003e\u003c/p\u003e",
+               "meta": {
+                  "created": "2013-04-12T13:58:12.693034Z",
+                  "createdBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "edited": "2013-04-12T13:58:14.010391Z",
+                  "editedBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "flags": {
+                     "deleted": false,
+                     "moderated": false,
+                     "visible": false
+                  },
+                  "links": [{
+                        "rel": "self",
+                        "href": "/api/v1/comments/1"
+                     }, {
+                        "rel": "conversation",
+                        "href": "/api/v1/conversations/1"
+                     }, {
+                        "rel": "up",
+                        "href": "/api/v1/conversations/1"
+                     }
+                  ]
+               }
+            }, {
+               "id": 2,
+               "itemType": "conversation",
+               "itemId": 1,
+               "revisions": 2,
+               "inReplyTo": 1,
+               "attachments": 0,
+               "firstLine": "",
+               "markdown": "An Updated First Level Header\n====================\n\nA Second Level Header\n---------------------\n\nNow is the time for all good men (such as +awesome_guy +blueprints) to\ncome to the aid of their community: http://www.lfgss.com/ . This is just a\nregular paragraph.\n\nThe quick brown [fox](http://www.google.com/?q=fox) jumped over the lazy\ndogs back.\n\n### Header 3\n\n\u003e This is a blockquote.\n\u003e \n\u003e This is the second paragraph in the blockquote.\n\u003e\n\u003e ## This is an H2 +Velocio @blueprints are mentioned in a blockquote",
+               "html": "\u003ch1\u003eAn Updated First Level Header\u003c/h1\u003e\n\u003ch2\u003eA Second Level Header\u003c/h2\u003e\n\u003cp\u003eNow is the time for all good men (such as +awesome_guy +blueprints) to come to the aid of their community: \u003ca href=\"/jump/qd\"\u003ewww.lfgss.com/\u003c/a\u003e . This is just a regular paragraph.\u003c/p\u003e\n\u003cp\u003eThe quick brown \u003ca href=\"/jump/ge\"\u003efox\u003c/a\u003e jumped over the lazy dogs back.\u003c/p\u003e\n\u003ch3\u003eHeader 3\u003c/h3\u003e\n\u003cblockquote\u003e\n\u003cp\u003eThis is a blockquote.\u003c/p\u003e\n\u003cp\u003eThis is the second paragraph in the blockquote.\u003c/p\u003e\n\u003ch2\u003eThis is an H2 \u003ca href=\"/profiles/2\"\u003e+Velocio\u003c/a\u003e @blueprints are mentioned in a blockquote\u003c/h2\u003e\n\u003c/blockquote\u003e",
+               "meta": {
+                  "created": "2013-04-12T13:58:15.77386Z",
+                  "createdBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "edited": "2013-04-12T13:58:22.026107Z",
+                  "editedBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "flags": {
+                     "deleted": false,
+                     "moderated": true,
+                     "visible": false
+                  },
+                  "links": [{
+                        "rel": "self",
+                        "href": "/api/v1/comments/1"
+                     }, {
+                        "rel": "conversation",
+                        "href": "/api/v1/conversations/1"
+                     }, {
+                        "rel": "up",
+                        "href": "/api/v1/conversations/1"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      "meta": {
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/comments"
+            }
+         ],
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
+         }
+      }
+   },
+   "error": null
+}</code></pre>
+
+          <h4>Single Resource</h4>
+
+          <h5>OPTIONS</h5>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,GET,PUT,DELETE
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h5>GET</h5>
+
+          <p>Fetches the detailed information about a single comment, including the HTML to render.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+   "context": "",
+   "status": 200,
+   "data": {
+      "id": 1,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 2,
+      "inReplyTo": 0,
+      "attachments": 0,
+      "firstLine": "",
+      "markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)",
+      "html": "\u003cp\u003eSome text and a link to \u003ca href=\"/jump/2c\"\u003eYahoo\u003c/a\u003e\u003c/p\u003e",
+      "meta": {
+         "created": "2013-04-12T13:58:12.693034Z",
+         "createdBy": {
+            "id": 1,
+            "userId": 1,
+            "profileName": "motter",
+            "visible": true,
+            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned": false,
+            "moderator": false,
+            "admin": false,
+            "meta": {
+               "links": [{
+                     "rel": "self",
+                     "href": "/api/v1/profiles/1"
+                  }, {
+                     "rel": "site",
+                     "href": "/api/v1/sites/1"
+                  }
+               ]
+            }
+         },
+         "edited": "2013-04-12T13:58:14.010391Z",
+         "editedBy": {
+            "id": 1,
+            "userId": 1,
+            "profileName": "motter",
+            "visible": true,
+            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned": false,
+            "moderator": false,
+            "admin": false,
+            "meta": {
+               "links": [{
+                     "rel": "self",
+                     "href": "/api/v1/profiles/1"
+                  }, {
+                     "rel": "site",
+                     "href": "/api/v1/sites/1"
+                  }
+               ]
+            }
+         },
+         "flags": {
+            "deleted": false,
+            "moderated": false,
+            "visible": false
+         },
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/comments/1"
+            }, {
+               "rel": "conversation",
+               "href": "/api/v1/conversations/1"
+            }, {
+               "rel": "up",
+               "href": "/api/v1/conversations/1"
+            }
+         ],
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
+         }
+      }
+   },
+   "error": null
+}</code></pre>
+  
+          <h5>PUT</h5>
+
+          <p>Updates a comment. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "itemType": "conversation",
+  "itemId": 1,
+  "markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"
+}</code></pre>
+
+          <p>It should be noted that you do not need to resupply <code>inReplyTo</code> (though you optionally may, it won't break anything). <code>inReplyTo</code> is immutable and is not updated when you change the content of a comment nor the item that the comment is attached to..</p>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>itemType</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>Identifies the type of item that this comment is attached to. Must be one of: <code>conversation</code>, <code>event</code> or <code>poll</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemType</code> is <code>conversation</code>.</td>
+              </tr>
+              <tr>
+                <td><code>itemId</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>The identifier for the given type of item described by <code>itemType</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemId</code> is <code>1</code>.</td>
+              </tr>
+              <tr>
+                <td><code>markdown</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>The textual content of the comment, markdown formatted.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"}' \
+  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/conversations/1
+Content-Length: 52
+
+{
+  "context":"",
+  "status":302,
+  "data":null,
+  "error":null
+}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated comment.</p>
+
+          <h5>PATCH</h5>
+
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a comment or a super user (Microcosm moderator or site admin) can delete a comment, but only a super user can undelete a comment.</p>
+
+          <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/deleted</code>, and <code>/meta/flags/moderated</code>.</p>
+
+          <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+          <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+          <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/moderated", "value": true}]' \
+  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Content-Length: 52
+Location: /api/v1/conversations/1
+
+{"context":"","status":302,"data":null,"error":null}</code></pre>
+
+          <p>That request will set the <code>moderated</code> property of a conversation to <code>true</code>. You will need to follow the redirect to GET the updated resource to see the change reflected.</p>
+
+          <p>Conversation fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags":{
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <p>Conversation fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "edited": "2013-04-09T11:25:48.715438Z",
+      "editedBy": {
+        "id": 1,
+        "userId": 1,
+        "profileName": "motter",
+        "visible": true,
+        "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+        "banned": false,
+        "moderator": false,
+        "admin": true,
+        "meta": {
+          "links": [
+            {rel: "self", href: "/api/v1/profiles/1"},
+            {rel: "site", href: "/api/v1/sites/1"}
+          ]
+        }
+      },
+      "flags":{
+        "deleted":false,
+        "moderated":true,
+        "visible":false,
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+          <p>The modified resource now reflects <code>"moderated":true</code> and the edited properties are populated describing the change to the resource.</p>
+
+          <h5>DELETE</h5>
+
+          <p>Deletes a comment.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 52
+
+{"context":"","status":200,"data":null,"error":null}</code></pre>
 
           <h3>/profiles</h3>
 
