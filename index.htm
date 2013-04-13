@@ -341,33 +341,33 @@
           <p>Most of the API calls will return a JSON object called <code>meta</code>, as part of the <code>data</code> object, that looks like this:</p>
 
 <pre><code>"meta":{
-  "created": "2013-04-11T05:52:46.362755Z",
-  "createdBy": {
-    "id": 1,
-    "userId": 1,
-    "profileName": "motter",
-    ...
-  },
-  "flags": {
-    "sticky": false,
-    "open": true,
-    "deleted": false,
-    "moderated": false,
-    "visible": false
-  },
-  "links":[
-    {"rel":"self", "href":"/api/v1/site"},
-    {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chatter"},
-    {"rel":"profile", "href":"/api/v1/profiles"}
-  ],
-  "permissions":{
-    "create":false,
-    "read":true,
-    "update":false,
-    "delete":false,
-    "guest":true,
-    "superUser":false
-  }
+   "created": "2013-04-11T05:52:46.362755Z",
+   "createdBy": {
+      "id": 1,
+      "userId": 1,
+      "profileName": "motter",
+      ...
+   },
+   "flags": {
+      "sticky": false,
+      "open": true,
+      "deleted": false,
+      "moderated": false,
+      "visible": false
+   },
+   "links":[
+      {"rel":"self", "href":"/api/v1/site"},
+      {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chatter"},
+      {"rel":"profile", "href":"/api/v1/profiles"}
+   ],
+   "permissions":{
+      "create":false,
+      "read":true,
+      "update":false,
+      "delete":false,
+      "guest":true,
+      "superUser":false
+   }
 }</code></pre>
 
           <h4>Author Information</h4>
@@ -568,12 +568,12 @@
 Content-Type: application/json
 
 {
-  "context":"",
-  "status":403,
-  "data":null,
-  "error":[
-    "You have supplied an invalid access token"
-  ]
+   "context":"",
+   "status":403,
+   "data":null,
+   "error":[
+      "You have supplied an invalid access token"
+   ]
 }
 </code></pre>
 
@@ -807,9 +807,9 @@ Content-Length: 0</code></pre>
           <p>The structure of the JSON to create a Microcosm is:</p>
 
 <pre><code>{
-  "visibility": "public",
-  "title": "General Chit-Chat",
-  "description": "A place to talk about anything and everything."
+   "visibility": "public",
+   "title": "General Chit-Chat",
+   "description": "A place to talk about anything and everything."
 }</code></pre>
 
           <p>Where:</p>
@@ -862,10 +862,10 @@ Location: /api/v1/microcosms/2
 Content-Length: 52
 
 {
-  "context":"",
-  "status":302,
-  "data":null,
-  "error":null
+   "context":"",
+   "status":302,
+   "data":null,
+   "error":null
 }</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created Microcosm.</p>
@@ -1194,10 +1194,10 @@ Content-Length: 0</code></pre>
           <p>Updates a Microcosm. The structure of the JSON to perform the update is:</p>
 
 <pre><code>{
-  "visibility": "public",
-  "title": "General Chit-Chat",
-  "description": "A place to talk about anything and everything.",
-  "meta": {"editReason": "Updated the title"}
+   "visibility": "public",
+   "title": "General Chit-Chat",
+   "description": "A place to talk about anything and everything.",
+   "meta": {"editReason": "Updated the title"}
 }</code></pre>
 
           <p>Where:</p>
@@ -1256,10 +1256,10 @@ Location: /api/v1/microcosms/2
 Content-Length: 52
 
 {
-  "context":"",
-  "status":302,
-  "data":null,
-  "error":null
+   "context":"",
+   "status":302,
+   "data":null,
+   "error":null
 }</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated Microcosm.</p>
@@ -1298,7 +1298,12 @@ Content-Type: application/json
 Content-Length: 52
 Location: /api/v1/microcosms/1
 
-{"context":"","status":302,"data":null,"error":null}</code></pre>
+{
+   "context":"",
+   "status":302,
+   "data":null,
+   "error":null
+ }</code></pre>
 
           <p>That request will set the <code>sticky</code> property of a Microcosm to <code>true</code>. You will need to follow the redirect to GET the updated resource to see the change reflected.</p>
 
