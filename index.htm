@@ -148,7 +148,7 @@
           </ul>
         </li>
 
-        <li><a href="#attendees">/events/{eventId}/attendees</a>
+        <li><a href="#attendees">/events/{id}/attendees</a>
           <ul class="nav">
             <li><a href="#attendees-urls">URLS and Methods</a></li>
             <li><a href="#attendees-collection">Collection</a>
@@ -2823,6 +2823,533 @@ Location: /api/v1/events/1
   -X DELETE \
   -H "Authorization: Bearer letmein" \
   http://esi01.dev.microcosm.cc/api/v1/events/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 52
+
+{"context":"","status":200,"data":null,"error":null}</code></pre>
+        </div>
+
+        <!-- /events/{id}/attendees -->
+        <div class="bs-docs-section" id="attendees">
+          <h2>/events/{id}/attendees</h2>
+
+          <p>Provides an interface to describe who is attending which events, who has been invited and who has declined invitations.</p>
+
+          <h3 id="attendees-urls">URLs and Methods</h3>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+                <td>POST</td>
+                <td>Creates a new attendee for the current event. Depending on the data sent, this is an invitation to an event, or a confirmation that someone will attend.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+                <td>GET</td>
+                <td>Returns information about the attendees for event.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns information about a specific attendee for an event. The information returned describes whether this is an invite, a maybe, a declined invite, or a confirmation of attendance.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+                <td>PATCH</td>
+                <td>Updates specific fragments of the attendance resource. This is how you change the status to reflect attendance, or not.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+                <td>DELETE</td>
+                <td>Deletes the attendance resource specified.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 id="attendees-collection">Collection</h3>
+          
+          <h4 id="attendees-collection-options">OPTIONS</h4>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,POST,GET
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h4 id="attendees-collection-post">POST</h4>
+
+          <p>Request:</p>
+
+          <p>The flow for creating an attendee is to create the event item, and then to create attendees against the event.</p>
+
+          <p>The structure of the JSON to create an attendee is:</p>
+
+<pre><code>{
+  "attendeeId": 1,
+  "rsvpd": true,
+  "confirmed": true,
+}</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>attendeeId</code></td>
+                <td>Integer</td>
+                <td>Required</td>
+                <td>Identifies which /profile is attending the event. The <code>attendeeId</code> will become the Id in the URL for the attendee. This property is required as every attendance resource must specify who is the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
+              </tr>
+              <tr>
+                <td><code>rsvpd</code></td>
+                <td>Boolean</td>
+                <td>Optional</td>
+                <td>If false, this is an invitation (and <code>confirmed</code> should not be supplied). If true, then attendeeId must be the same as profileId of the user performing the action and you may supply <code>confirmed</code>.</td>
+              </tr>
+              <tr>
+                <td><code>confirmed</code></td>
+                <td>Boolean</td>
+                <td>Optional</td>
+                <td>If true, indicates that the <code>attendeeId</code> has confirmed their presence at the event.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Example request to create an invitation for an attendee:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"attendeeId": 1}' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+
+          <p>Example request to create a confirmation for the user whose <code>Authorization</code> token matches the <code>attendeeId</code>:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"attendeeId": 1, "rsvpd": true, "confirmed":true}' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+
+          <p>Example response for both scenarios:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Location: /api/v1/events/1/attendees/1
+Content-Length: 52
+
+{"context":"","status":302,"data":null,"error":null}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attendee resource.</p>
+
+          <h4 id="attendees-collection-get">GET</h4>
+
+          <p>Fetches a collection of events across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain events that exist in private Microcosms not visible to guests.</p>
+
+          <p>Request:</p>
+
+          <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+   "context": "",
+   "status": 200,
+   "data": {
+      "attendees": {
+         "total": 1,
+         "limit": 25,
+         "offset": 0,
+         "pages": 1,
+         "links": [{
+               "rel": "first",
+               "href": "/api/v1/events/1/attendees"
+            }, {
+               "rel": "self",
+               "href": "/api/v1/events/1/attendees"
+            }, {
+               "rel": "last",
+               "href": "/api/v1/events/1/attendees"
+            }
+         ],
+         "type": "/api/v1/events/0/attendees",
+         "items": [{
+               "attendeeId": 2,
+               "attendee": {
+                  "id": 2,
+                  "userId": 2,
+                  "profileName": "Velocio",
+                  "visible": true,
+                  "gravatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
+                  "banned": false,
+                  "moderator": false,
+                  "admin": false,
+                  "meta": {
+                     "links": [{
+                           "rel": "self",
+                           "href": "/api/v1/profiles/2"
+                        }, {
+                           "rel": "site",
+                           "href": "/api/v1/sites/1"
+                        }
+                     ]
+                  }
+               },
+               "rsvpd": true,
+               "confirmed": false,
+               "declined": true,
+               "meta": {
+                  "created": "2013-04-17T08:48:50.445005Z",
+                  "createdBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "edited": "2013-04-17T08:48:52.96925Z",
+                  "editedBy": {
+                     "id": 1,
+                     "userId": 1,
+                     "profileName": "motter",
+                     "visible": true,
+                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "banned": false,
+                     "moderator": false,
+                     "admin": false,
+                     "meta": {
+                        "links": [{
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           }, {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "editReason": "Set declined to true",
+                  "links": [{
+                        "rel": "self",
+                        "href": "/api/v1/events/1/attendees/2"
+                     }, {
+                        "rel": "profile",
+                        "href": "/api/v1/profiles/2"
+                     }, {
+                        "rel": "event",
+                        "href": "/api/v1/events/1"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      "meta": {
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/events/1/attendees"
+            }
+         ],
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
+         }
+      }
+   },
+   "error": null
+}</code></pre>
+
+          <h3 id="attendees-single">Single Resource</h3>
+
+          <h4 id="attendees-single-options">OPTIONS</h4>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,GET,PATCH,DELETE
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h4 id="attendees-single-get">GET</h4>
+
+          <p>Fetches the detailed information about a single attendee for an event.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+   "context": "",
+   "status": 200,
+   "data": {
+      "attendeeId": 2,
+      "attendee": {
+         "id": 2,
+         "userId": 2,
+         "profileName": "Velocio",
+         "visible": true,
+         "gravatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
+         "banned": false,
+         "moderator": false,
+         "admin": false,
+         "meta": {
+            "links": [{
+                  "rel": "self",
+                  "href": "/api/v1/profiles/2"
+               }, {
+                  "rel": "site",
+                  "href": "/api/v1/sites/1"
+               }
+            ]
+         }
+      },
+      "rsvpd": true,
+      "confirmed": false,
+      "declined": true,
+      "meta": {
+         "created": "2013-04-17T08:48:50.445005Z",
+         "createdBy": {
+            "id": 1,
+            "userId": 1,
+            "profileName": "motter",
+            "visible": true,
+            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned": false,
+            "moderator": false,
+            "admin": false,
+            "meta": {
+               "links": [{
+                     "rel": "self",
+                     "href": "/api/v1/profiles/1"
+                  }, {
+                     "rel": "site",
+                     "href": "/api/v1/sites/1"
+                  }
+               ]
+            }
+         },
+         "edited": "2013-04-17T08:48:52.96925Z",
+         "editedBy": {
+            "id": 1,
+            "userId": 1,
+            "profileName": "motter",
+            "visible": true,
+            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "banned": false,
+            "moderator": false,
+            "admin": false,
+            "meta": {
+               "links": [{
+                     "rel": "self",
+                     "href": "/api/v1/profiles/1"
+                  }, {
+                     "rel": "site",
+                     "href": "/api/v1/sites/1"
+                  }
+               ]
+            }
+         },
+         "editReason": "Set declined to true",
+         "links": [{
+               "rel": "self",
+               "href": "/api/v1/events/1/attendees/2"
+            }, {
+               "rel": "profile",
+               "href": "/api/v1/profiles/2"
+            }, {
+               "rel": "event",
+               "href": "/api/v1/events/1"
+            }
+         ],
+         "permissions": {
+            "create": false,
+            "read": true,
+            "update": false,
+            "delete": false,
+            "guest": true,
+            "superUser": false
+         }
+      }
+   },
+   "error": null
+}</code></pre>
+
+          <p>The truth table for the key booleans is:</p>
+          <table>
+            <thead>
+              <tr>
+                <th><code>rsvpd</code></th>
+                <th><code>confirmed</code></th>
+                <th><code>declined</code></th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>false</td>
+                <td>false</td>
+                <td>false</td>
+                <td>Invitation</td>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>false</td>
+                <td>false</td>
+                <td>May attend</td>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>true</td>
+                <td>false</td>
+                <td>Attending</td>
+              </tr>
+              <tr>
+                <td>true</td>
+                <td>false</td>
+                <td>true</td>
+                <td>Not attending</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 id="attendees-single-patch">PATCH</h4>
+
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions.</p>
+
+          <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/rsvpd</code>, <code>/confirmed</code>, and <code>/declined</code>.</p>
+
+          <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/rsvpd", "value": true},
+  {"op":"replace", "path":"/confirmed", "value": true},
+  {"op":"replace", "path":"/declined", "value": false},
+]</code></pre>
+
+          <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+          <p>If you send nonsensical patch instructions in a single request they will be processed in order and the last one will take priority. i.e. If you try to set both <code>/confirmed</code>, and <code>/declined</code> to <code>true</code> then in that order <code>/declined</code> will win and <code>/confirmed</code> will be over-written as <code>false</code>.</p>
+
+          <p>Example request to set as attending:</p>
+
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/confirmed", "value": true}]' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+
+          <p>Example request to set as not attending:</p>
+  
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/declined", "value": true}]' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+
+          <p>Example request to set as maybe attending:</p>
+
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/confirmed", "value": false},{"op":"replace", "path":"/declined", "value": false}]' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Content-Type: application/json
+Content-Length: 52
+Location: /api/v1/events/1/attendees/2
+
+{"context":"","status":302,"data":null,"error":null}</code></pre>
+
+          <h4 id="attendees-single-delete">DELETE</h4>
+
+          <p>Deletes an attendee resource.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
 
           <p>Example response:</p>
 
