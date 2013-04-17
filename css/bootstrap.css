@@ -223,7 +223,7 @@ textarea {
 
 body {
   margin: 0;
-  font-family: 'source-sans-pro', sans-serif;
+  font-family: "Source-Sans-Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   color: #333333;
@@ -740,7 +740,7 @@ h5,
 h6 {
   margin: 12px 0;
   font-family: inherit;
-  font-weight: normal;
+  font-weight: bold;
   line-height: 24px;
   color: inherit;
   text-rendering: optimizelegibility;
@@ -1065,7 +1065,7 @@ input,
 button,
 select,
 textarea {
-  font-family: 'source-sans-pro', sans-serif;
+  font-family: "Source-Sans-Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 label {
@@ -4510,7 +4510,7 @@ input[type="submit"].btn.btn-mini {
 .navbar-search .search-query {
   padding: 4px 14px;
   margin-bottom: 0;
-  font-family: 'source-sans-pro', sans-serif;
+  font-family: "Source-Sans-Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   font-weight: normal;
   line-height: 1;
