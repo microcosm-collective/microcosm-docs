@@ -47,6 +47,7 @@
         <li><a class="nav-header" href="#basics">Basics</a>
           <ul class="nav">
             <li><a href="#basics-api-flow">API Flow</a>
+            <li><a href="#basics-terminology">Terminology</a>
             <li><a href="#basics-boiler">Boiler Plate</a></li>
             <li><a href="#basics-statuscodes">HTTP Status Codes</a></li>
             <li><a href="#basics-callbacks">Calbacks using JSONP</a></li>
@@ -245,9 +246,44 @@
             <img src="img/flow.png" alt="Image showing the high level flow through the API." />
           </p>
 
-          <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+          <p>Sites have Microcosms. Microcosms have types of content that include Conversations, Events and Polls. Those types of content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
 
           <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
+
+          <h2 id="basics-terminology">Terminology</h2>
+
+          <p>If you're coming from other forum/community software then you can translate things in this way:</p>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Common Terminology</th>
+                <th>Microcosm Terminology</th>
+                <th>Differences</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Forum</td>
+                <td>Site</td>
+                <td>In vBulletin, phpBB, the 'forum' is the over-arching instance of the software and the software runs on a single web domain. Microcosm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</td>
+              </tr>
+              <tr>
+                <td>Forums/Subforums</td>
+                <td>Microcosms</td>
+                <td>Within traditional forum software many forums can exist and they may be nested (subforums inside forums). These 'forums' are created by administrators and the users create conversations within an individual forum. We have Microcosms instead of forums, and these are not nested. They are called Microcosms as they can contain everything a group may need, the events, polls, conversations, etc... they represent a microcosm of the wider community. Users are able to create these Microcosms, the structure of the site is not necessarily dictated by the site administrator.</td>
+              </tr>
+              <tr>
+                <td>Threads</td>
+                <td>Conversations</td>
+                <td>Threads are the bread and butter of a traditional forum, and in a Microcosm we have a conversation as the direct equivalence. A conversation is simply a collection of comments around a topic.</td>
+              </tr>
+              <tr>
+                <td>Posts</td>
+                <td>Comments</td>
+                <td>Within traditional forum software threads have posts, and that's it. Microcosm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments. Comments are pieces of user generated content attached in a collection to some other content.</td>
+              </tr>
+            </tbody>
+          </table>
 
           <h2 id="basics-boiler">Boiler Plate</h2>
 
