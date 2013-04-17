@@ -10,15 +10,15 @@
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
     <!-- Le styles -->
-    <link href="css/tocify.css" rel="stylesheet" />
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/docs.css" rel="stylesheet" />
     <style type="text/css">
       body {
         padding-top: 30px;
         padding-bottom: 20px;
       }
-      h1 {
+      h1, .microcosm {
         font-family: "ubuntu", sans-serif;
       }
       pre {
@@ -35,21 +35,176 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-  <body>
-    <div class="container">
-      <div class="row-fluid">
+  <body class="bs-docs-docs" data-spy="scroll" data-target=".bs-docs-sidebar">
 
-        <div class="span3">
-          <div id="toc"></div>
-        </div>
+    <!-- Docs nav -->
+    <div class="bs-docs-sidebar">
+      <ul class="nav bs-docs-sidenav">
+        <h3 class="bs-docs-sidenav-heading"><a href="/" class="microcosm">Microcosm</a></h3>
 
-        <div id="docs" class="span9">
+        <li><a class="nav-header" href="#introduction">Introduction</a></li>
 
-          <h1>Microcosm</h1>
+        <li><a class="nav-header" href="#basics">Basics</a>
+          <ul class="nav">
+            <li><a href="#basics-api-flow">API Flow</a>
+            <li><a href="#basics-boiler">Boiler Plate</a></li>
+            <li><a href="#basics-statuscodes">HTTP Status Codes</a></li>
+            <li><a href="#basics-callbacks">Calbacks using JSONP</a></li>
+            <li><a href="#basics-urls">URL Patterns</a></li>
+            <li><a href="#basics-pagination">Pagination</a></li>
+            <li><a href="#basics-meta">Metadata</a>
+              <ul class="nav">
+                <li><a href="#basics-meta-author">Author</a></li>
+                <li><a href="#basics-meta-flags">Flags</a></li>
+                <li><a href="#basics-meta-links">Links</a></li>
+                <li><a href="#basics-meta-permissions">Permissions</a></li>
+              </ul>
+            </li>
+            <li><a href="#basics-authentication">Authentication</a>
+            <li><a href="#basics-errors">Error Handling</a>
+          </ul>
+        </li>
+
+        <li><a class="nav-header" href="#tutorial">Tutorial</a>
+
+        <li><a class="nav-header" href="#ref">Reference</a>
+
+        <li><a href="#site">/site</a>
+          <ul class="nav">
+            <li><a href="#site-urls">URLS and Methods</a></li>
+            <li><a href="#site-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#site-single-options">OPTIONS</a>
+                <li><a href="#site-single-get">GET</a>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="#microcosms">/microcosms</a>
+          <ul class="nav">
+            <li><a href="#microcosms-urls">URLS and Methods</a></li>
+            <li><a href="#microcosms-collection">Collection</a>
+              <ul class="nav">
+                <li><a href="#microcosms-collection-options">OPTIONS</a>
+                <li><a href="#microcosms-collection-post">POST</a>
+                <li><a href="#microcosms-collection-get">GET</a>
+              </ul>
+            </li>
+            <li><a href="#microcosms-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#microcosms-single-options">OPTIONS</a>
+                <li><a href="#microcosms-single-get">GET</a>
+                <li><a href="#microcosms-single-put">PUT</a>
+                <li><a href="#microcosms-single-patch">PATCH</a>
+                <li><a href="#microcosms-single-delete">DELETE</a>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="#conversations">/conversations</a>
+          <ul class="nav">
+            <li><a href="#conversations-urls">URLS and Methods</a></li>
+            <li><a href="#conversations-collection">Collection</a>
+              <ul class="nav">
+                <li><a href="#conversations-collection-options">OPTIONS</a>
+                <li><a href="#conversations-collection-post">POST</a>
+                <li><a href="#conversations-collection-get">GET</a>
+              </ul>
+            </li>
+            <li><a href="#conversations-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#conversations-single-options">OPTIONS</a>
+                <li><a href="#conversations-single-get">GET</a>
+                <li><a href="#conversations-single-put">PUT</a>
+                <li><a href="#conversations-single-patch">PATCH</a>
+                <li><a href="#conversations-single-delete">DELETE</a>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="#events">/events</a>
+          <ul class="nav">
+            <li><a href="#events-urls">URLS and Methods</a></li>
+            <li><a href="#events-collection">Collection</a>
+              <ul class="nav">
+                <li><a href="#events-collection-options">OPTIONS</a>
+                <li><a href="#events-collection-post">POST</a>
+                <li><a href="#events-collection-get">GET</a>
+              </ul>
+            </li>
+            <li><a href="#events-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#events-single-options">OPTIONS</a>
+                <li><a href="#events-single-get">GET</a>
+                <li><a href="#events-single-put">PUT</a>
+                <li><a href="#events-single-patch">PATCH</a>
+                <li><a href="#events-single-delete">DELETE</a>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="#polls">/polls</a>
+          <ul class="nav">
+            <li><a href="#polls-urls">URLS and Methods</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#comments">/comments</a>
+          <ul class="nav">
+            <li><a href="#comments-urls">URLS and Methods</a></li>
+            <li><a href="#comments-collection">Collection</a>
+              <ul class="nav">
+                <li><a href="#comments-collection-options">OPTIONS</a>
+                <li><a href="#comments-collection-post">POST</a>
+                <li><a href="#comments-collection-get">GET</a>
+              </ul>
+            </li>
+            <li><a href="#comments-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#comments-single-options">OPTIONS</a>
+                <li><a href="#comments-single-get">GET</a>
+                <li><a href="#comments-single-put">PUT</a>
+                <li><a href="#comments-single-patch">PATCH</a>
+                <li><a href="#comments-single-delete">DELETE</a>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="#profiles">/profiles</a>
+        </li>
+
+        <li><a href="#whoami">/whoami</a>
+          <ul class="nav">
+            <li><a href="#whoami-urls">URLS and Methods</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+
+
+    <div class="bs-docs-container">
+      <div class="row">
+
+        <!-- Welcome -->
+        <div class="bs-docs-section" id="welcome">
+          <div class="page-header">
+            <h1>Microcosm</h1>
+          </div>
 
           <p>Welcome to the API documentation for Microcosm. On this single-page site we explain how to use the Microcosm API. Print this page or bookmark, just keep it handy.</p>
+        </div>
 
-          <h2>Introduction</h2>
+        <!-- Introduction -->
+        <div class="bs-docs-section" id="introduction">
+          <div class="page-header">
+            <h1>Introduction</h1>
+          </div>
 
           <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you, the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you might implement a solution using our API.</p>
 
@@ -76,10 +231,25 @@
           <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
 
           <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
+        </div>
 
-          <h2>Conventions</h2>
+        <!-- Basics -->
+        <div class="bs-docs-section" id="basics">
+          <div class="page-header">
+            <h1>Basics</h1>
+          </div>
 
-          <h3>Boiler Plate</h3>
+          <h2 id="basics-api-flow">API Flow</h2>
+          
+          <p>At the highest level you can imagine that the core flow through the API is this:
+            <img src="img/flow.png" alt="Image showing the high level flow through the API." />
+          </p>
+
+          <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+
+          <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
+
+          <h2 id="basics-boiler">Boiler Plate</h2>
 
           <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
 
@@ -100,8 +270,8 @@
           </ul>
 
           <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
-
-          <h3>HTTP Status Codes</h3>
+</div>
+          <h2 id="basics-statuscodes">HTTP Status Codes</h2>
 
           <p>We only return a few <a href="http://www.ietf.org/rfc/rfc2616.txt" title="RFC 2616">HTTP status codes</a> that generally describe the state of a request, your application need only handle these status codes:</p>
 
@@ -172,7 +342,7 @@
             </tbody>
           </table>
 
-          <h3>Callbacks using JSONP</h3>
+          <h2 id="basics-callbacks">Callbacks using JSONP</h2>
 
           <p>We support JSONP, and to achieve that 3 things are needed:</p>
           <ol>
@@ -195,7 +365,7 @@
 
           <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
 
-          <h3>URL Patterns</h3>
+          <h2 id="basics-urls">URL Patterns</h2>
 
           <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
 
@@ -292,7 +462,7 @@
 
           <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
 
-          <h3>Pagination</h3>
+          <h2 id="basics-pagination">Pagination</h2>
 
           <p>Pagination of collections is supported using the offset approach:</p>
           <ul>
@@ -337,7 +507,7 @@
 
           <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
 
-          <h3>Resource Metadata</h3>
+          <h2 id="basics-meta">Resource Metadata</h2>
 
           <p>Most of the API calls will return a JSON object called <code>meta</code>, as part of the <code>data</code> object, that looks like this:</p>
 
@@ -371,7 +541,7 @@
    }
 }</code></pre>
 
-          <h4>Author Information</h4>
+          <h3 id="basics-meta-author">Author Information</h3>
 
           <p>Where applicable (single items), author information will be presented in the form of:</p>
 
@@ -412,7 +582,7 @@
             </tbody>
           </table>
 
-          <h4>Flags</h4>
+          <h3 id="basics-meta-flags">Flags</h3>
 
           <p>Where applicable (single items), generic boolean flags will be presented in a <code>flags</code> object:</p>
 
@@ -453,7 +623,7 @@
             </tbody>
           </table>
 
-          <h4>Links</h4>
+          <h3 id="basics-meta-links">Links</h3>
 
           <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>. Further, it describes the Microcosms link as being of relation <code>microcosms</code>, and also gives the type URL which in this case is the same as the full HRef URL.</p>
 
@@ -519,7 +689,7 @@
             </tbody>
           </table>
 
-          <h4>Permissions</h4>
+          <h3 id="basics-meta-permissions">Permissions</h3>
 
           <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the resource in the current context. You should interpret permissions alone these lines:</p>
           <table class="table table-hover">
@@ -548,14 +718,14 @@
               </tr>
             </tbody>
           </table>
-
-          <h3>Authentication</h3>
+</div>
+          <h2 id="basics-authentication">Authentication</h2>
 
           <p>TODO: Some text goes here, this is just placeholder</p>
 
           <p>Access tokens can either be provided by http header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form of <code>access_token={access_token}</code>. If both header and querystring are provided, then only the header will be examined. The header is the recommended way of providing the access token, the query string is only made available to help support some clients which may not have access to the HTTP headers.</p>
 
-          <h3>Error Handling</h3>
+          <h2 id="basics-errors">Error Handling</h2>
 
           <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
 
@@ -580,27 +750,31 @@ Content-Type: application/json
 
           <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
 
-          <h2>Tutorial</h2>
+        </div>
+
+
+        <div class="bs-docs-section" id="tutorial">
+          <div class="page-header">
+            <h1>Tutorial</h1>
+          </div>
 
           <p class="well well-small">We do not yet have a tutorial to share, but it is a TODO on our tasklist and we will prepare one before the launch of the beta version of the API.</p>
+        </div>
 
-          <h2>API Reference</h2>
+        <!-- Reference -->
+        <div class="bs-docs-section" id="ref">
+          <div class="page-header">
+            <h1>Reference</h1>
+          </div>
+        </div>
 
-          <h3>API Flow</h3>
-          
-          <p>At the highest level you can imagine that the core flow through the API is this:
-            <img src="img/flow.png" alt="Image showing the high level flow through the API." />
-          </p>
-
-          <p>Sites have Microcosms, Microcosms have types of content that include Conversations, Events and Poll. That content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
-
-          <p>That is overly simplistic, of course Comments are made by Profiles, and an Event describes which Microcosm it is in, etc but as a high-level view it suffices.</p>
-
-          <h3>/site</h3>
+        <!-- /site -->
+        <div class="bs-docs-section" id="site">
+          <h2>/site</h2>
 
           <p>Provides information about the site that you are currently on: the name of the site, the site logo, who created the site, and who owns the site.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="site-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -624,9 +798,9 @@ Content-Type: application/json
             </tbody>
           </table>
 
-          <h4>Single Resource</h4>
+          <h3 id="site-single">Single Resource</h3>
           
-          <h5>OPTIONS</h5>
+          <h4 id="site-single-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -642,7 +816,7 @@ Allow: GET,OPTIONS
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>GET</h5>
+          <h4 id="site-single-get">GET</h4>
 
           <p>There are no query string paramaters, the response of this API call describes the basic properties of a web site.</p>
 
@@ -730,12 +904,15 @@ Content-Length: 0</code></pre>
    },
    "error": null
 }</code></pre>
+        </div>
 
-          <h3>/microcosms</h3>
+        <!-- /microcosms -->
+        <div class="bs-docs-section" id="microcosms">
+          <h2>/microcosms</h2>
 
           <p>Provides an interface to the Microcosms that exist on a site and information on the items contained within them. Conceptually a Microcosm can be imagined as being like a 'forum' or 'sub-forum' on a traditional piece of forum software, it is the container for all conversations, polls, and other resources such as events.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="microcosms-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -784,9 +961,9 @@ Content-Length: 0</code></pre>
             </tbody>
           </table>
 
-          <h4>Collection</h4>
+          <h3 id="microcosms-collection">Collection</h3>
           
-          <h5>OPTIONS</h5>
+          <h4 id="microcosms-collection-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -801,7 +978,7 @@ Allow: OPTIONS,POST,GET
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>POST</h5>
+          <h4 id="microcosms-collection-post">POST</h4>
 
           <p>Request:</p>
 
@@ -871,7 +1048,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created Microcosm.</p>
 
-          <h5>GET</h5>
+          <h4 id="microcosms-collection-get">GET</h4>
 
           <p>Fetches a collection of Microcosms. If a valid <code>access_token</code> is provided then the collection may contain private Microcosms not visible to guests.</p>
 
@@ -998,9 +1175,9 @@ Content-Length: 52
    "error": null
 }</code></pre>
 
-          <h4>Single Resource</h4>
+          <h3 id="microcosms-single">Single Resource</h3>
 
-          <h5>OPTIONS</h5>
+          <h4 id="microcosms-single-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -1015,7 +1192,7 @@ Allow: OPTIONS,GET,PUT,DELETE
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>GET</h5>
+          <h4 id="microcosms-single-get">GET</h4>
 
           <p>Fetches the detailed information about a single Microcosm, including a collection of items contained within the Microcosm. The pagination query string parameters allow to you traverse the collection of items. Items include conversations, events, polls, etc.</p>
 
@@ -1190,7 +1367,7 @@ Content-Length: 0</code></pre>
    "error": null
 }</code></pre>
   
-          <h5>PUT</h5>
+          <h4 id="microcosms-single-put">PUT</h4>
 
           <p>Updates a Microcosm. The structure of the JSON to perform the update is:</p>
 
@@ -1265,7 +1442,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated Microcosm.</p>
 
-          <h5>PATCH</h5>
+          <h4 id="microcosms-single-patch">PATCH</h4>
 
           <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner of a Microcosm or a super user (site admin) can delete a Microcosm, but only a super user can undelete a Microcosm.</p>
 
@@ -1372,7 +1549,7 @@ Location: /api/v1/microcosms/1
 
           <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
 
-          <h5>DELETE</h5>
+          <h4 id="microcosms-single-delete">DELETE</h4>
 
           <p>Deletes a Microcosm.</p>
 
@@ -1390,12 +1567,15 @@ Content-Type: application/json
 Content-Length: 52
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+        </div>
 
-          <h3>/conversations</h3>
+        <!-- /conversations -->
+        <div class="bs-docs-section" id="conversations">
+          <h2>/conversations</h2>
 
           <p>Provides an interface to the conversations that exist on a site and the comments contained within them. A conversation is merely a titled (topical) collection of comments.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="conversations-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -1449,9 +1629,9 @@ Content-Length: 52
             </tbody>
           </table>
 
-          <h4>Collection</h4>
+          <h3 id="conversations-collection">Collection</h3>
           
-          <h5>OPTIONS</h5>
+          <h4 id="conversations-collection-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -1466,7 +1646,7 @@ Allow: OPTIONS,POST,GET
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>POST</h5>
+          <h4 id="conversations-collection-post">POST</h4>
 
           <p>Request:</p>
 
@@ -1531,7 +1711,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created conversation.</p>
 
-          <h5>GET</h5>
+          <h4 id="conversations-collection-get">GET</h4>
 
           <p>Fetches a collection of conversations across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain conversations that exist in private Microcosms not visible to guests.</p>
 
@@ -1633,9 +1813,9 @@ Content-Length: 52
    "error": null
 }</code></pre>
 
-          <h4>Single Resource</h4>
+          <h3 id="conversations-single">Single Resource</h3>
 
-          <h5>OPTIONS</h5>
+          <h4 id="conversations-single-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -1650,7 +1830,7 @@ Allow: OPTIONS,GET,PUT,DELETE
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>GET</h5>
+          <h4 id="conversations-single-get">GET</h4>
 
           <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow to you traverse the collection of comments.</p>
 
@@ -1739,7 +1919,7 @@ Content-Length: 0</code></pre>
    "error": null
 }</code></pre>
   
-          <h5>PUT</h5>
+          <h4 id="conversations-single-put">PUT</h4>
 
           <p>Updates a conversation. The structure of the JSON to perform the update is:</p>
 
@@ -1807,7 +1987,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated conversation.</p>
 
-          <h5>PATCH</h5>
+          <h4 id="conversations-single-patch">PATCH</h4>
 
           <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a conversation or a super user (Microcosm moderator or site admin) can delete a conversation, but only a super user can undelete a conversation.</p>
 
@@ -1909,7 +2089,7 @@ Location: /api/v1/conversations/1
 
           <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
 
-          <h5>DELETE</h5>
+          <h4 id="conversations-single-delete">DELETE</h4>
 
           <p>Deletes a conversation.</p>
 
@@ -1927,12 +2107,15 @@ Content-Type: application/json
 Content-Length: 52
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+        </div>
 
-          <h3>/events</h3>
+        <!-- /events -->
+        <div class="bs-docs-section" id="events">
+          <h2>/events</h2>
 
           <p>Provides an interface to the events that exist on a site and the comments contained within them. An event describes some thing that happens some where at some time, and can be attended by some people. A collection of comments may be attached to an event.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="events-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -1986,9 +2169,9 @@ Content-Length: 52
             </tbody>
           </table>
 
-          <h4>Collection</h4>
+          <h3 id="events-collection">Collection</h3>
           
-          <h5>OPTIONS</h5>
+          <h4 id="events-collection-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -2003,7 +2186,7 @@ Allow: OPTIONS,POST,GET
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>POST</h5>
+          <h4 id="events-collection-options">POST</h4>
 
           <p>Request:</p>
 
@@ -2100,7 +2283,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created event.</p>
 
-          <h5>GET</h5>
+          <h4 id="events-collection-get">GET</h4>
 
           <p>Fetches a collection of events across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain events that exist in private Microcosms not visible to guests.</p>
 
@@ -2253,9 +2436,9 @@ Content-Length: 52
    "error": null
 }</code></pre>
 
-          <h4>Single Resource</h4>
+          <h3 id="events-single">Single Resource</h3>
 
-          <h5>OPTIONS</h5>
+          <h4 id="events-single-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -2270,7 +2453,7 @@ Allow: OPTIONS,GET,PUT,PATCH,DELETE
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>GET</h5>
+          <h4 id="events-single-get">GET</h4>
 
           <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow to you traverse the collection of comments.</p>
 
@@ -2367,7 +2550,7 @@ Content-Length: 0</code></pre>
    "error": null
 }</code></pre>
   
-          <h5>PUT</h5>
+          <h4 id="events-single-put">PUT</h4>
 
           <p>Updates an event. The structure of the JSON to perform the update is:</p>
 
@@ -2470,7 +2653,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated event.</p>
 
-          <h5>PATCH</h5>
+          <h4 id="events-single-patch">PATCH</h4>
 
           <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of an event or a super user (Microcosm moderator or site admin) can delete an event, but only a super user can undelete an event.</p>
 
@@ -2573,7 +2756,7 @@ Location: /api/v1/events/1
 
           <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
 
-          <h5>DELETE</h5>
+          <h4 id="events-single-delete">DELETE</h4>
 
           <p>Deletes an event.</p>
 
@@ -2591,12 +2774,15 @@ Content-Type: application/json
 Content-Length: 52
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+        </div>
 
-          <h3>/polls</h3>
+        <!-- /polls -->
+        <div class="bs-docs-section" id="polls">
+          <h2>/polls</h2>
 
           <p>Provides an interface to the polls that exist on a site and the comments contained within them. A poll describes a question with a set of answers that a person can vote on. A collection of comments may be attached to an poll.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="polls-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -2644,8 +2830,11 @@ Content-Length: 52
               </tr>
             </tbody>
           </table>
+        </div>
 
-          <h3>/comments</h3>
+        <!-- /comments -->
+        <div class="bs-docs-section" id="comments">
+          <h2>/comments</h2>
 
           <p>Provides an interface to comments. These are the bread and butter of a community web site, each comment is a piece of content attached to some other item (a conversation, an event, a poll, etc) that discusses the item. Comments can be generally in response to the item, or specifically in response to another comment.</p>
 
@@ -2653,7 +2842,7 @@ Content-Length: 52
 
           <p>General rule of thumb: Take text through a standard textbox or textarea and send it to us and we'll worry about formatting it.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="comments-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -2707,9 +2896,9 @@ Content-Length: 52
             </tbody>
           </table>
 
-          <h4>Collection</h4>
+          <h3 id="comments-collection">Collection</h3>
           
-          <h5>OPTIONS</h5>
+          <h4 id="comments-collection-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -2724,7 +2913,7 @@ Allow: OPTIONS,POST,GET
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>POST</h5>
+          <h4 id="comments-collection-post">POST</h4>
 
           <p>Request:</p>
 
@@ -2811,7 +3000,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created comment.</p>
 
-          <h5>GET</h5>
+          <h4 id="comments-collection-get">GET</h4>
 
           <p>Fetches a collection of comments across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain comments that exist in private Microcosms, or attached to deleted items, not visible to guests.</p>
 
@@ -3010,9 +3199,9 @@ Content-Length: 52
    "error": null
 }</code></pre>
 
-          <h4>Single Resource</h4>
+          <h3 id="comments-single">Single Resource</h3>
 
-          <h5>OPTIONS</h5>
+          <h4 id="comments-single-options">OPTIONS</h4>
 
           <p>Example request:</p>
 
@@ -3027,7 +3216,7 @@ Allow: OPTIONS,GET,PUT,DELETE
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
-          <h5>GET</h5>
+          <h4 id="comments-single-get">GET</h4>
 
           <p>Fetches the detailed information about a single comment, including the HTML to render.</p>
 
@@ -3124,7 +3313,7 @@ Content-Length: 0</code></pre>
    "error": null
 }</code></pre>
   
-          <h5>PUT</h5>
+          <h4 id="comments-single-put">PUT</h4>
 
           <p>Updates a comment. The structure of the JSON to perform the update is:</p>
 
@@ -3194,7 +3383,7 @@ Content-Length: 52
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated comment.</p>
 
-          <h5>PATCH</h5>
+          <h4 id="comments-single-patch">PATCH</h4>
 
           <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a comment or a super user (Microcosm moderator or site admin) can delete a comment, but only a super user can undelete a comment.</p>
 
@@ -3289,7 +3478,7 @@ Location: /api/v1/conversations/1
 
           <p>The modified resource now reflects <code>"moderated":true</code> and the edited properties are populated describing the change to the resource.</p>
 
-          <h5>DELETE</h5>
+          <h4 id="comments-single-delete">DELETE</h4>
 
           <p>Deletes a comment.</p>
 
@@ -3307,16 +3496,22 @@ Content-Type: application/json
 Content-Length: 52
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+        </div>
 
-          <h3>/profiles</h3>
+        <!-- /profiles -->
+        <div class="bs-docs-section" id="profiles">
+          <h2>/profiles</h2>
 
           <p>TODO: Some text goes here, this is just placeholder</p>
+        </div>
 
-          <h3>/whoami</h3>
+        <!-- /whoami -->
+        <div class="bs-docs-section" id="whoami">
+          <h2>/whoami</h2>
 
           <p>A convenience resource that will acts like the *nix <a href="http://linux.die.net/man/1/whoami">whoami</a> command by determining your identity from the authentication token and issuing a redirect to the <code>/api/v1/profiles</code> of the currently authenticated user.</p>
 
-          <h4>URLs and Methods</h4>
+          <h3 id="whoami-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -3344,20 +3539,23 @@ Content-Length: 52
       </div>
     </div>
 
+    <a href="#welcome" class="bs-docs-top">
+      Back to top
+    </a>
+
+    <footer class="bs-docs-footer">
+      <div class="container">
+        <p><a href="http://microco.sm">Microco.sm</a> documentation hosted by <a href="https://github.com/microcosm-cc/microcosm-cc.github.com">GitHub</a>, please <a href="https://github.com/microcosm-cc/microcosm-cc.github.com/issues">report any issues or inconsistencies</a>.</p>
+        <p>Designed and built using <a href="https://github.com/twitter/bootstrap">Twitter Bootstrap</a> (<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>), and the <a href="https://github.com/twitter/bootstrap/tree/master/docs">Twitter Bootstrap Docs</a> (<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>).</p>
+      </div>
+    </footer>
+
     <!-- jQuery and Bootstrap -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
-    <!-- Tocify -->
-    <script src="/js/jquery.tocify.min.js"></script>
 
-    <!-- Kick out the Jamms -->
-    <script>
-    $(document).ready(function() {
-        // Navigation wizardry, builds navigation from the structure of the document
-        var toc = $("#toc").tocify({ context: "#docs", selectors: "h2,h3,h4,h5" }).data("toc-tocify");
-    });
-    </script>
+    <script src="js/bootstrap-scrollspy.js"></script>
   </body>
 </html>
