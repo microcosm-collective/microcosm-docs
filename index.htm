@@ -162,7 +162,7 @@
               <ul class="nav">
                 <li><a href="#attendees-single-options">OPTIONS</a>
                 <li><a href="#attendees-single-get">GET</a>
-                <li><a href="#attendees-single-patch">PATCH</a>
+                <li><a href="#attendees-single-put">PUT</a>
                 <li><a href="#attendees-single-delete">DELETE</a>
               </ul>
             </li>
@@ -2877,8 +2877,8 @@ Content-Length: 52
               </tr>
               <tr>
                 <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
-                <td>PATCH</td>
-                <td>Updates specific fragments of the attendance resource. This is how you change the status to reflect attendance, or not.</td>
+                <td>PUT</td>
+                <td>Updates attendance resource. This is how you change the status to reflect attendance, or not, of the attendee.</td>
               </tr>
               <tr>
                 <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
@@ -2915,8 +2915,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>{
   "attendeeId": 1,
-  "rsvpd": true,
-  "confirmed": true,
+  "rsvp": "invited",
 }</code></pre>
 
           <p>Where:</p>
@@ -2939,15 +2938,9 @@ Content-Length: 0</code></pre>
               </tr>
               <tr>
                 <td><code>rsvpd</code></td>
-                <td>Boolean</td>
+                <td>String</td>
                 <td>Optional</td>
-                <td>If false, this is an invitation (and <code>confirmed</code> should not be supplied). If true, then attendeeId must be the same as profileId of the user performing the action and you may supply <code>confirmed</code>.</td>
-              </tr>
-              <tr>
-                <td><code>confirmed</code></td>
-                <td>Boolean</td>
-                <td>Optional</td>
-                <td>If true, indicates that the <code>attendeeId</code> has confirmed their presence at the event.</td>
+                <td>Describes the RSVP state of the attendee, may be one of <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite. If not supplied this defaults to "invited".</td>
               </tr>
             </tbody>
           </table>
@@ -2967,7 +2960,7 @@ Content-Length: 0</code></pre>
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"attendeeId": 1, "rsvpd": true, "confirmed":true}' \
+  -d '{"attendeeId": 1, "rsvp": "yes"}' \
   http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
 
           <p>Example response for both scenarios:</p>
@@ -2983,7 +2976,7 @@ Content-Length: 52
 
           <h4 id="attendees-collection-get">GET</h4>
 
-          <p>Fetches a collection of events across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain events that exist in private Microcosms not visible to guests.</p>
+          <p>Fetches a collection of attendees for the current event.</p>
 
           <p>Request:</p>
 
@@ -3040,11 +3033,10 @@ Content-Length: 52
                      ]
                   }
                },
-               "rsvpd": true,
-               "confirmed": false,
-               "declined": true,
+               "rsvp": "no",
+               "rsvpdOn": "2013-04-18T09:38:04.212643Z",
                "meta": {
-                  "created": "2013-04-17T08:48:50.445005Z",
+                  "created": "2013-04-18T09:38:02.1381Z",
                   "createdBy": {
                      "id": 1,
                      "userId": 1,
@@ -3065,7 +3057,7 @@ Content-Length: 52
                         ]
                      }
                   },
-                  "edited": "2013-04-17T08:48:52.96925Z",
+                  "edited": "2013-04-18T09:38:04.212643Z",
                   "editedBy": {
                      "id": 1,
                      "userId": 1,
@@ -3086,7 +3078,7 @@ Content-Length: 52
                         ]
                      }
                   },
-                  "editReason": "Set declined to true",
+                  "editReason": "Changed state to no",
                   "links": [{
                         "rel": "self",
                         "href": "/api/v1/events/1/attendees/2"
@@ -3134,7 +3126,7 @@ Content-Length: 52
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET,PATCH,DELETE
+Allow: OPTIONS,GET,PUT,DELETE
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0</code></pre>
 
@@ -3175,11 +3167,10 @@ Content-Length: 0</code></pre>
             ]
          }
       },
-      "rsvpd": true,
-      "confirmed": false,
-      "declined": true,
+      "rsvp": "no",
+      "rsvpdOn": "2013-04-18T09:38:04.212643Z",
       "meta": {
-         "created": "2013-04-17T08:48:50.445005Z",
+         "created": "2013-04-18T09:38:02.1381Z",
          "createdBy": {
             "id": 1,
             "userId": 1,
@@ -3200,7 +3191,7 @@ Content-Length: 0</code></pre>
                ]
             }
          },
-         "edited": "2013-04-17T08:48:52.96925Z",
+         "edited": "2013-04-18T09:38:04.212643Z",
          "editedBy": {
             "id": 1,
             "userId": 1,
@@ -3221,7 +3212,7 @@ Content-Length: 0</code></pre>
                ]
             }
          },
-         "editReason": "Set declined to true",
+         "editReason": "Changed state to no",
          "links": [{
                "rel": "self",
                "href": "/api/v1/events/1/attendees/2"
@@ -3246,91 +3237,44 @@ Content-Length: 0</code></pre>
    "error": null
 }</code></pre>
 
-          <p>The truth table of the boolean fields is:</p>
+          <h4 id="attendees-single-put">PUT</h4>
 
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th><code>rsvpd</code></th>
-                <th><code>confirmed</code></th>
-                <th><code>declined</code></th>
-                <th>Meaning</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-error">false</td>
-                <td class="text-error">false</td>
-                <td class="text-error">false</td>
-                <td>Invitation</td>
-              </tr>
-              <tr>
-                <td class="text-success">true</td>
-                <td class="text-error">false</td>
-                <td class="text-error">false</td>
-                <td>May attend</td>
-              </tr>
-              <tr>
-                <td class="text-success">true</td>
-                <td class="text-success">true</td>
-                <td class="text-error">false</td>
-                <td>Attending</td>
-              </tr>
-              <tr>
-                <td class="text-success">true</td>
-                <td class="text-error">false</td>
-                <td class="text-success">true</td>
-                <td>Not attending</td>
-              </tr>
-            </tbody>
-          </table>
+          <p>Updates the attendee resource to reflect the new attendance state.</p>
 
-          <h4 id="attendees-single-patch">PATCH</h4>
+          <p>The structure of the JSON to perform the update is:</p>
 
-          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions.</p>
+<pre><code>{
+   "rsvp": "maybe"
+}</code></pre>
 
-          <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
-
-          <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/rsvpd</code>, <code>/confirmed</code>, and <code>/declined</code>.</p>
-
-          <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
-
-<pre><code>[
-  {"op":"replace", "path":"/rsvpd", "value": true},
-  {"op":"replace", "path":"/confirmed", "value": true},
-  {"op":"replace", "path":"/declined", "value": false},
-]</code></pre>
-
-          <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
-
-          <p>If you send nonsensical patch instructions in a single request they will be processed in order and the last one will take priority. i.e. If you try to set both <code>/confirmed</code>, and <code>/declined</code> to <code>true</code> then in that order <code>/declined</code> will win and <code>/confirmed</code> will be over-written as <code>false</code>.</p>
+          <p>Where the <code>rsvp</code> property is one of: <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite.</p>
 
           <p>Example request to set as attending:</p>
 
 <pre><code>curl -i \
-  -X PATCH \
+  -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '[{"op":"replace", "path":"/confirmed", "value": true}]' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+  -d '{"rsvp":"yes"}' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example request to set as not attending:</p>
   
 <pre><code>curl -i \
-  -X PATCH \
+  -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '[{"op":"replace", "path":"/declined", "value": true}]' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+  -d '{"rsvp":"no"}' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example request to set as maybe attending:</p>
 
 <pre><code>curl -i \
-  -X PATCH \
+  -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '[{"op":"replace", "path":"/confirmed", "value": false},{"op":"replace", "path":"/declined", "value": false}]' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+  -d '{"rsvp":"maybe"}' \
+  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
