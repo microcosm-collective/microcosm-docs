@@ -1,4 +1,3 @@
-
-- @buro9
-- @mattcottingham
-- @doismellburning
+- https://github.com/buro9
+- https://github.com/mattcottingham
+- https://github.com/doismellburning
