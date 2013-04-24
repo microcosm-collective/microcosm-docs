@@ -778,22 +778,67 @@
 
           <h2 id="basics-authentication">Authentication</h2>
 
-          <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> which signifies that a user has successfully logged in to your application.</p>
+          <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that that user has successfully logged in to your application.</p>
 
           <p>When you sign up as an API client, we'll provide you with a client secret. This is used in conjunction with a Persona assertion generate an <code>access token</code> for a user.</p>
 
           <p>To generate an access token, POST the following structure to <code>/auth</code>.
 
-          <pre><code>
-{
-   "Assertion": [redacted],
-   "ClientSecret": [redacted]
+          <pre><code>{
+   "Assertion": "redacted",
+   "ClientSecret": "redacted"
 }
+</code></pre>
+
+          <p>Where:</p>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Optional?</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Assertion</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>Assertion from Mozilla Persona signifying a successful user login for the site.</td>
+              </tr>
+              <tr>
+                <td><code>ClientSecret</code></td>
+                <td>String</td>
+                <td>Required</td>
+                <td>Client secret supplied when the API client was registered with Microcosm.</td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <p>Example request</p>
+          <pre><code>curl -i \
+-X POST \
+-H "Content-Type: application/json" \
+-d '{"Assertion": "redacted", "ClientSecret": "redacted"}' \
+http://esi01.dev.microcosm.cc/api/v1/auth
 </code></pre>
 
           <p>Example response</p>
 
+          <pre><code>{
+    "status": 200,
+    "data": "redacted",
+    "context": "",
+    "error": null
+}
+</code></pre>
+
           <p>Access tokens can either be provided by http header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form of <code>access_token={access_token}</code>. If both header and querystring are provided, then only the header will be examined. The header is the recommended way of providing the access token, the query string is only made available to help support some clients which may not have access to the HTTP headers.</p>
+
+          <p>Tokens don't currently expire, nor do they have a particular scope. These are earmarked for future development.</p>
 
           <h2 id="basics-errors">Error Handling</h2>
 
