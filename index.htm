@@ -232,7 +232,7 @@
 
           <p>Using the API is as easy as:</p>
 
-          <pre><code>curl -X GET http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
+          <pre><code>curl -X GET https://sandbox.microco.sm/api/v1/microcosms</code></pre>
 
           <p>What we give you:</p>
           <ul>
@@ -825,7 +825,7 @@
 -X POST \
 -H "Content-Type: application/json" \
 -d '{"Assertion": "redacted", "ClientSecret": "redacted"}' \
-http://esi01.dev.microcosm.cc/api/v1/auth
+https://sandbox.microco.sm/api/v1/auth
 </code></pre>
 
           <p>Example response</p>
@@ -925,7 +925,7 @@ Content-Type: application/json
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/site
+  https://sandbox.microco.sm/api/v1/site
 </code></pre>
 
           <p>Example response:</p>
@@ -943,7 +943,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/site
+  https://sandbox.microco.sm/api/v1/site
 </code></pre>
 
           <p>Example response:</p>
@@ -1090,7 +1090,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -1151,7 +1151,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"visibility":"public", "title":"General Chit-Chat","description":"A place to talk about anything and everything."}' \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -1181,7 +1181,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -1304,7 +1304,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/microcosm/1</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosm/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1321,7 +1321,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1545,7 +1545,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"visibility": "public","title": "General Chit-Chat","description": "A place to talk about anything and everything.","meta":{"editReason": "Updated the title"}}' \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1588,7 +1588,7 @@ Content-Length: 52
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1679,7 +1679,7 @@ Location: /api/v1/microcosms/1
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  http://esi01.dev.microcosm.cc/api/v1/microcosms/1</code></pre>
+  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1760,7 +1760,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/conversations</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -1816,7 +1816,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1, "title": "Did anyone see the article on the news last night?"}' \
-  http://esi01.dev.microcosm.cc/api/v1/conversations</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -1846,7 +1846,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/conversations</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -1944,7 +1944,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/conversations/1</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1961,7 +1961,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/conversations/1</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2092,7 +2092,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1, "title": "Sightings in the media", "meta":{"editReason": "Updated the title"}}' \
-  http://esi01.dev.microcosm.cc/api/v1/conversations/1</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2135,7 +2135,7 @@ Content-Length: 52
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  http://esi01.dev.microcosm.cc/api/v1/conversations/1</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2221,7 +2221,7 @@ Location: /api/v1/conversations/1
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  http://esi01.dev.microcosm.cc/api/v1/conversations/1</code></pre>
+  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2302,7 +2302,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/events</code></pre>
+  https://sandbox.microco.sm/api/v1/events</code></pre>
 
           <p>Example response:</p>
 
@@ -2386,7 +2386,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding"}' \
-  http://esi01.dev.microcosm.cc/api/v1/events</code></pre>
+  https://sandbox.microco.sm/api/v1/events</code></pre>
 
           <p>Example request to create a confirmed/upcoming event:</p>
 
@@ -2395,7 +2395,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:00:00Z","duration": 180,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 50}' \
-  http://esi01.dev.microcosm.cc/api/v1/events</code></pre>
+  https://sandbox.microco.sm/api/v1/events</code></pre>
 
           <p>Example response for both scenarios:</p>
 
@@ -2420,7 +2420,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/events</code></pre>
+  https://sandbox.microco.sm/api/v1/events</code></pre>
 
           <p>Example response:</p>
 
@@ -2569,7 +2569,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/events/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2586,7 +2586,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/events/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2760,7 +2760,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:42:48.515233Z","duration": 183473,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 60,"status": "upcoming","meta": {"editReason": "Increased attendee number"}}' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2803,7 +2803,7 @@ Content-Length: 52
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1
+  https://sandbox.microco.sm/api/v1/events/1
 </code></pre>
 
           <p>Example response:</p>
@@ -2890,7 +2890,7 @@ Location: /api/v1/events/1
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  http://esi01.dev.microcosm.cc/api/v1/events/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2966,7 +2966,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response:</p>
 
@@ -3022,7 +3022,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"attendeeId": 1}' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example request to create a confirmation for the user whose <code>Authorization</code> token matches the <code>attendeeId</code>:</p>
 
@@ -3031,7 +3031,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"attendeeId": 1, "rsvp": "yes"}' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response for both scenarios:</p>
 
@@ -3056,7 +3056,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response:</p>
 
@@ -3191,7 +3191,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3208,7 +3208,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees/2</code></pre>
 
           <p>Example response:</p>
 
@@ -3326,7 +3326,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"yes"}' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example request to set as not attending:</p>
   
@@ -3335,7 +3335,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"no"}' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example request to set as maybe attending:</p>
 
@@ -3344,7 +3344,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"maybe"}' \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/1</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3364,7 +3364,7 @@ Location: /api/v1/events/1/attendees/2
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  http://esi01.dev.microcosm.cc/api/v1/events/1/attendees/2</code></pre>
+  https://sandbox.microco.sm/api/v1/events/1/attendees/2</code></pre>
 
           <p>Example response:</p>
 
@@ -3507,7 +3507,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+  https://sandbox.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -3585,7 +3585,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"itemType": "conversation","itemId": 1,"markdown": "A First Level Header\n====================\n\nA Second Level Header\n---------------------\n\nNow is the time for all good men (such as +awesome_guy +blueprints) to\ncome to the aid of their community: http://www.lfgss.com/ . This is just a\nregular paragraph.\n\nThe quick brown [fox](http://www.google.com/?q=fox) jumped over the lazy\ndogs back.\n\n### Header 3\n\n> This is a blockquote.\n> \n> This is the second paragraph in the blockquote.\n>\n> ## This is an H2 +Velocio @blueprints are mentioned in a blockquote"}' \
-  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+  https://sandbox.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -3615,7 +3615,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+  https://sandbox.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -3810,7 +3810,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3827,7 +3827,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3968,7 +3968,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"itemType": "conversation","itemId": 1,"markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"}' \
-  http://esi01.dev.microcosm.cc/api/v1/comments</code></pre>
+  https://sandbox.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -4009,7 +4009,7 @@ Content-Length: 52
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/moderated", "value": true}]' \
-  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4090,7 +4090,7 @@ Location: /api/v1/conversations/1
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  http://esi01.dev.microcosm.cc/api/v1/comments/1</code></pre>
+  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
