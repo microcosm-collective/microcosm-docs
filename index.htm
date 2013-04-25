@@ -778,9 +778,11 @@
 
           <h2 id="basics-authentication">Authentication</h2>
 
-          <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that that user has successfully logged in to your application.</p>
+          <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
 
-          <p>When you sign up as an API client, we'll provide you with a client secret. This is used in conjunction with a Persona assertion generate an <code>access token</code> for a user.</p>
+          <p>You can <a href="https://developer.mozilla.org/en-US/docs/Persona/Quick_Setup#Step_4.3A_Verify_the_user.E2.80.99s_credentials">read about assertions</a> on the Persona website or <a href="https://github.com/mozilla/browserid-cookbook">view example code</a>.</p>
+
+          <p>When you sign up as an API client, we'll provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
 
           <p>To generate an access token, POST the following structure to <code>/auth</code>.
 
@@ -836,7 +838,9 @@ http://esi01.dev.microcosm.cc/api/v1/auth
 }
 </code></pre>
 
-          <p>Access tokens can either be provided by http header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form of <code>access_token={access_token}</code>. If both header and querystring are provided, then only the header will be examined. The header is the recommended way of providing the access token, the query string is only made available to help support some clients which may not have access to the HTTP headers.</p>
+          <p>The <code>data</code> attribute above contains a string which is the generated access token. You can supply this with a request to the API to authenticate the user.</p>
+
+          <p>Access tokens can be supplied as an HTTP header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form <code>access_token={redacted}</code>. If both header and querystring are provided, only the header will be examined. The header is the recommended way of providing the access token, the query string is only made available to help support some clients which may not have access to the HTTP headers.</p>
 
           <p>Tokens don't currently expire, nor do they have a particular scope. These are earmarked for future development.</p>
 
