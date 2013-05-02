@@ -536,7 +536,9 @@
   "total": 861,
   "limit": 10,
   "offset": 100,
-  "pages": 87,
+  "maxOffset" 860,
+  "totalPages": 87,
+  "page": 11,
   "links": [
     {"rel": "first", "href": "/api/v1/things?limit=10"},
     {"rel": "prev", "href": "/api/v1/things?limit=10&offset=90"},
@@ -555,8 +557,10 @@
             <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
             <li><code>total</code> = The total number of resources in the collection.</li>
             <li><code>limit</code> = The maximum number of resources per page of the collection.</li>
-            <li><code>offset</code> = The current page in the collection.</li>
-            <li><code>pages</code> = The number of pages in the collection.</li>
+            <li><code>offset</code> = The current offset in the query.</li>
+            <li><code>maxOffset</code> = The maximum offset that will return a page.</li>
+            <li><code>totalPages</code> = The total number of pages in the collection.</li>
+            <li><code>page</code> = The current page in the collection.</li>
             <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
             <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
             <li><code>items</code> = Contains the resources being paginated.</li>
