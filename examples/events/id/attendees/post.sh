@@ -4,7 +4,7 @@ curl -i \
 	-H "Authorization: Bearer letmein" \
 	-H "Content-Type: application/json" \
 	-d '{"attendeeId": 1}' \
-	http://esi01.dev.microcosm.cc/api/v1/events/1/attendees
+	https://sandbox.microco.sm/api/v1/events/1/attendees
 
 # User Confirming
 curl -i \
@@ -12,4 +12,4 @@ curl -i \
 	-H "Authorization: Bearer letmein" \
 	-H "Content-Type: application/json" \
 	-d '{"attendeeId": 1, "rsvp":"yes"}' \
-	http://esi01.dev.microcosm.cc/api/v1/events/1/attendees
+	https://sandbox.microco.sm/api/v1/events/1/attendees

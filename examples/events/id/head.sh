@@ -1,3 +1,3 @@
 curl -i \
-	-X GET \
+	--head \
 	https://sandbox.microco.sm/api/v1/events/1

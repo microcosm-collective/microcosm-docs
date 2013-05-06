@@ -1,4 +1,3 @@
 curl -i \
-	-X DELETE \
-	-H "Authorization: Bearer letmein" \
+	--head \
 	https://sandbox.microco.sm/api/v1/microcosms/1

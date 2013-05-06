@@ -3,6 +3,6 @@ curl -i \
 	-H "Authorization: Bearer letmein" \
 	-H "Content-Type: application/json" \
 	-d '{"itemType": "conversation","itemId": 1,"markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"}' \
-	http://esi01.dev.microcosm.cc/api/v1/comments
+	https://sandbox.microco.sm/api/v1/comments
 
 # Update a comment in reply to existing comment is identical to updating a normal comment. inReplyTo is ignored on PUT

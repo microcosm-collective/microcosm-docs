@@ -1,3 +1,3 @@
 curl -i \
-	-X OPTIONS \
+	--head \
 	https://sandbox.microco.sm/api/v1/comments
