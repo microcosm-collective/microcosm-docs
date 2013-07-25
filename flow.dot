@@ -5,8 +5,8 @@ digraph ApiFlow{
 	Microcosms -> Conversations;
 	Microcosms -> Events;
 	Microcosms -> Polls;
-	Conversations -> Comments;
+	Conversations -> Comments -> Attachments;
 	Events -> Comments;
 	Polls -> Comments;
-	WhoAmI -> Profiles;
+	WhoAmI -> Profiles -> Attachments;
 }
