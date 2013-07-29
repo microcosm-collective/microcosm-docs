@@ -223,6 +223,23 @@
           </ul>
         </li>
 
+        <li><a href="#attachments">/files</a>
+          <ul class="nav">
+            <li><a href="#attachments-urls">URLS and Methods</a></li>
+            <li><a href="#attachments-collection">Collection</a>
+              <ul class="nav">
+                <li><a href="#attachments-collection-options">OPTIONS</a></li>
+                <li><a href="#attachments-collection-post">POST</a></li>
+              </ul>
+            </li>
+            <li><a href="#attachments-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#files-single-delete">DELETE</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
       </ul>
     </div>
 
@@ -4167,9 +4184,12 @@ Content-Length: 52
 
           <p>This is the endpoint for uploading user-generated files such as images. The endpoint accepts POSTDATA encoded as <code>enctype/multipart-form</code> and returns an array of file metadata records for each file that is uploaded. The file metadata stores information about when the file was uploaded, by whom, a SHA-1 hash of the file content, and the file mime-type.</p>
 
-          <p>To retrieve a file, it must be accessed using the SHA-1 hash of the file content as the identifier. Files cannot be retrieved by their file metadata ID.</p>
+          <p>Note that images (png/gif/jpeg) are currently the only accepted file type.</p>
 
-          <h3 id="whoami-urls">URLs and Methods</h3>
+          <p>To retrieve a file, it must be accessed using the SHA-1 hash of the file content as the identifier. Files cannot be retrieved by their file metadata ID. Note that
+            all files are accessible publicly via the SHA-1 identifier, so that links to files can be shared. However, the link itself will only be visible to users with the correct permission, giving the notion of "private URLs" to files.</p>
+
+          <h3 id="files-urls">URLs and Methods</h3>
 
           <table class="table table-hover">
             <thead>
@@ -4190,8 +4210,204 @@ Content-Length: 52
                 <td>POST</td>
                 <td>Given a valid authentication token, accepts files encoded as a multipart form.</td>
               </tr>
+              <tr>
+                <td>/api/v1/files/{SHA-1:[0-9A-Za-z]+}</td>
+                <td>GET</td>
+                <td>Fetch a file by its SHA-1 hash of the file content.</td>
+              </tr>
             </tbody>
           </table>
+
+          <h3 id="files-collection">Collection</h3>
+
+          <h4 id="files-collection-post">POST</h4>
+
+          <p>Example request:</p>
+
+<pre><code>curl -H "Authorization: Bearer mytoken" -F file=@IMG1.jpg -F file=@IMG2.jpg https://sandbox.microco.sm/api/v1/files</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>{
+  "context": "",
+  "status": 200,
+  "data": [
+    {
+      "created": "2013-07-29T15:49:11.764079716Z",
+      "fileSize": 305736,
+      "fileHash": "IMG1-SHA1",
+      "mimeType": "image/jpeg"
+    },
+    {
+      "created": "2013-07-29T15:49:14.594377343Z",
+      "fileSize": 62625,
+      "fileHash": "IMG2-SHA1",
+      "mimeType": "image/jpeg"
+    }
+  ],
+  "error": null
+</code></pre>
+
+          <h3 id="files-single">Single Resource</h3>
+
+          <h4 id="files-single-get">GET</h4>
+
+          <p>Example request:</p>
+
+<pre><code>curl https://sandbox.microco.sm/api/v1/files/IMG1-SHA1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>[binary image data]</code></pre>
+        </div>
+
+        <!-- /attachments -->
+        <div class="bs-docs-section" id="attachments">
+          <h2>/{item_type}/{id}/attachments</h2>
+
+          <p>An attachment represents a link between an item and a file. To create an attachment, the file must already have been uploaded to <code>/files</code> and the item
+            must also exist.</p>
+
+          <p>Attachments can be created on a comment or a profile (in which case it becomes the profile's avatar). Attachments are always accessed through the path of the
+            parent object, e.g. <code>/comments/1/attachments</code> or <code>/profiles/1/attachments</code>.</p>
+
+          <p>Once created on a comment or profile, the attachments can be listed by fetching <code>/{item_type}/{id}/attachments</code> which returns a paginated list of
+            attachments on the item, e.g. <code>/profiles/1/attachments</code>.
+
+          <h3 id="attachments-urls">URLs and Methods</h3>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/files</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/{item_type}/{id}/attachments</td>
+                <td>POST</td>
+                <td>Given a valid access token with write permissions on the item, allows creation of an attachment (i.e. an association between a file and an item).</td>
+              </tr>
+              <tr>
+                <td>/api/v1/{item_type}/{id}/attachments</td>
+                <td>GET</td>
+                <td>Given a valid access token, fetch the attachments for a given item.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 id="attachments-collection">Collection</h3>
+
+          <h4 id="attachments-collection-post">POST</h4>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i -X POST \
+  -H "Authorization: Bearer mytoken" \
+  -H "Content-Type: application/json" \
+  -d '{"FileHash":"FILE-SHA1"}' \
+  https://sandbox.microco.sm/api/v1/comments/1/attachments
+</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>
+HTTP/1.1 302 Found
+Location: /api/v1/profiles/1/attachments
+
+{
+  "context": "",
+  "status": 302,
+  "data": null,
+  "error": null
+}
+{
+  "context": "",
+  "status": 200,
+  "data": {
+    "attachments": {
+      "total": 1,
+      "limit": 25,
+      "offset": 0,
+      "maxOffset": 0,
+      "totalPages": 1,
+      "page": 1,
+      "links": [
+        {
+          "rel": "self",
+          "href": "/api/v1/profiles/1/attachments"
+        }
+      ],
+      "type": "attachments",
+      "items": [
+        {
+          "profileId": 1,
+          "fileHash": "FILE-SHA1",
+          "created": "2013-07-29T15:49:15.908149Z",
+          "meta": {
+            "links": [
+              {
+                "rel": "related",
+                "href": "/api/v1/files/FILE-SHA1",
+                "title": "File resource"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "meta": {
+      "links": [
+        {
+          "rel": "self",
+          "href": "/api/v1/profiles/1/attachments"
+        }
+      ],
+      "permissions": {
+        "create": false,
+        "read": true,
+        "update": false,
+        "delete": false,
+        "guest": true,
+        "superUser": false
+      }
+    }
+  },
+  "error": null
+}
+</code></pre>
+
+          <p>As can be seen in this example, the attachments are returned as a paginated list, with a "related" link that references the file directly (useful for displaying inline).</p>
+
+          <h3 id="attachments-single">Single Resource</h3>
+
+          <h4 id="attachments-single-delete">DELETE</h4>
+
+          <p>To remove an attachment from a comment, issue a DELETE request using the fileHash as the identifier.</p>
+
+<pre><code>curl -X DELETE \
+  -H "Authorization: Bearer mytoken" \
+  https://dev1.microco.sm/api/v1/comments/1/attachments/FILE-SHA1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+{
+  "context": "",
+  "status": 200,
+  "data": null,
+  "error": null
+}</code></pre>
+
+        <p>Currently attachments can't be deleted from profiles, so to replace an avatar upload the file and link it as an attachment to the appropriate profile. This will
+          override the existing avatar. In future an avatar picker will allow users see previous avatars they have used and delete them if needed.</p>
         </div>
 
         <a href="#welcome" class="bs-docs-top">
