@@ -98,6 +98,7 @@
                 <li><a href="#microcosms-single-put">PUT</a></li>
                 <li><a href="#microcosms-single-patch">PATCH</a></li>
                 <li><a href="#microcosms-single-delete">DELETE</a></li>
+                <li><a href="#microcosms-single-markread">MARKREAD</a></li>
               </ul>
             </li>
           </ul>
@@ -120,6 +121,7 @@
                 <li><a href="#conversations-single-put">PUT</a></li>
                 <li><a href="#conversations-single-patch">PATCH</a></li>
                 <li><a href="#conversations-single-delete">DELETE</a></li>
+                <li><a href="#conversations-single-markread">MARKREAD</a></li>
               </ul>
             </li>
           </ul>
@@ -142,6 +144,7 @@
                 <li><a href="#events-single-put">PUT</a></li>
                 <li><a href="#events-single-patch">PATCH</a></li>
                 <li><a href="#events-single-delete">DELETE</a></li>
+                <li><a href="#events-single-markread">MARKREAD</a></li>
               </ul>
             </li>
           </ul>
@@ -191,6 +194,7 @@
                 <li><a href="#comments-single-put">PUT</a></li>
                 <li><a href="#comments-single-patch">PATCH</a></li>
                 <li><a href="#comments-single-delete">DELETE</a></li>
+                <li><a href="#comments-single-markread">MARKREAD</a></li>
               </ul>
             </li>
           </ul>
@@ -639,7 +643,8 @@
       "open": true,
       "deleted": false,
       "moderated": false,
-      "visible": false
+      "visible": false,
+      "isread": true
    },
    "links":[
       {"rel":"self", "href":"/api/v1/site"},
@@ -734,6 +739,11 @@
                 <td>visible</td>
                 <td>bool</td>
                 <td>Summarises <code>deleted</code> and <code>moderated</code> into a single flag indicating whether the resource is currently visible on the site to most users.</td>
+              </tr>
+              <tr>
+                <td>isread</td>
+                <td>bool</td>
+                <td>If the item has previously been read before by the user.  The user needs to be logged in otherwise this will return false.  An item (conversation, event, poll) is marked as read if the user has read all comments in it, and a microcosm is marked as read if all items within it are read.</td>
               </tr>
             </tbody>
           </table>
@@ -1020,7 +1030,7 @@ Content-Length: 0</code></pre>
          "userId": 1,
          "profileName": "motter",
          "visible": true,
-         "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+         "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
          "banned": false,
          "moderator": false,
          "admin": false,
@@ -1035,15 +1045,18 @@ Content-Length: 0</code></pre>
             ]
          }
       },
+      "themeId": 1,
       "logoUrl": "http://placekitten.com/300/150",
+      "headerBackgroundUrl": "/static/themes/1/background.png",
       "meta": {
          "created": "2013-04-11T17:07:53.078177Z",
          "createdBy": {
             "id": 1,
+            "siteId": 3,
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "banned": false,
             "moderator": false,
             "admin": false,
@@ -1074,8 +1087,14 @@ Content-Length: 0</code></pre>
             "read": true,
             "update": false,
             "delete": false,
+            "closeOwn": false,
+            "openOwn": false,
+            "readOthers": false,
             "guest": true,
-            "superUser": false
+            "banned": false,
+            "owner": false,
+            "moderator": false,
+            "siteOwner": false
          }
       }
    },
@@ -1134,6 +1153,16 @@ Content-Length: 0</code></pre>
                 <td>/api/v1/microcosms/{id:[0-9]+}</td>
                 <td>DELETE</td>
                 <td>Deletes the Microco.sm specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms/markread</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/microcosms/markread</td>
+                <td>PUT</td>
+                <td>Marks the microcosm and all children items as read.</td>
               </tr>
             </tbody>
           </table>
@@ -1214,6 +1243,8 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
 Content-Type: application/json
 Location: /api/v1/microcosms/2
 Content-Length: 52
@@ -1251,6 +1282,8 @@ Content-Length: 52
          "total": 1,
          "limit": 25,
          "offset": 0,
+         "maxOffset": 0,
+         "totalPages": 1,
          "pages": 1,
          "links": [{
                "rel": "first",
@@ -1266,17 +1299,20 @@ Content-Length: 52
          "type": "/api/v1/microcosms",
          "items": [{
                "id": 1,
+               "siteId": 3,
                "visibility": "public",
                "title": "General Chit-Chat",
                "description": "A place to talk about anything and everything.",
                "moderators": null,
+               "totalItems": 2,
+               "totalComments": 2,
                "mostRecentUpdate": {
                   "microcosmId": 1,
                   "itemType": "event",
                   "id": 2,
                   "title": "Introduction to Track Riding",
-                  "comments": 0,
-                  "views": 0,
+                  "totalComments": 0,
+                  "totalViews": 0,
                   "meta": {
                      "created": "2013-04-11T17:08:40.436382Z",
                      "createdBy": null,
@@ -1285,7 +1321,8 @@ Content-Length: 52
                         "open": true,
                         "deleted": false,
                         "moderated": false,
-                        "visible": true
+                        "visible": true,
+                        "isread": false
                      },
                      "links": [{
                            "rel": "self",
@@ -1298,13 +1335,11 @@ Content-Length: 52
                   "created": "2013-04-11T17:08:26.828928Z",
                   "createdBy": {
                      "id": 1,
+                     "siteId": 3,
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "meta": {
                         "links": [{
                               "rel": "self",
@@ -1321,7 +1356,8 @@ Content-Length: 52
                      "open": true,
                      "deleted": false,
                      "moderated": false,
-                     "visible": false
+                     "visible": false,
+                     "isread": false
                   },
                   "links": [{
                         "rel": "self",
@@ -1346,8 +1382,14 @@ Content-Length: 52
             "read": true,
             "update": false,
             "delete": false,
+            "closeOwn": false,
+            "openOwn": false,
+            "readOthers": false,
             "guest": true,
-            "superUser": false
+            "banned": false,
+            "owner": false,
+            "moderator": false,
+            "siteOwner": false
          }
       }
    },
@@ -1388,6 +1430,7 @@ Content-Length: 0</code></pre>
    "status": 200,
    "data": {
       "id": 1,
+      "siteId": 3,
       "visibility": "public",
       "title": "General Chit-Chat",
       "description": "A place to talk about anything and everything.",
@@ -1396,15 +1439,11 @@ Content-Length: 0</code></pre>
          "total": 2,
          "limit": 25,
          "offset": 0,
-         "pages": 1,
+         "maxOffset": 0,
+         "totalPages": 1,
+         "page": 1,
          "links": [{
-               "rel": "first",
-               "href": "/api/v1/microcosms/1"
-            }, {
                "rel": "self",
-               "href": "/api/v1/microcosms/1"
-            }, {
-               "rel": "last",
                "href": "/api/v1/microcosms/1"
             }
          ],
@@ -1414,19 +1453,17 @@ Content-Length: 0</code></pre>
                "itemType": "conversation",
                "id": 1,
                "title": "Just some chatter",
-               "comments": 0,
-               "views": 0,
+               "totalComments": 0,
+               "totalViews": 0,
                "meta": {
                   "created": "2013-04-11T17:08:31.12043Z",
                   "createdBy": {
                      "id": 1,
+                     "siteId": 3,
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "meta": {
                         "links": [{
                               "rel": "self",
@@ -1443,7 +1480,8 @@ Content-Length: 0</code></pre>
                      "open": true,
                      "deleted": false,
                      "moderated": false,
-                     "visible": true
+                     "visible": true,
+                     "isread": true
                   },
                   "links": [{
                         "rel": "self",
@@ -1456,19 +1494,17 @@ Content-Length: 0</code></pre>
                "itemType": "event",
                "id": 1,
                "title": "Introduction to Track Riding",
-               "comments": 0,
-               "views": 0,
+               "totalComments": 0,
+               "totalViews": 0,
                "meta": {
                   "created": "2013-04-11T17:08:38.537299Z",
                   "createdBy": {
                      "id": 1,
+                     "siteId": 3,
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "meta": {
                         "links": [{
                               "rel": "self",
@@ -1485,7 +1521,8 @@ Content-Length: 0</code></pre>
                      "open": true,
                      "deleted": false,
                      "moderated": false,
-                     "visible": true
+                     "visible": true,
+                     "isread": true
                   },
                   "links": [{
                         "rel": "self",
@@ -1500,13 +1537,11 @@ Content-Length: 0</code></pre>
          "created": "2013-04-11T17:08:26.828928Z",
          "createdBy": {
             "id": 1,
+            "siteId": 3,
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "banned": false,
-            "moderator": false,
-            "admin": false,
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "meta": {
                "links": [{
                      "rel": "self",
@@ -1523,7 +1558,8 @@ Content-Length: 0</code></pre>
             "open": true,
             "deleted": false,
             "moderated": false,
-            "visible": false
+            "visible": false,
+            "isread": true
          },
          "links": [{
                "rel": "self",
@@ -1538,8 +1574,14 @@ Content-Length: 0</code></pre>
             "read": true,
             "update": false,
             "delete": false,
+            "closeOwn": false,
+            "openOwn": false,
+            "readOthers": false,
             "guest": true,
-            "superUser": false
+            "banned": false,
+            "owner": false,
+            "moderator": false,
+            "siteOwner": false
          }
       }
    },
@@ -1608,9 +1650,12 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Content-Length: 65
 Content-Type: application/json
-Location: /api/v1/microcosms/2
-Content-Length: 52
+Location: /api/v1/microcosms/1
+Time-Spent: 495.583001ms
 
 {
    "context":"",
@@ -1651,9 +1696,11 @@ Content-Length: 52
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Content-Length: 65
 Content-Type: application/json
-Content-Length: 52
 Location: /api/v1/microcosms/1
+Time-Spent: 523.7224ms
+Date: Tue, 17 Sep 2013 13:11:44 GMT
 
 {
    "context":"",
@@ -1679,6 +1726,7 @@ Location: /api/v1/microcosms/1
         "deleted":false,
         "moderated":false,
         "visible":true,
+        "isread": true
       }
       ...
     }
@@ -1701,10 +1749,7 @@ Location: /api/v1/microcosms/1
         "userId": 1,
         "profileName": "motter",
         "visible": true,
-        "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-        "banned": false,
-        "moderator": false,
-        "admin": true,
+        "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
         "meta": {
           "links": [
             {rel: "self", href: "/api/v1/profiles/1"},
@@ -1719,6 +1764,7 @@ Location: /api/v1/microcosms/1
         "deleted":false,
         "moderated":false,
         "visible":true,
+        "isread": true
       }
       ...
     }
@@ -1742,10 +1788,36 @@ Location: /api/v1/microcosms/1
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Content-Length: 65
 Content-Type: application/json
-Content-Length: 52
+Time-Spent: 497.785526ms
+Date: Tue, 17 Sep 2013 13:13:45 GMT
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+
+          <h4 id="microcosms-single-markread">MARKREAD</h4>
+
+          <p>Marks a microcosm and all related items as read, returning the microcosm url in the Location field.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer mytoken" \
+  https://sandbox.microco.sm/api/v1/microcosms/1/markread</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+  Access-Control-Allow-Credentials: true
+  Access-Control-Allow-Origin: *
+  Content-Length: 65
+  Content-Type: application/json
+  Location: /api/v1/microcosms/1
+
+  {"context": "","status": 302,"data": null,"error": null}</code></pre>
         </div>
 
         <!-- /conversations -->
@@ -1781,7 +1853,7 @@ Content-Length: 52
                 <td>Returns information about the conversations that exist on the current site.</td>
               </tr>
               <tr>
-                <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}</td>
+                <td>/api/v1/conversations/{id:[0-9]+}</td>
                 <td>OPTIONS</td>
                 <td>The <code>Allow:</code> header lists the methods available.</td>
               </tr>
@@ -1805,6 +1877,36 @@ Content-Length: 52
                 <td>DELETE</td>
                 <td>Deletes the conversation specified by the numeric identifier.</td>
               </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}/lastcomment</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}/lastcomment</td>
+                <td>GET</td>
+                <td>Returns a redirect with a location linking to the last comment in the conversation.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}/newcomment</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}/newcomment</td>
+                <td>Get</td>
+                <td>Returns a redirect with a location linking to the first new comment in the conversation, or if there are no new comments then the last comment in the conversation.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}/markread</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/conversations/{id:[0-9]+}/markread</td>
+                <td>PUT</td>
+                <td>Marks the conversation as read.</td>
+              </tr>
             </tbody>
           </table>
 
@@ -1823,9 +1925,13 @@ Content-Length: 52
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,POST,GET
-Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Access-Control-Allow-Headers: 
+Access-Control-Allow-Origin: *
+Allow: OPTIONS,GET,HEAD,POST,TRACE
+Content-Length: 0
+Time-Spent: 795.535917ms
+Date: Tue, 17 Sep 2013 17:31:04 GMT
+Content-Type: text/plain; charset=utf-8</code></pre>
 
           <h4 id="conversations-collection-post">POST</h4>
 
@@ -1879,9 +1985,13 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Content-Length: 65
 Content-Type: application/json
-Location: /api/v1/conversations/4
-Content-Length: 52
+Location: /api/v1/conversations/1
+Time-Spent: 482.650218ms
+Date: Tue, 17 Sep 2013 17:34:04 GMT
 
 {
   "context":"",
@@ -1940,7 +2050,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -1960,7 +2070,8 @@ Content-Length: 52
                      "open": true,
                      "deleted": false,
                      "moderated": false,
-                     "visible": true
+                     "visible": true,
+                     "isread": true
                   },
                   "links": [{
                         "rel": "self",
@@ -2034,15 +2145,11 @@ Content-Length: 0</code></pre>
          "total": 0,
          "limit": 25,
          "offset": 0,
-         "pages": 0,
+         "maxOffset": 0,
+         "totalPages": 0,
+         "page": 1,
          "links": [{
-               "rel": "first",
-               "href": "/api/v1/conversations/1"
-            }, {
                "rel": "self",
-               "href": "/api/v1/conversations/1"
-            }, {
-               "rel": "last",
                "href": "/api/v1/conversations/1"
             }
          ],
@@ -2056,10 +2163,7 @@ Content-Length: 0</code></pre>
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "banned": false,
-            "moderator": false,
-            "admin": false,
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "meta": {
                "links": [{
                      "rel": "self",
@@ -2076,7 +2180,8 @@ Content-Length: 0</code></pre>
             "open": true,
             "deleted": false,
             "moderated": false,
-            "visible": true
+            "visible": true,
+            "isread": true
          },
          "links": [{
                "rel": "self",
@@ -2088,12 +2193,18 @@ Content-Length: 0</code></pre>
             }
          ],
          "permissions": {
-            "create": false,
+            "create": true,
             "read": true,
-            "update": false,
-            "delete": false,
-            "guest": true,
-            "superUser": false
+            "update": true,
+            "delete": true,
+            "closeOwn": true,
+            "openOwn": true,
+            "readOthers": true,
+            "guest": false,
+            "banned": false,
+            "owner": true,
+            "moderator": true,
+            "siteOwner": true
          }
       }
    },
@@ -2155,9 +2266,13 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Content-Length: 65
 Content-Type: application/json
 Location: /api/v1/conversations/1
-Content-Length: 52
+Time-Spent: 601.119506ms
+Date: Tue, 17 Sep 2013 17:41:06 GMT
 
 {
   "context":"",
@@ -2198,9 +2313,11 @@ Content-Length: 52
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Content-Length: 65
 Content-Type: application/json
-Content-Length: 52
 Location: /api/v1/conversations/1
+Time-Spent: 1.445091965s
+Date: Tue, 17 Sep 2013 17:51:41 GMT
 
 {"context":"","status":302,"data":null,"error":null}</code></pre>
 
@@ -2243,7 +2360,7 @@ Location: /api/v1/conversations/1
         "userId": 1,
         "profileName": "motter",
         "visible": true,
-        "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+        "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
         "banned": false,
         "moderator": false,
         "admin": true,
@@ -2261,6 +2378,7 @@ Location: /api/v1/conversations/1
         "deleted":false,
         "moderated":false,
         "visible":true,
+        "isread": true
       }
       ...
     }
@@ -2284,10 +2402,38 @@ Location: /api/v1/conversations/1
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Content-Length: 65
 Content-Type: application/json
-Content-Length: 52
+Time-Spent: 733.29522ms
+Date: Tue, 17 Sep 2013 17:52:41 GMT
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+
+          <h4 id="conversations-single-markread">MARKREAD</h4>
+
+          <p>Marks a conversation as read, returning the conversation url in the Location field.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer mytoken" \
+  https://sandbox.microco.sm/api/v1/conversations/1/markread</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Content-Length: 65
+Content-Type: application/json
+Location: /api/v1/conversations/1
+Time-Spent: 599.31815ms
+Date: Tue, 17 Sep 2013 17:53:33 GMT
+
+{"context": "","status": 302,"data": null,"error": null}</code></pre>
         </div>
 
         <!-- /events -->
@@ -2323,7 +2469,7 @@ Content-Length: 52
                 <td>Returns information about the events that exist on the current site.</td>
               </tr>
               <tr>
-                <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}</td>
+                <td>/api/v1/events/{id:[0-9]+}</td>
                 <td>OPTIONS</td>
                 <td>The <code>Allow:</code> header lists the methods available.</td>
               </tr>
@@ -2346,6 +2492,36 @@ Content-Length: 52
                 <td>/api/v1/events/{id:[0-9]+}</td>
                 <td>DELETE</td>
                 <td>Deletes the event specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/lastcomment</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/lastcomment</td>
+                <td>GET</td>
+                <td>Returns a redirect with a location linking to the last comment in the event.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/newcomment</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/newcomment</td>
+                <td>Get</td>
+                <td>Returns a redirect with a location linking to the first new comment in the event, or if there are no new comments then the last comment in the event.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/markread</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/events/{id:[0-9]+}/markread</td>
+                <td>PUT</td>
+                <td>Marks the event as read.</td>
               </tr>
             </tbody>
           </table>
@@ -2520,7 +2696,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -2540,7 +2716,8 @@ Content-Length: 52
                      "open": true,
                      "deleted": false,
                      "moderated": false,
-                     "visible": true
+                     "visible": true,
+                     "isread": true
                   },
                   "links": [{
                         "rel": "self",
@@ -2565,7 +2742,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -2585,7 +2762,8 @@ Content-Length: 52
                      "open": true,
                      "deleted": false,
                      "moderated": false,
-                     "visible": true
+                     "visible": true,
+                     "isread": true
                   },
                   "links": [{
                         "rel": "self",
@@ -2667,15 +2845,11 @@ Content-Length: 0</code></pre>
          "total": 0,
          "limit": 25,
          "offset": 0,
-         "pages": 0,
+         "maxOffset": 0,
+         "totalPages": 1,
+         "page": 1,
          "links": [{
-               "rel": "first",
-               "href": "/api/v1/events/1"
-            }, {
                "rel": "self",
-               "href": "/api/v1/events/1"
-            }, {
-               "rel": "last",
                "href": "/api/v1/events/1"
             }
          ],
@@ -2686,13 +2860,11 @@ Content-Length: 0</code></pre>
          "created": "2013-04-11T17:59:42.807352Z",
          "createdBy": {
             "id": 1,
+            "siteId": 3,
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "banned": false,
-            "moderator": false,
-            "admin": false,
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "meta": {
                "links": [{
                      "rel": "self",
@@ -2709,7 +2881,8 @@ Content-Length: 0</code></pre>
             "open": true,
             "deleted": false,
             "moderated": false,
-            "visible": true
+            "visible": true,
+            "isread": true
          },
          "links": [{
                "rel": "self",
@@ -2721,12 +2894,18 @@ Content-Length: 0</code></pre>
             }
          ],
          "permissions": {
-            "create": false,
+            "create": true,
             "read": true,
-            "update": false,
-            "delete": false,
-            "guest": true,
-            "superUser": false
+            "update": true,
+            "delete": true,
+            "closeOwn": true,
+            "openOwn": true,
+            "readOthers": true,
+            "guest": false,
+            "banned": false,
+            "owner": true,
+            "moderator": true,
+            "siteOwner": true
          }
       }
    },
@@ -2890,6 +3069,7 @@ Location: /api/v1/events/1
         "deleted":false,
         "moderated":false,
         "visible":true,
+        "isread": true
       }
       ...
     }
@@ -2912,7 +3092,7 @@ Location: /api/v1/events/1
         "userId": 1,
         "profileName": "motter",
         "visible": true,
-        "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+        "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
         "banned": false,
         "moderator": false,
         "admin": true,
@@ -2930,6 +3110,7 @@ Location: /api/v1/events/1
         "deleted":false,
         "moderated":false,
         "visible":true,
+        "isread": true
       }
       ...
     }
@@ -2957,6 +3138,28 @@ Content-Type: application/json
 Content-Length: 52
 
 {"context":"","status":200,"data":null,"error":null}</code></pre>
+
+          <h4 id="events-single-markread">MARKREAD</h4>
+
+          <p>Marks an event as read, returning the event url in the Location field.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer mytoken" \
+  https://sandbox.microco.sm/api/v1/events/1/markread</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+  Access-Control-Allow-Credentials: true
+  Access-Control-Allow-Origin: *
+  Content-Length: 65
+  Content-Type: application/json
+  Location: /api/v1/events/1
+
+  {"context": "","status": 302,"data": null,"error": null}</code></pre>
         </div>
 
         <!-- /events/{id}/attendees -->
@@ -3146,7 +3349,7 @@ Content-Length: 52
                   "userId": 2,
                   "profileName": "Velocio",
                   "visible": true,
-                  "gravatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
+                  "avatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
                   "banned": false,
                   "moderator": false,
                   "admin": false,
@@ -3170,7 +3373,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -3191,7 +3394,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -3280,7 +3483,7 @@ Content-Length: 0</code></pre>
          "userId": 2,
          "profileName": "Velocio",
          "visible": true,
-         "gravatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
+         "avatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
          "banned": false,
          "moderator": false,
          "admin": false,
@@ -3304,7 +3507,7 @@ Content-Length: 0</code></pre>
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "banned": false,
             "moderator": false,
             "admin": false,
@@ -3325,7 +3528,7 @@ Content-Length: 0</code></pre>
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "banned": false,
             "moderator": false,
             "admin": false,
@@ -3466,7 +3669,7 @@ Content-Length: 52
                 <td>Returns information about the polls that exist on the current site.</td>
               </tr>
               <tr>
-                <td style="white-space:nowrap;">/api/v1/polls/{id:[0-9]+}</td>
+                <td>/api/v1/polls/{id:[0-9]+}</td>
                 <td>OPTIONS</td>
                 <td>The <code>Allow:</code> header lists the methods available.</td>
               </tr>
@@ -3484,6 +3687,36 @@ Content-Length: 52
                 <td>/api/v1/polls/{id:[0-9]+}</td>
                 <td>DELETE</td>
                 <td>Deletes the poll specified by the numeric identifier.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}/lastcomment</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}/lastcomment</td>
+                <td>GET</td>
+                <td>Returns a redirect with a location linking to the last comment in the poll.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}/newcomment</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td style="white-space:nowrap;">/api/v1/polls/{id:[0-9]+}/newcomment</td>
+                <td>Get</td>
+                <td>Returns a redirect with a location linking to the first new comment in the poll, or if there are no new comments then the last comment in the poll.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}/markread</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/polls/{id:[0-9]+}/markread</td>
+                <td>PUT</td>
+                <td>Marks the poll as read.</td>
               </tr>
             </tbody>
           </table>
@@ -3715,7 +3948,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -3736,7 +3969,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -3785,7 +4018,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -3806,7 +4039,7 @@ Content-Length: 52
                      "userId": 1,
                      "profileName": "motter",
                      "visible": true,
-                     "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
                      "banned": false,
                      "moderator": false,
                      "admin": false,
@@ -3909,7 +4142,7 @@ Content-Length: 0</code></pre>
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "banned": false,
             "moderator": false,
             "admin": false,
@@ -3930,7 +4163,7 @@ Content-Length: 0</code></pre>
             "userId": 1,
             "profileName": "motter",
             "visible": true,
-            "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
             "banned": false,
             "moderator": false,
             "admin": false,
@@ -4115,7 +4348,7 @@ Location: /api/v1/conversations/1
         "userId": 1,
         "profileName": "motter",
         "visible": true,
-        "gravatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
+        "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
         "banned": false,
         "moderator": false,
         "admin": true,
