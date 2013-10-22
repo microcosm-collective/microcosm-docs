@@ -1,3 +1,4 @@
 curl -i \
 	-X GET \
-	https://dev1.microco.sm/api/v1/huddles/1
+	-H "Authorization: Bearer letmein" \
+	"https://dev1.microco.sm/api/v1/huddles/1"
