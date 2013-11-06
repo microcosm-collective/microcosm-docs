@@ -199,8 +199,23 @@
             </li>
           </ul>
         </li>
-
-        <li><a href="#profiles">/profiles</a></li>
+        <li><a href="#profiles">/profiles</a>
+          <ul class="nav">
+            <li><a href="#profiles-urls">URLS and Methods</a></li>
+            <li><a href="#profiles-collection">Collection</a>
+              <ul class="nav">
+                <li><a href="#profiles-collection-options">OPTIONS</a></li>
+                <li><a href="#profiles-collection-get">GET</a></li>
+              </ul>
+            </li>
+            <li><a href="#profiles-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#profiles-single-options">OPTIONS</a></li>
+                <li><a href="#profiles-single-get">GET</a></li>
+                <li><a href="#profiles-single-put">PUT</a></li>
+              </ul>
+          </ul>
+        </li>
 
         <li><a href="#whoami">/whoami</a>
           <ul class="nav">
@@ -4395,8 +4410,306 @@ Content-Length: 52
         <!-- /profiles -->
         <div class="bs-docs-section" id="profiles">
           <h2>/profiles</h2>
+          <p>Provides an interface to the set of profiles associated with the site.</p>
 
-          <p>TODO: Some text goes here, this is just placeholder</p>
+          <h3 id="profiles-urls">URLs and Methods</h3>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>URL Pattern</th>
+                <th>Method</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>/api/v1/profiles</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/profiles</td>
+                <td>GET</td>
+                <td>Returns summaries for the profiles associated with the site.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/profiles/{id:[0-9]+}</td>
+                <td>OPTIONS</td>
+                <td>The <code>Allow:</code> header lists the methods available.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/profiles/{id:[0-9]+}</td>
+                <td>GET</td>
+                <td>Returns the specified profile.</td>
+              </tr>
+              <tr>
+                <td>/api/v1/profiles/{id:[0-9]+}</td>
+                <td>PUT</td>
+                <td>Updates the specified profile.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 id="profiles-collection">Collection</h3>
+          <h4 id="profiles-collection-options">OPTIONS</h4>
+
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://sandbox.microco.sm/api/v1/profiles</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Allow: OPTIONS,GET
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0</code></pre>
+
+          <h4 id="profiles-collection-get">GET</h4>
+
+          <p>Fetches a collection of profiles for the given site.</p>
+
+          <p>Request:</p>
+
+          <p>The pagination query string parameters allow you to paginate the collection of events returned.  There are two additional options:  A boolean 'top' which will order the profiles by comment count (rather than the default alphanumerical ordering), and a string 'q' which filters the profiles returned by profile name.</p>
+
+          <p>Example request - usernames beginning with the letter 'u', ordered by comment count:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://sandbox.microco.sm/api/v1/profiles?q=u&top=true</code></pre>
+
+            <p>Example response:</p>
+
+<pre><code>
+HTTP/1.1 200 OK
+Server: nginx
+Date: Wed, 06 Nov 2013 11:25:54 GMT
+Content-Type: application/json
+Content-Length: 1511
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+Time-Spent: 33.311053ms
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "profiles": {
+   "total": 2,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles?q=u&top=true"
+    }
+   ],
+   "type": "/api/v1/profiles",
+   "items": [
+    {
+     "id": 5,
+     "siteId": 1,
+     "userId": 3,
+     "profileName": "user5833",
+     "visible": true,
+     "avatar": "/api/v1/files/159e405e607e689500318ca46e28c93dc947323c",
+     "meta": {
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/profiles/5"
+       },
+       {
+        "rel": "site",
+        "href": "/api/v1/sites/1"
+       }
+      ]
+     }
+    },
+    {
+     "id": 6,
+     "siteId": 1,
+     "userId": 4,
+     "profileName": "user5834",
+     "visible": true,
+     "avatar": "/api/v1/files/18abe7b186a04ab252df3005f481c8980fabc737",
+     "meta": {
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/profiles/6"
+       },
+       {
+        "rel": "site",
+        "href": "/api/v1/sites/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles?q=u&top=true"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}</code></pre>
+
+          <h3 id="profiles-single">Single Resource</h3>
+          <h4 id="profiles-single-options">OPTIONS</h4>
+
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://sandbox.microco.sm/api/v1/profiles/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Server: nginx
+Date: Wed, 06 Nov 2013 11:36:31 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Access-Control-Allow-Headers: 
+Access-Control-Allow-Origin: *
+Allow: OPTIONS,GET,PUT
+Time-Spent: 2.064575ms</code></pre>
+
+          <h4 id="profiles-single-get">GET</h4>
+
+          <p>Fetches the specified profile.</p>
+
+          <p>Example request:</p>
+
+          <pre><code>curl -i \
+  -X GET \
+  https://sandbox.microco.sm/api/v1/profiles/1</code></pre>
+
+          <p>Example response:</p>
+
+          <pre><code>HTTP/1.1 200 OK
+Server: nginx
+Date: Wed, 06 Nov 2013 11:41:28 GMT
+Content-Type: application/json
+Content-Length: 855
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+Time-Spent: 49.970193ms
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "siteId": 1,
+  "userId": 1,
+  "profileName": "motter",
+  "visible": true,
+  "styleId": 1,
+  "itemCount": 0,
+  "commentCount": 25,
+  "created": "2013-11-05T13:55:45.492937Z",
+  "lastActive": "2013-11-05T16:11:44.121511Z",
+  "avatar": "/api/v1/files/6c0b87cba4359131e79bbab6befd6ee0c51842d6",
+  "banned": false,
+  "admin": true,
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles/1"
+    },
+    {
+     "rel": "site",
+     "href": "/api/v1/sites/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+          <h4 id="profiles-single-put">PUT</h4>
+
+          <p>Updates a profile. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{"profileName": "NewProfileName"}</code></pre>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer mytoken" \
+  -H "Content-Type: application/json" \
+  -d '{"profileName": "NewProfileName"}' \
+  https://sandbox.microco.sm/api/v1/profiles/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Server: nginx
+Date: Wed, 06 Nov 2013 11:58:07 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: *
+Location: /api/v1/profiles/1
+Time-Spent: 248.608426ms
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}</code></pre>
+
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated profile.</p>
+        </div>
         </div>
 
         <!-- /whoami -->
