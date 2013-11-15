@@ -3783,7 +3783,7 @@ Content-Length: 52
               <tr>
                 <td>/api/v1/comments/{id:[0-9]+}</td>
                 <td>GET</td>
-                <td>Returns information about the comment specified by the numeric identifier and the HTML to show when rendering the comment.</td>
+                <td>Returns information about the comment specified by the numeric identifier and the HTML to show when rendering the comment.  Also includes the parents and children for the comment to enable a threaded view.</td>
               </tr>
               <tr>
                 <td>/api/v1/comments/{id:[0-9]+}</td>
@@ -4127,13 +4127,13 @@ Content-Length: 0</code></pre>
 
           <h4 id="comments-single-get">GET</h4>
 
-          <p>Fetches the detailed information about a single comment, including the HTML to render.</p>
+          <p>Fetches the detailed information about a single comment up to 3 parents and up to 5 children, including the HTML to render all of them.</p>
 
           <p>Example request:</p>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
+  https://sandbox.microco.sm/api/v1/comments/4</code></pre>
 
           <p>Example response:</p>
 
@@ -4193,6 +4193,83 @@ Content-Length: 0</code></pre>
                ]
             }
          },
+         "parents": null,
+         "children": [
+            {
+               "id": 33,
+               "itemType": "conversation",
+               "itemId": 15,
+               "revisions": 1,
+               "inReplyTo": 32,
+               "attachments": 0,
+               "firstLine": "",
+               "markdown": "A reply to a comment",
+               "html": "\u003cp\u003eA reply to a comment\u003c/p\u003e\n",
+               "meta": {
+                  "created": "2013-11-13T15:09:34.919874Z",
+                  "createdBy": {
+                     "id": 1,
+                     "siteId": 1,
+                     "userId": 1,
+                     "profileName": "testy",
+                     "visible": true,
+                     "avatar": "/api/v1/files/6c0b87cba4359131e79bbab6befd6ee0c51842d6",
+                     "meta": {
+                        "links": [
+                           {
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           },
+                           {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "edited": "2013-11-13T15:09:34.919874Z",
+                  "editedBy": {
+                     "id": 1,
+                     "siteId": 1,
+                     "userId": 1,
+                     "profileName": "testy",
+                     "visible": true,
+                     "avatar": "/api/v1/files/6c0b87cba4359131e79bbab6befd6ee0c51842d6",
+                     "meta": {
+                        "links": [
+                           {
+                              "rel": "self",
+                              "href": "/api/v1/profiles/1"
+                           },
+                           {
+                              "rel": "site",
+                              "href": "/api/v1/sites/1"
+                           }
+                        ]
+                     }
+                  },
+                  "flags": {
+                     "deleted": false,
+                     "moderated": false,
+                     "visible": false
+                  },
+                  "links": [
+                     {
+                        "rel": "self",
+                        "href": "/api/v1/comments/33"
+                     },
+                     {
+                        "rel": "conversation",
+                        "href": "/api/v1/conversations/15"
+                     },
+                     {
+                        "rel": "up",
+                        "href": "/api/v1/conversations/15"
+                     }
+                  ]
+               }
+            }
+         ],
          "flags": {
             "deleted": false,
             "moderated": false,
