@@ -667,7 +667,7 @@
    "createdBy": {
       "id": 1,
       "userId": 1,
-      "profileName": "motter",
+      "profileName": "BillyPilgrim",
       ...
    },
    "flags": {
@@ -676,11 +676,11 @@
       "deleted": false,
       "moderated": false,
       "visible": false,
-      "isread": true
+      "unread": true
    },
    "links":[
       {"rel":"self", "href":"/api/v1/site"},
-      {"rel":"microcosm", "href":"/api/v1/microcosms/1", "title":"General Chatter"},
+      {"rel":"microcosm", "href":"/api/v1/microcosms"},
       {"rel":"profile", "href":"/api/v1/profiles"}
    ],
    "permissions":{
@@ -719,17 +719,17 @@
               <tr>
                 <td>edited</td>
                 <td>ISO8601 Datetime</td>
-                <td>If the resource has been modified since creation, when the resource was modified.</td>
+                <td>If the resource has been modified since creation, when the resource was last modified.</td>
               </tr>
               <tr>
                 <td>editedBy</td>
                 <td>Profile summary object</td>
-                <td>If the resource has been modified since creation, who modified the resource and a link to that profile.</td>
+                <td>If the resource has been modified since creation, who modified the resource most recently and a link to that profile.</td>
               </tr>
               <tr>
                 <td>editReason</td>
                 <td>String</td>
-                <td>If the resource has been modified since creation, a one-line summary of the modification.</td>
+                <td>If the resource has been modified since creation, a one-line summary of the most recent modification.</td>
               </tr>
             </tbody>
           </table>
@@ -773,18 +773,18 @@
                 <td>Summarises <code>deleted</code> and <code>moderated</code> into a single flag indicating whether the resource is currently visible on the site to most users.</td>
               </tr>
               <tr>
-                <td>isread</td>
+                <td>unread</td>
                 <td>bool</td>
-                <td>If the item has previously been read before by the user.  The user needs to be logged in otherwise this will return false.  An item (conversation, event, poll) is marked as read if the user has read all comments in it, and a microcosm is marked as read if all items within it are read.</td>
+                <td>If the item has previously been read before by the user. The user needs to be logged in otherwise this will return false. An item (conversation, event, poll) is marked as read if the user has read all comments in it, and a microcosm is marked as read if all items within it are read.</td>
               </tr>
             </tbody>
           </table>
 
           <h3 id="basics-meta-links">Links</h3>
 
-          <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>. Further, it describes the Microcosms link as being of relation <code>microcosms</code>, and also gives the type URL which in this case is the same as the full HRef URL.</p>
+          <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>.</p>
 
-          <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request.</p>
+          <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request and to provide you with that link so that you do not have to construct it yourself.</p>
 
           <p>We currently support the following link relations:</p>
           <table class="table table-hover">
@@ -849,6 +849,7 @@
           <h3 id="basics-meta-permissions">Permissions</h3>
 
           <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the resource in the current context. You should interpret permissions alone these lines:</p>
+
           <table class="table table-hover">
             <thead>
               <tr>
@@ -876,19 +877,23 @@
             </tbody>
           </table>
 
+          <p>The permissions themselves are always at the site level, microcosm level, or the item level. That is, if you are the owner of an item by virtue of authoring it, then you have certain permissions that stem from that. Otherwise your permissions are derived from a Microcosm (if the API call relates to something that relates to a Microcosm, or from the site.</p>
+
+          <p>Be sure to reflect this information within your client so that a user doesn't try to edit content when they will not have permission to do so.</p>
+
           <h2 id="basics-authentication">Authentication</h2>
 
           <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
 
           <p>You can <a href="https://developer.mozilla.org/en-US/docs/Persona/Quick_Setup#Step_4.3A_Verify_the_user.E2.80.99s_credentials">read about assertions</a> on the Persona website or <a href="https://github.com/mozilla/browserid-cookbook">view example code</a>.</p>
 
-          <p>When you sign up as an API client, we'll provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
+          <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
 
           <p>To generate an access token, POST the following structure to <code>/auth</code>.
 
           <pre><code>{
-   "Assertion": "redacted",
-   "ClientSecret": "redacted"
+  "Assertion": "suppliedByPersonaOnUserLogin",
+  "ClientSecret": "suppliedByMicrocosmDuringDevClientRegistration"
 }
 </code></pre>
 
@@ -932,7 +937,7 @@ https://dev1.microco.sm/api/v1/auth
 
           <pre><code>{
     "status": 200,
-    "data": "redacted",
+    "data": "theGeneratedAccessTokenToAuthenticateFutureRequestsByThisUser",
     "context": "",
     "error": null
 }
@@ -940,9 +945,9 @@ https://dev1.microco.sm/api/v1/auth
 
           <p>The <code>data</code> attribute above contains a string which is the generated access token. You can supply this with a request to the API to authenticate the user.</p>
 
-          <p>Access tokens can be supplied as an HTTP header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form <code>access_token={redacted}</code>. If both header and querystring are provided, only the header will be examined. The header is the recommended way of providing the access token, the query string is only made available to help support some clients which may not have access to the HTTP headers.</p>
+          <p>Access tokens can be supplied as an HTTP header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form <code>access_token={redacted}</code>. If both header and querystring are provided, only the header will be examined. The header is the recommended way of providing the access token, the query string is made available to help support some clients which may not have access to the HTTP headers but the use of this is not encouraged.</p>
 
-          <p>Tokens don't currently expire, nor do they have a particular scope. These are earmarked for future development.</p>
+          <p>Tokens do not currently expire, nor do they have a particular scope. These are earmarked for future development as is allowing users to revoke older access tokens whilst logged in with a more recent access token.</p>
 
           <h2 id="basics-errors">Error Handling</h2>
 
@@ -967,7 +972,7 @@ Content-Type: application/json
 }
 </code></pre>
 
-          <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> querystring flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
+          <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
 
         </div>
 
@@ -977,7 +982,7 @@ Content-Type: application/json
             <h1>Tutorial</h1>
           </div>
 
-          <p class="well well-small">We do not yet have a tutorial to share, but it is a TODO on our tasklist and we will prepare one before the launch of the beta version of the API.</p>
+          <p class="well well-small">We do not yet have a tutorial to share, but it is a TODO on our tasklist and we will prepare one before the public launch.</p>
         </div>
 
         <!-- Reference -->
@@ -1031,9 +1036,9 @@ Content-Type: application/json
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: GET,OPTIONS
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Allow: OPTIONS,HEAD,GET</code></pre>
 
           <h4 id="site-single-get">GET</h4>
 
