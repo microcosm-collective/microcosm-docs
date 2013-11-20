@@ -3,4 +3,4 @@ curl -i \
 	-H "Authorization: Bearer letmein" \
 	-H "Content-Type: application/json" \
 	-d '{"visibility":"public", "title":"General Chit-Chat","description":"A place to talk about anything and everything."}' \
-	https://sandbox.microco.sm/api/v1/microcosms
+	https://dev1.microco.sm/api/v1/microcosms

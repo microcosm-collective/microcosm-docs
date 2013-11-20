@@ -49,7 +49,7 @@
             <li><a href="#basics-terminology">Terminology</a></li>
             <li><a href="#basics-boiler">Boiler Plate</a></li>
             <li><a href="#basics-statuscodes">HTTP Status Codes</a></li>
-            <li><a href="#basics-callbacks">Calbacks using JSONP</a></li>
+            <li><a href="#basics-callbacks">Calbacks</a></li>
             <li><a href="#basics-urls">URL Patterns</a></li>
             <li><a href="#basics-pagination">Pagination</a></li>
             <li><a href="#basics-meta">Metadata</a>
@@ -301,16 +301,17 @@
             <h1>Introduction</h1>
           </div>
 
-          <p>The Microco.sm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we've sought to make pragmatic choices that help and assist you, the developer. With that in mind we offer an API that we believe has the best of REST without limiting the ways in which you might implement a solution using our API.</p>
+          <p>The Microco.sm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
 
           <p>Using the API is as easy as:</p>
 
-          <pre><code>curl -X GET https://sandbox.microco.sm/api/v1/microcosms</code></pre>
+          <pre><code>curl -X GET https://dev1.microco.sm/api/v1/microcosms</code></pre>
 
           <p>What we give you:</p>
           <ul>
             <li>A <a href="http://www.json.org/">JSON</a> interface of resources that you can manipulate via the most common HTTP verbs.</li>
             <li>Token-based authentication to identify the user and client accessing the API.</li>
+            <li>Resources that compose together enough data (including links, associated data, and metadata) that you can do what you need with a minimal number of API calls.</li>
             <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> inspired meta data to show the relation of a given resource to other resources, as well as a description of your user's permissions so that you know what state changing actions your user can perform.</li>
           </ul>
 
@@ -359,29 +360,43 @@
               <tr>
                 <td>Forum</td>
                 <td>Site</td>
-                <td><p>In vBulletin, phpBB, etc. the 'forum' is the over-arching instance of the software and the software runs on a single web domain.</p><p>Microco.sm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p></td>
+                <td>
+                  <p>In vBulletin, phpBB, and so on, the 'forum' is the over-arching instance of the software and the software runs on a single web domain.</p>
+                  <p>Microco.sm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
+                </td>
               </tr>
               <tr>
-                <td>Forums/Subforums</td>
+                <td>Forums or subforums</td>
                 <td>Microcosms</td>
-                <td><p>Within traditional forum software many forums can exist and they may be nested (subforums inside forums). These 'forums' are created by administrators and the users create conversations within an individual forum.</p><p>We have Microcosms instead of forums, and these are not nested. They are called Microcosms as they can contain everything a group may need, the events, polls, conversations, etc.... they represent a smaller microcosm of the whole community.</p><p>Users are able to create these Microcosms, the structure of the site is not necessarily dictated by the site administrator.</p></td>
+                <td>
+                  <p>Within traditional forum software many forums can exist and they may be nested (subforums inside forums). These 'forums' are created by administrators and the users create conversations within an individual forum.</p>
+                  <p>We have Microcosms instead of forums, and these are provided as a list rather than a tree-structure. The name Microcosm was chosen as they can contain everything a group may need, the events, polls, conversations, etc... they represent a smaller microcosm of the whole community.</p>
+                  <p>Users are able to create these Microcosms, the structure of the site is not necessarily dictated by the site administrator.</p>
+                </td>
               </tr>
               <tr>
                 <td>Threads</td>
                 <td>Conversations</td>
-                <td><p>Threads are the bread and butter of a traditional forum, and in a Microco.sm we have a conversation as the direct equivalence.</p><p>A conversation is simply a collection of comments around a topic.</p></td>
+                <td>
+                  <p>Threads are the bread and butter of a traditional forum, and within a Microcosm we have a conversation as the direct equivalent.</p>
+                  <p>A conversation is simply a collection of comments on a topic.</p>
+                </td>
               </tr>
               <tr>
                 <td>Posts</td>
                 <td>Comments</td>
-                <td><p>Within traditional forum software threads have posts, and that's it.</p><p>Microco.sm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p><p>Comments are pieces of user generated content attached in a collection to some other content.</p></td>
+                <td>
+                  <p>Within traditional forum software threads have posts, and that's it.</p>
+                  <p>Microco.sm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
+                  <p>Comments are pieces of user generated content attached in the form of a list to some other content.</p>
+                </td>
               </tr>
             </tbody>
           </table>
 
           <h2 id="basics-boiler">Boiler Plate</h2>
 
-          <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support JSONP.</p>
+          <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support the use of JSONP to those who need it.</p>
 
           <p>All responses are wrapped in this:</p>
 
@@ -393,13 +408,15 @@
 }</code></pre>
 
           <ul>
-            <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to identify which request this response relates to.</li>
+            <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to include a token that can identify which request this response relates to.</li>
             <li><code>status</code> = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
             <li><code>data</code> = The actual JSON representation of the resource requested.</li>
             <li><code>error</code> = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
           </ul>
 
-          <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code>. With that set, only the data object would be returned in the body of the response.</p>
+          <p>All of the above will be returned on every call, null and "" are used to represent an absense of data (no context supplied, no data retrieved, and no error).</p>
+
+          <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code> or within a HTTP header like this: <code>X-Disable-Boiler: true</code>. With either of those set only the data object would be returned in the body of the response.</p>
 
           <h2 id="basics-statuscodes">HTTP Status Codes</h2>
 
@@ -472,9 +489,9 @@
             </tbody>
           </table>
 
-          <h2 id="basics-callbacks">Callbacks using JSONP</h2>
+          <h2 id="basics-callbacks">Callbacks</h2>
 
-          <p>We support JSONP, and to achieve that 3 things are needed:</p>
+          <p>We support callbacks using JSONP. To achieve that 3 things are needed:</p>
           <ol>
             <li>The ability to wrap the returned JSON in a callback function.</li>
             <li>The ability to override the HTTP method so that you can perform the action of HTTP PUT and HTTP DELETE via HTTP POST.</li>
@@ -483,11 +500,11 @@
 
           <p>To fulfil the first requirement you can wrap the response in a callback function name you provide by adding <code>callback=funcName</code> to the querystring of your request.</p>
 
-          <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring.</p>
+          <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring. You also have the option to use the standard <code>X-HTTP-Method-Override</code> HTTP header.</p>
 
           <p class="well well-small">Note: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
 
-          <p>To fulfil the third requirement you may add <code>always200</code> to the querystring and this will force the API to only ever return a HTTP 200 OK header regardless of what happened, however the <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
+          <p>To fulfil the third requirement you may add <code>always200</code> to the querystring or <code>X-Always-200: true</code> to the HTTP headers and this will force the API to only ever return a HTTP 200 OK header regardless of what happened. The <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
 
           <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
 
@@ -497,7 +514,7 @@
 
           <h2 id="basics-urls">URL Patterns</h2>
 
-          <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code> for a site hosted on microco.sm or <code>https://{customDomain}/api/v1</code> for a site hosted on a custom domain. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
+          <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code>. Even if a site has a CNAMEd domain such as http://example.com , the API will always be served over SSL on a {subdomain}.microco.sm URL. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
 
           <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
 
@@ -908,7 +925,7 @@
 -X POST \
 -H "Content-Type: application/json" \
 -d '{"Assertion": "redacted", "ClientSecret": "redacted"}' \
-https://sandbox.microco.sm/api/v1/auth
+https://dev1.microco.sm/api/v1/auth
 </code></pre>
 
           <p>Example response</p>
@@ -1008,7 +1025,7 @@ Content-Type: application/json
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/site
+  https://dev1.microco.sm/api/v1/site
 </code></pre>
 
           <p>Example response:</p>
@@ -1026,7 +1043,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/site
+  https://dev1.microco.sm/api/v1/site
 </code></pre>
 
           <p>Example response:</p>
@@ -1039,7 +1056,7 @@ Content-Length: 0</code></pre>
       "title": "LFGSS",
       "description": "London Fixed-Gear and Single-Speed",
       "subdomainKey": "sandbox",
-      "domain": "sandbox.microco.sm",
+      "domain": "dev1.microco.sm",
       "ownedBy": {
          "id": 1,
          "userId": 1,
@@ -1192,7 +1209,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/microcosms</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -1253,7 +1270,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"visibility":"public", "title":"General Chit-Chat","description":"A place to talk about anything and everything."}' \
-  https://sandbox.microco.sm/api/v1/microcosms</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -1285,7 +1302,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/microcosms</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms</code></pre>
 
           <p>Example response:</p>
 
@@ -1419,7 +1436,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1436,7 +1453,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1660,7 +1677,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"visibility": "public","title": "General Chit-Chat","description": "A place to talk about anything and everything.","meta":{"editReason": "Updated the title"}}' \
-  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1706,7 +1723,7 @@ Time-Spent: 495.583001ms
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1798,7 +1815,7 @@ Date: Tue, 17 Sep 2013 13:11:44 GMT
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/microcosms/1</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
 
@@ -1821,7 +1838,7 @@ Date: Tue, 17 Sep 2013 13:13:45 GMT
 <pre><code>curl -i \
   -X PUT \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/microcosms/1/markread</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/markread</code></pre>
 
           <p>Example response:</p>
 
@@ -1935,7 +1952,7 @@ Date: Tue, 17 Sep 2013 13:13:45 GMT
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/conversations</code></pre>
+  https://dev1.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -1995,7 +2012,7 @@ Content-Type: text/plain; charset=utf-8</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1, "title": "Did anyone see the article on the news last night?"}' \
-  https://sandbox.microco.sm/api/v1/conversations</code></pre>
+  https://dev1.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -2029,7 +2046,7 @@ Date: Tue, 17 Sep 2013 17:34:04 GMT
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/conversations</code></pre>
+  https://dev1.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
@@ -2128,7 +2145,7 @@ Date: Tue, 17 Sep 2013 17:34:04 GMT
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2145,7 +2162,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2276,7 +2293,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1, "title": "Sightings in the media", "meta":{"editReason": "Updated the title"}}' \
-  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2323,7 +2340,7 @@ Date: Tue, 17 Sep 2013 17:41:06 GMT
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2412,7 +2429,7 @@ Date: Tue, 17 Sep 2013 17:51:41 GMT
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2435,7 +2452,7 @@ Date: Tue, 17 Sep 2013 17:52:41 GMT
 <pre><code>curl -i \
   -X PUT \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/conversations/1/markread</code></pre>
+  https://dev1.microco.sm/api/v1/conversations/1/markread</code></pre>
 
           <p>Example response:</p>
 
@@ -2551,7 +2568,7 @@ Date: Tue, 17 Sep 2013 17:53:33 GMT
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/events</code></pre>
+  https://dev1.microco.sm/api/v1/events</code></pre>
 
           <p>Example response:</p>
 
@@ -2635,7 +2652,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding"}' \
-  https://sandbox.microco.sm/api/v1/events</code></pre>
+  https://dev1.microco.sm/api/v1/events</code></pre>
 
           <p>Example request to create a confirmed/upcoming event:</p>
 
@@ -2644,7 +2661,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:00:00Z","duration": 180,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 50}' \
-  https://sandbox.microco.sm/api/v1/events</code></pre>
+  https://dev1.microco.sm/api/v1/events</code></pre>
 
           <p>Example response for both scenarios:</p>
 
@@ -2669,7 +2686,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/events</code></pre>
+  https://dev1.microco.sm/api/v1/events</code></pre>
 
           <p>Example response:</p>
 
@@ -2820,7 +2837,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/events/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -2837,7 +2854,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/events/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3012,7 +3029,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:42:48.515233Z","duration": 183473,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 60,"status": "upcoming","meta": {"editReason": "Increased attendee number"}}' \
-  https://sandbox.microco.sm/api/v1/events/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3055,7 +3072,7 @@ Content-Length: 52
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  https://sandbox.microco.sm/api/v1/events/1
+  https://dev1.microco.sm/api/v1/events/1
 </code></pre>
 
           <p>Example response:</p>
@@ -3144,7 +3161,7 @@ Location: /api/v1/events/1
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/events/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3163,7 +3180,7 @@ Content-Length: 52
 <pre><code>curl -i \
   -X PUT \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/events/1/markread</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/markread</code></pre>
 
           <p>Example response:</p>
 
@@ -3242,7 +3259,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response:</p>
 
@@ -3298,7 +3315,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"attendeeId": 1}' \
-  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example request to create a confirmation for the user whose <code>Authorization</code> token matches the <code>attendeeId</code>:</p>
 
@@ -3307,7 +3324,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"attendeeId": 1, "rsvp": "yes"}' \
-  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response for both scenarios:</p>
 
@@ -3332,7 +3349,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/events/1/attendees</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response:</p>
 
@@ -3467,7 +3484,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3484,7 +3501,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/events/1/attendees/2</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/2</code></pre>
 
           <p>Example response:</p>
 
@@ -3602,7 +3619,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"yes"}' \
-  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example request to set as not attending:</p>
   
@@ -3611,7 +3628,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"no"}' \
-  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example request to set as maybe attending:</p>
 
@@ -3620,7 +3637,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"maybe"}' \
-  https://sandbox.microco.sm/api/v1/events/1/attendees/1</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
@@ -3640,7 +3657,7 @@ Location: /api/v1/events/1/attendees/2
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/events/1/attendees/2</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/2</code></pre>
 
           <p>Example response:</p>
 
@@ -3813,7 +3830,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/comments</code></pre>
+  https://dev1.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -3891,7 +3908,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"itemType": "conversation","itemId": 1,"markdown": "A First Level Header\n====================\n\nA Second Level Header\n---------------------\n\nNow is the time for all good men (such as +awesome_guy +blueprints) to\ncome to the aid of their community: http://www.lfgss.com/ . This is just a\nregular paragraph.\n\nThe quick brown [fox](http://www.google.com/?q=fox) jumped over the lazy\ndogs back.\n\n### Header 3\n\n> This is a blockquote.\n> \n> This is the second paragraph in the blockquote.\n>\n> ## This is an H2 +Velocio @blueprints are mentioned in a blockquote"}' \
-  https://sandbox.microco.sm/api/v1/comments</code></pre>
+  https://dev1.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -3921,7 +3938,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/comments</code></pre>
+  https://dev1.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -4116,7 +4133,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4133,7 +4150,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/comments/4</code></pre>
+  https://dev1.microco.sm/api/v1/comments/4</code></pre>
 
           <p>Example response:</p>
 
@@ -4351,7 +4368,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"itemType": "conversation","itemId": 1,"markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"}' \
-  https://sandbox.microco.sm/api/v1/comments</code></pre>
+  https://dev1.microco.sm/api/v1/comments</code></pre>
 
           <p>Example response:</p>
 
@@ -4392,7 +4409,7 @@ Content-Length: 52
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/moderated", "value": true}]' \
-  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4473,7 +4490,7 @@ Location: /api/v1/conversations/1
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/comments/1</code></pre>
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4536,7 +4553,7 @@ Content-Length: 52
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/profiles</code></pre>
+  https://dev1.microco.sm/api/v1/profiles</code></pre>
 
           <p>Example response:</p>
 
@@ -4557,7 +4574,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/profiles?q=u&top=true</code></pre>
+  https://dev1.microco.sm/api/v1/profiles?q=u&top=true</code></pre>
 
             <p>Example response:</p>
 
@@ -4666,7 +4683,7 @@ Time-Spent: 33.311053ms
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/profiles/1</code></pre>
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4689,7 +4706,7 @@ Time-Spent: 2.064575ms</code></pre>
 
           <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/profiles/1</code></pre>
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4763,7 +4780,7 @@ Time-Spent: 49.970193ms
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"profileName": "NewProfileName"}' \
-  https://sandbox.microco.sm/api/v1/profiles/1</code></pre>
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
 
           <p>Example response:</p>
 
@@ -4895,7 +4912,7 @@ Time-Spent: 248.608426ms
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
 
           <p>Example response:</p>
 
@@ -4969,7 +4986,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '[{"key": "MyString","value": "an example string"},{"key": "MyDate","value": "2007-01-27"},{"key": "MyBoolean","value": true},{"key": "MyInt","value": 42},{"key": "MyFloat","value": 3.14159265359}]' \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
 
           <p>Example response:</p>
 
@@ -4998,7 +5015,7 @@ Content-Length: 65
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
 
           <p>Example response:</p>
 
@@ -5101,7 +5118,7 @@ Content-Length: 65
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '[{"key": "MyString"},{"key": "MyDate"},{"key": "MyBoolean"},{"key": "MyInt"},{"key": "MyFloat"}]' \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
 
           <p>Example response:</p>
 
@@ -5126,7 +5143,7 @@ Content-Length: 65
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
 
           <p>Example response:</p>
 
@@ -5177,7 +5194,7 @@ Content-Length: 0</code></pre>
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"value": "an example string"}' \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
 
           <p>Example response:</p>
 
@@ -5203,7 +5220,7 @@ Location: /api/v1/microcosms/1/attributes/MyString
 
 <pre><code>curl -i \
   -X GET \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
 
           <p>Example response:</p>
 
@@ -5226,7 +5243,7 @@ Location: /api/v1/microcosms/1/attributes/MyString
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer mytoken" \
-  https://sandbox.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
 
           <p>Example response:</p>
 
@@ -5283,7 +5300,7 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -H "Authorization: Bearer mytoken" -F file=@IMG1.jpg -F file=@IMG2.jpg https://sandbox.microco.sm/api/v1/files</code></pre>
+<pre><code>curl -H "Authorization: Bearer mytoken" -F file=@IMG1.jpg -F file=@IMG2.jpg https://dev1.microco.sm/api/v1/files</code></pre>
 
           <p>Example response:</p>
 
@@ -5313,7 +5330,7 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl https://sandbox.microco.sm/api/v1/files/IMG1-SHA1</code></pre>
+<pre><code>curl https://dev1.microco.sm/api/v1/files/IMG1-SHA1</code></pre>
 
           <p>Example response:</p>
 
@@ -5372,7 +5389,7 @@ Content-Length: 52
   -H "Authorization: Bearer mytoken" \
   -H "Content-Type: application/json" \
   -d '{"FileHash":"FILE-SHA1"}' \
-  https://sandbox.microco.sm/api/v1/comments/1/attachments
+  https://dev1.microco.sm/api/v1/comments/1/attachments
 </code></pre>
 
           <p>Example response:</p>

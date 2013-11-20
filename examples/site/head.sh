@@ -1,3 +1,3 @@
 curl -i \
 	--head \
-	https://sandbox.microco.sm/api/v1/site
+	https://dev1.microco.sm/api/v1/site
