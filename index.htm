@@ -1706,7 +1706,7 @@ Location: /api/v1/microcosms/1
           <p>Example request:</p>
 <pre><code>curl -i \
   -X PATCH \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
   https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
@@ -1802,7 +1802,7 @@ Connection: keep-alive
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
 
           <p>Example response:</p>
@@ -1913,7 +1913,7 @@ Connection: keep-alive
             </tbody>
           </table>
 
-          <p class="well well-small">The <code>conversationId</code> is based on a sequential number (that spans all sites in the Microco.sm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+          <p class="well well-small">The <code>conversationId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc on the given site).</p>
 
           <h3 id="conversations-collection">Collection</h3>
           
@@ -1928,13 +1928,11 @@ Connection: keep-alive
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Access-Control-Allow-Headers: 
-Access-Control-Allow-Origin: *
-Allow: OPTIONS,GET,HEAD,POST,TRACE
+Date: Thu, 21 Nov 2013 15:53:05 GMT
+Content-Type: text/plain; charset=utf-8
 Content-Length: 0
-Time-Spent: 795.535917ms
-Date: Tue, 17 Sep 2013 17:31:04 GMT
-Content-Type: text/plain; charset=utf-8</code></pre>
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST</code></pre>
 
           <h4 id="conversations-collection-post">POST</h4>
 
@@ -1946,7 +1944,7 @@ Content-Type: text/plain; charset=utf-8</code></pre>
 
 <pre><code>{
   "microcosmId": 1,
-  "title": "Did anyone see the article on the news last night?"
+  "title": "There are whisperings that the Nazgûl are abroad"
 }</code></pre>
 
           <p>Where:</p>
@@ -1980,34 +1978,33 @@ Content-Type: text/plain; charset=utf-8</code></pre>
 
 <pre><code>curl -i \
   -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1, "title": "Did anyone see the article on the news last night?"}' \
+  -d '{"microcosmId": 1, "title": "There are whisperings that the Nazgûl are abroad"}' \
   https://dev1.microco.sm/api/v1/conversations</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Origin: *
-Content-Length: 65
+Date: Thu, 21 Nov 2013 16:10:01 GMT
 Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
 Location: /api/v1/conversations/1
-Time-Spent: 482.650218ms
-Date: Tue, 17 Sep 2013 17:34:04 GMT
 
 {
-  "context":"",
-  "status":302,
-  "data":null,
-  "error":null
-}</code></pre>
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created conversation.</p>
 
           <h4 id="conversations-collection-get">GET</h4>
 
-          <p>Fetches a collection of conversations across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain conversations that exist in private Microcosms not visible to guests.</p>
+          <p>Fetches a collection of conversations across all microcosms. If a valid <code>access_token</code> is provided then the collection may contain conversations that exist in microcosms not visible to guests.</p>
 
           <p>Request:</p>
 
@@ -2021,92 +2018,108 @@ Date: Tue, 17 Sep 2013 17:34:04 GMT
 
           <p>Example response:</p>
 
-<pre><code>{
-   "context": "",
-   "status": 200,
-   "data": {
-      "conversations": {
-         "total": 1,
-         "limit": 25,
-         "offset": 0,
-         "pages": 1,
-         "links": [{
-               "rel": "first",
-               "href": "/api/v1/conversations"
-            }, {
-               "rel": "self",
-               "href": "/api/v1/conversations"
-            }, {
-               "rel": "last",
-               "href": "/api/v1/conversations"
-            }
-         ],
-         "type": "/api/v1/conversations",
-         "items": [{
-               "id": 1,
-               "microcosmId": 1,
-               "title": "Just some chatter",
-               "meta": {
-                  "created": "2013-04-11T17:59:15.876221Z",
-                  "createdBy": {
-                     "id": 1,
-                     "userId": 1,
-                     "profileName": "motter",
-                     "visible": true,
-                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
-                     "meta": {
-                        "links": [{
-                              "rel": "self",
-                              "href": "/api/v1/profiles/1"
-                           }, {
-                              "rel": "site",
-                              "href": "/api/v1/sites/1"
-                           }
-                        ]
-                     }
-                  },
-                  "flags": {
-                     "sticky": false,
-                     "open": true,
-                     "deleted": false,
-                     "moderated": false,
-                     "visible": true,
-                     "isread": true
-                  },
-                  "links": [{
-                        "rel": "self",
-                        "href": "/api/v1/conversations/1"
-                     }, {
-                        "rel": "microcosm",
-                        "href": "/api/v1/microcosms/1",
-                        "title": "General Chit-Chat"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      "meta": {
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/conversations"
-            }
-         ],
-         "permissions": {
-            "create": false,
-            "read": true,
-            "update": false,
-            "delete": false,
-            "guest": true,
-            "superUser": false
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:10:53 GMT
+Content-Type: application/json
+Content-Length: 1770
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "conversations": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations"
+    }
+   ],
+   "type": "/api/v1/conversations",
+   "items": [
+    {
+     "id": 1,
+     "microcosmId": 1,
+     "title": "There are whisperings that the Nazgûl are abroad",
+     "meta": {
+      "created": "2013-11-21T16:10:01.851585Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
          }
-      }
-   },
-   "error": null
-}</code></pre>
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/conversations/1"
+       },
+       {
+        "rel": "microcosm",
+        "href": "/api/v1/microcosms/1",
+        "title": "Rivendell"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
 
           <h3 id="conversations-single">Single Resource</h3>
 
@@ -2121,9 +2134,11 @@ Date: Tue, 17 Sep 2013 17:34:04 GMT
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET,PUT,DELETE
+Date: Thu, 21 Nov 2013 16:14:44 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
 
           <h4 id="conversations-single-get">GET</h4>
 
@@ -2137,82 +2152,97 @@ Content-Length: 0</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>{
-   "context": "",
-   "status": 200,
-   "data": {
-      "id": 1,
-      "microcosmId": 1,
-      "title": "Just some chatter",
-      "comments": {
-         "total": 0,
-         "limit": 25,
-         "offset": 0,
-         "maxOffset": 0,
-         "totalPages": 0,
-         "page": 1,
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/conversations/1"
-            }
-         ],
-         "type": "/api/v1/comments",
-         "items": null
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:15:07 GMT
+Content-Type: application/json
+Content-Length: 1504
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "microcosmId": 1,
+  "title": "There are whisperings that the Nazgûl are abroad",
+  "comments": {
+   "total": 0,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 0,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations/1"
+    }
+   ],
+   "type": "/api/v1/comments",
+   "items": []
+  },
+  "meta": {
+   "created": "2013-11-21T16:10:01.851585Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
       },
-      "meta": {
-         "created": "2013-04-11T17:59:15.876221Z",
-         "createdBy": {
-            "id": 1,
-            "userId": 1,
-            "profileName": "motter",
-            "visible": true,
-            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "meta": {
-               "links": [{
-                     "rel": "self",
-                     "href": "/api/v1/profiles/1"
-                  }, {
-                     "rel": "site",
-                     "href": "/api/v1/sites/1"
-                  }
-               ]
-            }
-         },
-         "flags": {
-            "sticky": false,
-            "open": true,
-            "deleted": false,
-            "moderated": false,
-            "visible": true,
-            "isread": true
-         },
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/conversations/1"
-            }, {
-               "rel": "microcosm",
-               "href": "/api/v1/microcosms/1",
-               "title": "General Chit-Chat"
-            }
-         ],
-         "permissions": {
-            "create": true,
-            "read": true,
-            "update": true,
-            "delete": true,
-            "closeOwn": true,
-            "openOwn": true,
-            "readOthers": true,
-            "guest": false,
-            "banned": false,
-            "owner": true,
-            "moderator": true,
-            "siteOwner": true
-         }
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
       }
+     ]
+    }
    },
-   "error": null
-}</code></pre>
+   "flags": {
+    "sticky": false,
+    "open": true,
+    "deleted": false,
+    "moderated": false,
+    "visible": true,
+    "unread": false,
+    "watched": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms/1",
+     "title": "Rivendell"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
   
           <h4 id="conversations-single-put">PUT</h4>
 
@@ -2220,7 +2250,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>{
   "microcosmId": 1,
-  "title": "Sightings in the media",
+  "title": "The Nazgûl have been sighted",
   "meta": {"editReason": "Updated the title"}
 }</code></pre>
 
@@ -2261,28 +2291,27 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1, "title": "Sightings in the media", "meta":{"editReason": "Updated the title"}}' \
+  -d '{"microcosmId": 1, "title": "The Nazgûl have been sighted", "meta": {"editReason": "Updated the title"}}' \
   https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Origin: *
-Content-Length: 65
+Date: Thu, 21 Nov 2013 16:17:05 GMT
 Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
 Location: /api/v1/conversations/1
-Time-Spent: 601.119506ms
-Date: Tue, 17 Sep 2013 17:41:06 GMT
 
 {
-  "context":"",
-  "status":302,
-  "data":null,
-  "error":null
-}</code></pre>
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated conversation.</p>
 
@@ -2308,23 +2337,28 @@ Date: Tue, 17 Sep 2013 17:41:06 GMT
           <p>Example request:</p>
 <pre><code>curl -i \
   -X PATCH \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
   https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>HTTP/1.1 302 Found
-Content-Length: 65
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:22:01 GMT
 Content-Type: application/json
-Location: /api/v1/conversations/1
-Time-Spent: 1.445091965s
-Date: Tue, 17 Sep 2013 17:51:41 GMT
+Content-Length: 66
+Connection: keep-alive
 
-{"context":"","status":302,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
-          <p>That request will set the <code>sticky</code> property of a conversation to <code>true</code>. You will need to follow the redirect to GET the updated resource to see the change reflected.</p>
+          <p>That request will set the <code>sticky</code> property of a conversation to <code>true</code>. You will need to perform a GET on the updated resource to see the change reflected.</p>
 
           <p>Conversation fragment before:</p>
 <pre><code>{
@@ -2357,39 +2391,37 @@ Date: Tue, 17 Sep 2013 17:51:41 GMT
     ...
     "meta":{
       ...
-      "edited": "2013-04-09T11:25:48.715438Z",
+      "edited": "2013-11-21T16:22:01.378813Z",
       "editedBy": {
-        "id": 1,
-        "userId": 1,
-        "profileName": "motter",
-        "visible": true,
-        "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-        "banned": false,
-        "moderator": false,
-        "admin": true,
-        "meta": {
-          "links": [
-            {rel: "self", href: "/api/v1/profiles/1"},
-            {rel: "site", href: "/api/v1/sites/1"}
-          ]
-        }
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         ...
+        ]
+       }
       },
       "editReason": "Set sticky to true",
-      "flags":{
-        "sticky":true,
-        "open":true,
-        "deleted":false,
-        "moderated":false,
-        "visible":true,
-        "isread": true
-      }
+      "flags": {
+      "sticky": true,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
       ...
     }
   },
   "error":null
 }</code></pre>
 
-          <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
+          <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
 
           <h4 id="conversations-single-delete">DELETE</h4>
 
@@ -2399,20 +2431,24 @@ Date: Tue, 17 Sep 2013 17:51:41 GMT
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/conversations/1</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Origin: *
-Content-Length: 65
+Date: Thu, 21 Nov 2013 16:32:10 GMT
 Content-Type: application/json
-Time-Spent: 733.29522ms
-Date: Tue, 17 Sep 2013 17:52:41 GMT
+Content-Length: 66
+Connection: keep-alive
 
-{"context":"","status":200,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
         </div>
 
@@ -2597,7 +2633,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding"}' \
   https://dev1.microco.sm/api/v1/events</code></pre>
@@ -2606,7 +2642,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:00:00Z","duration": 180,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 50}' \
   https://dev1.microco.sm/api/v1/events</code></pre>
@@ -2974,7 +3010,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:42:48.515233Z","duration": 183473,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 60,"status": "upcoming","meta": {"editReason": "Increased attendee number"}}' \
   https://dev1.microco.sm/api/v1/events/1</code></pre>
@@ -3017,7 +3053,7 @@ Content-Length: 52
           <p>Example request:</p>
 <pre><code>curl -i \
   -X PATCH \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
   https://dev1.microco.sm/api/v1/events/1
@@ -3108,7 +3144,7 @@ Location: /api/v1/events/1
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
@@ -3239,7 +3275,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"attendeeId": 1}' \
   https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
@@ -3248,7 +3284,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"attendeeId": 1, "rsvp": "yes"}' \
   https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
@@ -3543,7 +3579,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"yes"}' \
   https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
@@ -3552,7 +3588,7 @@ Content-Length: 0</code></pre>
   
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"no"}' \
   https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
@@ -3561,7 +3597,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"rsvp":"maybe"}' \
   https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
@@ -3583,7 +3619,7 @@ Location: /api/v1/events/1/attendees/2
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/events/1/attendees/2</code></pre>
 
           <p>Example response:</p>
@@ -3832,7 +3868,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"itemType": "conversation","itemId": 1,"markdown": "A First Level Header\n====================\n\nA Second Level Header\n---------------------\n\nNow is the time for all good men (such as +awesome_guy +blueprints) to\ncome to the aid of their community: http://www.lfgss.com/ . This is just a\nregular paragraph.\n\nThe quick brown [fox](http://www.google.com/?q=fox) jumped over the lazy\ndogs back.\n\n### Header 3\n\n> This is a blockquote.\n> \n> This is the second paragraph in the blockquote.\n>\n> ## This is an H2 +Velocio @blueprints are mentioned in a blockquote"}' \
   https://dev1.microco.sm/api/v1/comments</code></pre>
@@ -4292,7 +4328,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"itemType": "conversation","itemId": 1,"markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"}' \
   https://dev1.microco.sm/api/v1/comments</code></pre>
@@ -4333,7 +4369,7 @@ Content-Length: 52
           <p>Example request:</p>
 <pre><code>curl -i \
   -X PATCH \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/moderated", "value": true}]' \
   https://dev1.microco.sm/api/v1/comments/1</code></pre>
@@ -4416,7 +4452,7 @@ Location: /api/v1/conversations/1
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/comments/1</code></pre>
 
           <p>Example response:</p>
@@ -4704,7 +4740,7 @@ Time-Spent: 49.970193ms
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"profileName": "NewProfileName"}' \
   https://dev1.microco.sm/api/v1/profiles/1</code></pre>
@@ -4910,7 +4946,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"key": "MyString","value": "an example string"},{"key": "MyDate","value": "2007-01-27"},{"key": "MyBoolean","value": true},{"key": "MyInt","value": 42},{"key": "MyFloat","value": 3.14159265359}]' \
   https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
@@ -5042,7 +5078,7 @@ Content-Length: 65
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"key": "MyString"},{"key": "MyDate"},{"key": "MyBoolean"},{"key": "MyInt"},{"key": "MyFloat"}]' \
   https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
@@ -5118,7 +5154,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X PUT \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"value": "an example string"}' \
   https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
@@ -5169,7 +5205,7 @@ Location: /api/v1/microcosms/1/attributes/MyString
 
 <pre><code>curl -i \
   -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
 
           <p>Example response:</p>
@@ -5227,7 +5263,7 @@ Content-Length: 52
 
           <p>Example request:</p>
 
-<pre><code>curl -H "Authorization: Bearer mytoken" -F file=@IMG1.jpg -F file=@IMG2.jpg https://dev1.microco.sm/api/v1/files</code></pre>
+<pre><code>curl -H "Authorization: Bearer letmein" -F file=@IMG1.jpg -F file=@IMG2.jpg https://dev1.microco.sm/api/v1/files</code></pre>
 
           <p>Example response:</p>
 
@@ -5313,7 +5349,7 @@ Content-Length: 52
           <p>Example request:</p>
 
 <pre><code>curl -i -X POST \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"FileHash":"FILE-SHA1"}' \
   https://dev1.microco.sm/api/v1/comments/1/attachments
@@ -5396,7 +5432,7 @@ Location: /api/v1/profiles/1/attachments
           <p>To remove an attachment from a comment, issue a DELETE request using the fileHash as the identifier.</p>
 
 <pre><code>curl -X DELETE \
-  -H "Authorization: Bearer mytoken" \
+  -H "Authorization: Bearer letmein" \
   https://dev1.microco.sm/api/v1/comments/1/attachments/FILE-SHA1</code></pre>
 
           <p>Example response:</p>
