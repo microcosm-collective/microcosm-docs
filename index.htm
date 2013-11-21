@@ -2526,18 +2526,8 @@ Connection: keep-alive
               </tr>
               <tr>
                 <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/newcomment</td>
-                <td>Get</td>
+                <td>GET</td>
                 <td>Returns a redirect with a location linking to the first new comment in the event, or if there are no new comments then the last comment in the event.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/events/{id:[0-9]+}/markread</td>
-                <td>OPTIONS</td>
-                <td>The <code>Allow:</code> header lists the methods available.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/events/{id:[0-9]+}/markread</td>
-                <td>PUT</td>
-                <td>Marks the event as read.</td>
               </tr>
             </tbody>
           </table>
@@ -2557,25 +2547,33 @@ Connection: keep-alive
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,POST,GET
+Date: Thu, 21 Nov 2013 16:55:22 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
           <h4 id="events-collection-post">POST</h4>
 
           <p>Request:</p>
 
-          <p>The flow for creating an event is to create the event item, and then to create comments against the event. An event is simply an empty container for a list of comments, but with additional structure to describe the event. An event generally is something that occurs at a moment in time, at some place in space... whilst a proposed event need no time or place, a confirmed event usually has a time and place.</p>
+          <p>The flow for creating an event is to create the event item, and then to create comments against the event. An event is simply an empty container for a list of comments, but with additional structure to describe the event and manage attendees. An event is something that occurs at a moment in time, at some place in space. It is perfectly fine to create an event without knowing the location for it and/or when it occurs.</p>
 
           <p>The structure of the JSON to create an event is:</p>
 
 <pre><code>{
   "microcosmId": 1,
-  "title": "Introduction to Track Riding",
-  "when": "2013-09-15T09:42:48.515233Z",
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
   "duration": 180,
-  "where": "Herne Hill Velodrome",
-  "rsvpLimit": 38
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "rsvpLimit": 5
 }</code></pre>
 
           <p>Where:</p>
@@ -2612,13 +2610,49 @@ Content-Length: 0</code></pre>
                 <td><code>duration</code></td>
                 <td>Integer</td>
                 <td>Optional</td>
-                <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 3 hours.</td>
+                <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 60 minutes = 1 hour.</td>
               </tr>
               <tr>
                 <td><code>where</code></td>
                 <td>String</td>
                 <td>Optional</td>
-                <td>A short textual description of the location of the event. This may be an address, and this value will be mapped based on the first result from a Google maps search of this value.</td>
+                <td>A short textual description of the location of the event. This may be an address or just the title of the location. No geolocation will be done on this, it can be a useful label "Tower of London, UK" or a meaningless one "In the middle of a field".</td>
+              </tr>
+              <tr>
+                <td><code>lat</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>The latitude where a pin should be displayed on a map.</td>
+              </tr>
+              <tr>
+                <td><code>lon</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>The longitude where a pin should be displayed on a map.</td>
+              </tr>
+              <tr>
+                <td><code>north</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>A Northerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+              </tr>
+              <tr>
+                <td><code>east</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>An Easterly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+              </tr>
+              <tr>
+                <td><code>south</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>A Southerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+              </tr>
+              <tr>
+                <td><code>west</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>A Westerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
               </tr>
               <tr>
                 <td><code>rsvpLimit</code></td>
@@ -2629,13 +2663,15 @@ Content-Length: 0</code></pre>
             </tbody>
           </table>
 
+          <p>If you supply a time then we expect a duration. Likewise if you supply a location then we expect all of the location fields to be valid and logical (the pin outside of the bounding box isn't helpful to a user, etc).</p>
+
           <p>Example request to create a proposed event:</p>
 
 <pre><code>curl -i \
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1,"title": "Introduction to Track Riding"}' \
+  -d '{"microcosmId": 1, "title": "Ale tasting?"}' \
   https://dev1.microco.sm/api/v1/events</code></pre>
 
           <p>Example request to create a confirmed/upcoming event:</p>
@@ -2644,17 +2680,25 @@ Content-Length: 0</code></pre>
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:00:00Z","duration": 180,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 50}' \
+  -d '{"microcosmId": 1, "title": "Ale tasting", "when": "2013-11-22T20:00:00Z", "duration": 180, "where": "Green Dragon Inn", "lat": 51.674871, "lon": -0.216352, "north": 51.679581, "east": -0.208955, "south": 51.66984, "west": -0.227494, "rsvpLimit": 5}' \
   https://dev1.microco.sm/api/v1/events</code></pre>
 
           <p>Example response for both scenarios:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 17:35:14 GMT
 Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
 Location: /api/v1/events/1
-Content-Length: 52
 
-{"context":"","status":302,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created event.</p>
 
