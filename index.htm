@@ -168,12 +168,6 @@
           </ul>
         </li>
 
-        <li><a href="#polls">/polls</a>
-          <ul class="nav">
-            <li><a href="#polls-urls">URLS and Methods</a></li>
-          </ul>
-        </li>
-
         <li><a href="#comments">/comments</a>
           <ul class="nav">
             <li><a href="#comments-urls">URLS and Methods</a></li>
@@ -2532,7 +2526,7 @@ Connection: keep-alive
             </tbody>
           </table>
 
-          <p class="well well-small">The <code>eventId</code> is based on a sequential number (that spans all sites in the Microco.sm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+          <p class="well well-small">The <code>eventId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
 
           <h3 id="events-collection">Collection</h3>
           
@@ -3307,7 +3301,7 @@ Connection: keep-alive
             </tbody>
           </table>
 
-          <p class="well well-small">Whilst the <code>eventId</code> is based on a sequential number (that spans all sites in the Microco.sm network), the <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. This means that if you have profile 27 and event 86574, and even if there are no other attendees, the URL would be <code>/api/v1/events/86574/attendees/27</code>.</p>
+          <p class="well well-small">Whilst the <code>eventId</code> is based on a sequential number (that spans all sites in the microcosm network), the <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. This means that if you have profile 27 and event 86574, and even if there are no other attendees, the URL would be <code>/api/v1/events/86574/attendees/27</code>.</p>
 
           <h3 id="attendees-collection">Collection</h3>
           
@@ -3322,9 +3316,11 @@ Connection: keep-alive
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,POST,GET
+Date: Fri, 22 Nov 2013 11:25:48 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
           <h4 id="attendees-collection-post">POST</h4>
 
@@ -3336,7 +3332,7 @@ Content-Length: 0</code></pre>
 
 <pre><code>{
   "attendeeId": 1,
-  "rsvp": "invited",
+  "rsvp": "yes",
 }</code></pre>
 
           <p>Where:</p>
@@ -3355,7 +3351,7 @@ Content-Length: 0</code></pre>
                 <td><code>attendeeId</code></td>
                 <td>Integer</td>
                 <td>Required</td>
-                <td>Identifies which /profile is attending the event. The <code>attendeeId</code> will become the Id in the URL for the attendee. This property is required as every attendance resource must specify who is the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
+                <td>Identifies which profile is attending the event. The <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
               </tr>
               <tr>
                 <td><code>rsvpd</code></td>
@@ -3375,7 +3371,7 @@ Content-Length: 0</code></pre>
   -d '{"attendeeId": 1}' \
   https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
-          <p>Example request to create a confirmation for the user whose <code>Authorization</code> token matches the <code>attendeeId</code>:</p>
+          <p>Example request to create a confirmation for the user whose authentication credentials token matches the <code>attendeeId</code>:</p>
 
 <pre><code>curl -i \
   -X POST \
@@ -3387,11 +3383,19 @@ Content-Length: 0</code></pre>
           <p>Example response for both scenarios:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:29:19 GMT
 Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
 Location: /api/v1/events/1/attendees/1
-Content-Length: 52
 
-{"context":"","status":302,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attendee resource.</p>
 
@@ -3411,127 +3415,120 @@ Content-Length: 52
 
           <p>Example response:</p>
 
-<pre><code>{
-   "context": "",
-   "status": 200,
-   "data": {
-      "attendees": {
-         "total": 1,
-         "limit": 25,
-         "offset": 0,
-         "pages": 1,
-         "links": [{
-               "rel": "first",
-               "href": "/api/v1/events/1/attendees"
-            }, {
-               "rel": "self",
-               "href": "/api/v1/events/1/attendees"
-            }, {
-               "rel": "last",
-               "href": "/api/v1/events/1/attendees"
-            }
-         ],
-         "type": "/api/v1/events/0/attendees",
-         "items": [{
-               "attendeeId": 2,
-               "attendee": {
-                  "id": 2,
-                  "userId": 2,
-                  "profileName": "Velocio",
-                  "visible": true,
-                  "avatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
-                  "banned": false,
-                  "moderator": false,
-                  "admin": false,
-                  "meta": {
-                     "links": [{
-                           "rel": "self",
-                           "href": "/api/v1/profiles/2"
-                        }, {
-                           "rel": "site",
-                           "href": "/api/v1/sites/1"
-                        }
-                     ]
-                  }
-               },
-               "rsvp": "no",
-               "rsvpdOn": "2013-04-18T09:38:04.212643Z",
-               "meta": {
-                  "created": "2013-04-18T09:38:02.1381Z",
-                  "createdBy": {
-                     "id": 1,
-                     "userId": 1,
-                     "profileName": "motter",
-                     "visible": true,
-                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
-                     "meta": {
-                        "links": [{
-                              "rel": "self",
-                              "href": "/api/v1/profiles/1"
-                           }, {
-                              "rel": "site",
-                              "href": "/api/v1/sites/1"
-                           }
-                        ]
-                     }
-                  },
-                  "edited": "2013-04-18T09:38:04.212643Z",
-                  "editedBy": {
-                     "id": 1,
-                     "userId": 1,
-                     "profileName": "motter",
-                     "visible": true,
-                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
-                     "meta": {
-                        "links": [{
-                              "rel": "self",
-                              "href": "/api/v1/profiles/1"
-                           }, {
-                              "rel": "site",
-                              "href": "/api/v1/sites/1"
-                           }
-                        ]
-                     }
-                  },
-                  "editReason": "Changed state to no",
-                  "links": [{
-                        "rel": "self",
-                        "href": "/api/v1/events/1/attendees/2"
-                     }, {
-                        "rel": "profile",
-                        "href": "/api/v1/profiles/2"
-                     }, {
-                        "rel": "event",
-                        "href": "/api/v1/events/1"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:29:40 GMT
+Content-Type: application/json
+Content-Length: 2044
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attendees": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees"
+    }
+   ],
+   "type": "/api/v1/events/0/attendees",
+   "items": [
+    {
+     "attendeeId": 1,
+     "attendee": {
+      "id": 1,
+      "siteId": 1,
+      "userId": 1,
+      "profileName": "Frodo",
+      "visible": true,
+      "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
       "meta": {
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/events/1/attendees"
-            }
-         ],
-         "permissions": {
-            "create": false,
-            "read": true,
-            "update": false,
-            "delete": false,
-            "guest": true,
-            "superUser": false
-         }
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/profiles/1"
+        },
+        {
+         "rel": "site",
+         "href": "/api/v1/sites/1"
+        }
+       ]
       }
-   },
-   "error": null
+     },
+     "rsvp": "invited",
+     "rsvpdOn": "2013-11-22T11:29:19.137938Z",
+     "meta": {
+      "created": "2013-11-22T11:29:19.137938Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/events/1/attendees/1"
+       },
+       {
+        "rel": "profile",
+        "href": "/api/v1/profiles/1"
+       },
+       {
+        "rel": "event",
+        "href": "/api/v1/events/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
 }</code></pre>
 
           <h3 id="attendees-single">Single Resource</h3>
@@ -3547,9 +3544,11 @@ Content-Length: 52
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET,PUT,DELETE
+Date: Fri, 22 Nov 2013 11:30:23 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,DELETE</code></pre>
 
           <h4 id="attendees-single-get">GET</h4>
 
@@ -3559,104 +3558,99 @@ Content-Length: 0</code></pre>
 
 <pre><code>curl -i \
   -X GET \
-  https://dev1.microco.sm/api/v1/events/1/attendees/2</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>{
-   "context": "",
-   "status": 200,
-   "data": {
-      "attendeeId": 2,
-      "attendee": {
-         "id": 2,
-         "userId": 2,
-         "profileName": "Velocio",
-         "visible": true,
-         "avatar": "https://secure.gravatar.com/avatar/309cb01f0a25f751e7294407d983f801",
-         "banned": false,
-         "moderator": false,
-         "admin": false,
-         "meta": {
-            "links": [{
-                  "rel": "self",
-                  "href": "/api/v1/profiles/2"
-               }, {
-                  "rel": "site",
-                  "href": "/api/v1/sites/1"
-               }
-            ]
-         }
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:32:14 GMT
+Content-Type: application/json
+Content-Length: 1467
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attendeeId": 1,
+  "attendee": {
+   "id": 1,
+   "siteId": 1,
+   "userId": 1,
+   "profileName": "Frodo",
+   "visible": true,
+   "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+   "meta": {
+    "links": [
+     {
+      "rel": "self",
+      "href": "/api/v1/profiles/1"
+     },
+     {
+      "rel": "site",
+      "href": "/api/v1/sites/1"
+     }
+    ]
+   }
+  },
+  "rsvp": "invited",
+  "rsvpdOn": "2013-11-22T11:29:19.137938Z",
+  "meta": {
+   "created": "2013-11-22T11:29:19.137938Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
       },
-      "rsvp": "no",
-      "rsvpdOn": "2013-04-18T09:38:04.212643Z",
-      "meta": {
-         "created": "2013-04-18T09:38:02.1381Z",
-         "createdBy": {
-            "id": 1,
-            "userId": 1,
-            "profileName": "motter",
-            "visible": true,
-            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "banned": false,
-            "moderator": false,
-            "admin": false,
-            "meta": {
-               "links": [{
-                     "rel": "self",
-                     "href": "/api/v1/profiles/1"
-                  }, {
-                     "rel": "site",
-                     "href": "/api/v1/sites/1"
-                  }
-               ]
-            }
-         },
-         "edited": "2013-04-18T09:38:04.212643Z",
-         "editedBy": {
-            "id": 1,
-            "userId": 1,
-            "profileName": "motter",
-            "visible": true,
-            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "banned": false,
-            "moderator": false,
-            "admin": false,
-            "meta": {
-               "links": [{
-                     "rel": "self",
-                     "href": "/api/v1/profiles/1"
-                  }, {
-                     "rel": "site",
-                     "href": "/api/v1/sites/1"
-                  }
-               ]
-            }
-         },
-         "editReason": "Changed state to no",
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/events/1/attendees/2"
-            }, {
-               "rel": "profile",
-               "href": "/api/v1/profiles/2"
-            }, {
-               "rel": "event",
-               "href": "/api/v1/events/1"
-            }
-         ],
-         "permissions": {
-            "create": false,
-            "read": true,
-            "update": false,
-            "delete": false,
-            "guest": true,
-            "superUser": false
-         }
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
       }
+     ]
+    }
    },
-   "error": null
-}</code></pre>
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees/1"
+    },
+    {
+     "rel": "profile",
+     "href": "/api/v1/profiles/1"
+    },
+    {
+     "rel": "event",
+     "href": "/api/v1/events/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
 
           <h4 id="attendees-single-put">PUT</h4>
 
@@ -3700,11 +3694,19 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:33:17 GMT
 Content-Type: application/json
-Content-Length: 52
-Location: /api/v1/events/1/attendees/2
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1/attendees/1
 
-{"context":"","status":302,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <h4 id="attendees-single-delete">DELETE</h4>
 
@@ -3715,104 +3717,24 @@ Location: /api/v1/events/1/attendees/2
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  https://dev1.microco.sm/api/v1/events/1/attendees/2</code></pre>
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:33:36 GMT
 Content-Type: application/json
-Content-Length: 52
+Content-Length: 66
+Connection: keep-alive
 
-{"context":"","status":200,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
         </div>
-
-        <!-- /polls -->
-        <div class="bs-docs-section" id="polls">
-          <h2>/polls</h2>
-
-          <p>Provides an interface to the polls that exist on a site and the comments contained within them. A poll describes a question with a set of answers that a person can vote on. A collection of comments may be attached to an poll.</p>
-
-          <h3 id="polls-urls">URLs and Methods</h3>
-
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>URL Pattern</th>
-                <th>Method</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>/api/v1/polls</td>
-                <td>OPTIONS</td>
-                <td>The <code>Allow:</code> header lists the methods available.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls</td>
-                <td>POST</td>
-                <td>Creates a new poll on the current site.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls</td>
-                <td>GET</td>
-                <td>Returns information about the polls that exist on the current site.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}</td>
-                <td>OPTIONS</td>
-                <td>The <code>Allow:</code> header lists the methods available.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}</td>
-                <td>GET</td>
-                <td>Returns information about the poll specified by the numeric identifier and a collection of comments related to this poll.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}</td>
-                <td>PUT</td>
-                <td>Updates the poll specified by the numeric identifier.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}</td>
-                <td>DELETE</td>
-                <td>Deletes the poll specified by the numeric identifier.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}/lastcomment</td>
-                <td>OPTIONS</td>
-                <td>The <code>Allow:</code> header lists the methods available.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}/lastcomment</td>
-                <td>GET</td>
-                <td>Returns a redirect with a location linking to the last comment in the poll.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}/newcomment</td>
-                <td>OPTIONS</td>
-                <td>The <code>Allow:</code> header lists the methods available.</td>
-              </tr>
-              <tr>
-                <td style="white-space:nowrap;">/api/v1/polls/{id:[0-9]+}/newcomment</td>
-                <td>Get</td>
-                <td>Returns a redirect with a location linking to the first new comment in the poll, or if there are no new comments then the last comment in the poll.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}/markread</td>
-                <td>OPTIONS</td>
-                <td>The <code>Allow:</code> header lists the methods available.</td>
-              </tr>
-              <tr>
-                <td>/api/v1/polls/{id:[0-9]+}/markread</td>
-                <td>PUT</td>
-                <td>Marks the poll as read.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p class="well well-small">The <code>pollId</code> is based on a sequential number (that spans all sites in the Microco.sm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
 
         <!-- /comments -->
         <div class="bs-docs-section" id="comments">
@@ -3878,7 +3800,7 @@ Content-Length: 52
             </tbody>
           </table>
 
-          <p class="well well-small">The <code>commentId</code> is based on a sequential number (that spans all sites in the Microco.sm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+          <p class="well well-small">The <code>commentId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
 
           <h3 id="comments-collection">Collection</h3>
           
