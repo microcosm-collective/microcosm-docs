@@ -2317,7 +2317,7 @@ Location: /api/v1/conversations/1
 
           <h4 id="conversations-single-patch">PATCH</h4>
 
-          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a conversation or a super user (Microco.sm moderator or site admin) can delete a conversation, but only a super user can undelete a conversation.</p>
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a conversation or a super user (microcosm moderator or site admin) can delete a conversation, but only a super user can undelete a conversation.</p>
 
           <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
 
@@ -2718,144 +2718,118 @@ Location: /api/v1/events/1
 
           <p>Example response:</p>
 
-<pre><code>{
-   "context": "",
-   "status": 200,
-   "data": {
-      "events": {
-         "total": 2,
-         "limit": 25,
-         "offset": 0,
-         "pages": 1,
-         "links": [{
-               "rel": "first",
-               "href": "/api/v1/events"
-            }, {
-               "rel": "self",
-               "href": "/api/v1/events"
-            }, {
-               "rel": "last",
-               "href": "/api/v1/events"
-            }
-         ],
-         "type": "/api/v1/events",
-         "items": [{
-               "id": 1,
-               "microcosmId": 1,
-               "title": "Introduction to Track Riding",
-               "when": "2013-09-15T09:00:00Z",
-               "duration": 180,
-               "where": "Herne Hill Velodrome, SE24 9HE",
-               "lat": 51.450975,
-               "lon": -0.091447,
-               "status": "upcoming",
-               "meta": {
-                  "created": "2013-04-11T17:59:42.807352Z",
-                  "createdBy": {
-                     "id": 1,
-                     "userId": 1,
-                     "profileName": "motter",
-                     "visible": true,
-                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
-                     "meta": {
-                        "links": [{
-                              "rel": "self",
-                              "href": "/api/v1/profiles/1"
-                           }, {
-                              "rel": "site",
-                              "href": "/api/v1/sites/1"
-                           }
-                        ]
-                     }
-                  },
-                  "flags": {
-                     "sticky": false,
-                     "open": true,
-                     "deleted": false,
-                     "moderated": false,
-                     "visible": true,
-                     "isread": true
-                  },
-                  "links": [{
-                        "rel": "self",
-                        "href": "/api/v1/events/1"
-                     }, {
-                        "rel": "microcosm",
-                        "href": "/api/v1/microcosms/1",
-                        "title": "General Chit-Chat"
-                     }
-                  ]
-               }
-            }, {
-               "id": 2,
-               "microcosmId": 1,
-               "title": "Introduction to Track Riding",
-               "duration": 180,
-               "status": "proposed",
-               "meta": {
-                  "created": "2013-04-11T17:59:44.372575Z",
-                  "createdBy": {
-                     "id": 1,
-                     "userId": 1,
-                     "profileName": "motter",
-                     "visible": true,
-                     "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-                     "banned": false,
-                     "moderator": false,
-                     "admin": false,
-                     "meta": {
-                        "links": [{
-                              "rel": "self",
-                              "href": "/api/v1/profiles/1"
-                           }, {
-                              "rel": "site",
-                              "href": "/api/v1/sites/1"
-                           }
-                        ]
-                     }
-                  },
-                  "flags": {
-                     "sticky": true,
-                     "open": true,
-                     "deleted": false,
-                     "moderated": false,
-                     "visible": true,
-                     "isread": true
-                  },
-                  "links": [{
-                        "rel": "self",
-                        "href": "/api/v1/events/2"
-                     }, {
-                        "rel": "microcosm",
-                        "href": "/api/v1/microcosms/1",
-                        "title": "General Chit-Chat"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      "meta": {
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/events"
-            }
-         ],
-         "permissions": {
-            "create": false,
-            "read": true,
-            "update": false,
-            "delete": false,
-            "guest": true,
-            "superUser": false
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:36:58 GMT
+Content-Type: application/json
+Content-Length: 1960
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "events": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events"
+    }
+   ],
+   "type": "/api/v1/events",
+   "items": [
+    {
+     "id": 1,
+     "microcosmId": 1,
+     "title": "Ale tasting",
+     "when": "2013-11-22T20:00:00Z",
+     "duration": 180,
+     "where": "Green Dragon Inn",
+     "lat": 51.674871,
+     "lon": -0.216352,
+     "north": 51.679581,
+     "east": -0.208955,
+     "south": 51.66984,
+     "west": -0.227494,
+     "status": "upcoming",
+     "meta": {
+      "created": "2013-11-22T10:28:46.261132Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
          }
-      }
-   },
-   "error": null
-}</code></pre>
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/events/1"
+       },
+       {
+        "rel": "microcosm",
+        "href": "/api/v1/microcosms/1",
+        "title": "Rivendell"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
 
           <h3 id="events-single">Single Resource</h3>
 
@@ -2870,9 +2844,11 @@ Location: /api/v1/events/1
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET,PUT,PATCH,DELETE
+Date: Fri, 22 Nov 2013 10:40:42 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
 
           <h4 id="events-single-get">GET</h4>
 
@@ -2886,90 +2862,107 @@ Content-Length: 0</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>{
-   "context": "",
-   "status": 200,
-   "data": {
-      "id": 1,
-      "microcosmId": 1,
-      "title": "Introduction to Track Riding",
-      "when": "2013-09-15T09:00:00Z",
-      "duration": 180,
-      "where": "Herne Hill Velodrome, SE24 9HE",
-      "lat": 51.450975,
-      "lon": -0.091447,
-      "status": "upcoming",
-      "rsvpLimit": 50,
-      "rsvpSpaces": 50,
-      "comments": {
-         "total": 0,
-         "limit": 25,
-         "offset": 0,
-         "maxOffset": 0,
-         "totalPages": 1,
-         "page": 1,
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/events/1"
-            }
-         ],
-         "type": "/api/v1/comments",
-         "items": null
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:41:03 GMT
+Content-Type: application/json
+Content-Length: 1722
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "status": "upcoming",
+  "rsvpLimit": 5,
+  "rsvpSpaces": 5,
+  "comments": {
+   "total": 0,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 0,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1"
+    }
+   ],
+   "type": "/api/v1/comments",
+   "items": []
+  },
+  "meta": {
+   "created": "2013-11-22T10:28:46.261132Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
       },
-      "meta": {
-         "created": "2013-04-11T17:59:42.807352Z",
-         "createdBy": {
-            "id": 1,
-            "siteId": 3,
-            "userId": 1,
-            "profileName": "motter",
-            "visible": true,
-            "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-            "meta": {
-               "links": [{
-                     "rel": "self",
-                     "href": "/api/v1/profiles/1"
-                  }, {
-                     "rel": "site",
-                     "href": "/api/v1/sites/1"
-                  }
-               ]
-            }
-         },
-         "flags": {
-            "sticky": false,
-            "open": true,
-            "deleted": false,
-            "moderated": false,
-            "visible": true,
-            "isread": true
-         },
-         "links": [{
-               "rel": "self",
-               "href": "/api/v1/events/1"
-            }, {
-               "rel": "microcosm",
-               "href": "/api/v1/microcosms/1",
-               "title": "General Chit-Chat"
-            }
-         ],
-         "permissions": {
-            "create": true,
-            "read": true,
-            "update": true,
-            "delete": true,
-            "closeOwn": true,
-            "openOwn": true,
-            "readOthers": true,
-            "guest": false,
-            "banned": false,
-            "owner": true,
-            "moderator": true,
-            "siteOwner": true
-         }
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
       }
+     ]
+    }
    },
-   "error": null
+   "flags": {
+    "sticky": false,
+    "open": true,
+    "deleted": false,
+    "moderated": false,
+    "visible": true,
+    "unread": false,
+    "watched": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms/1",
+     "title": "Rivendell"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
 }</code></pre>
   
           <h4 id="events-single-put">PUT</h4>
@@ -2978,13 +2971,20 @@ Content-Length: 0</code></pre>
 
 <pre><code>{
   "microcosmId": 1,
-  "title": "Introduction to Track Riding",
-  "when": "2013-09-15T09:42:48.515233Z",
-  "duration": 183473,
-  "where": "Herne Hill Velodrome, SE24 9HE",
-  "rsvpLimit": 60,
-  "status": "upcoming",
-  "meta": {"editReason": "Increased attendee number"}
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "rsvpLimit": 25,
+  "meta": {
+    "editReason": "Increased attendee number"
+  }
 }</code></pre>
 
           <p>Where:</p>
@@ -3021,13 +3021,49 @@ Content-Length: 0</code></pre>
                 <td><code>duration</code></td>
                 <td>Integer</td>
                 <td>Required</td>
-                <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 3 hours.</td>
+                <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 60 minutes = 1 hour.</td>
               </tr>
               <tr>
                 <td><code>where</code></td>
                 <td>String</td>
                 <td>Required</td>
                 <td>A short textual description of the location of the event. This may be an address, and this value will be mapped based on the first result from a Google maps search of this value.</td>
+              </tr>
+              <tr>
+                <td><code>lat</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>The latitude where a pin should be displayed on a map.</td>
+              </tr>
+              <tr>
+                <td><code>lon</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>The longitude where a pin should be displayed on a map.</td>
+              </tr>
+              <tr>
+                <td><code>north</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>A Northerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+              </tr>
+              <tr>
+                <td><code>east</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>An Easterly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+              </tr>
+              <tr>
+                <td><code>south</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>A Southerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+              </tr>
+              <tr>
+                <td><code>west</code></td>
+                <td>Float</td>
+                <td>Optional</td>
+                <td>A Westerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
               </tr>
               <tr>
                 <td><code>rsvpLimit</code></td>
@@ -3056,28 +3092,30 @@ Content-Length: 0</code></pre>
   -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1,"title": "Introduction to Track Riding","when": "2013-09-15T09:42:48.515233Z","duration": 183473,"where": "Herne Hill Velodrome, SE24 9HE","rsvpLimit": 60,"status": "upcoming","meta": {"editReason": "Increased attendee number"}}' \
+  -d '{"microcosmId": 1, "title": "Ale tasting", "when": "2013-11-22T20:00:00Z", "duration": 180, "where": "Green Dragon Inn", "lat": 51.674871, "lon": -0.216352, "north": 51.679581, "east": -0.208955, "south": 51.66984, "west": -0.227494, "rsvpLimit": 25, "meta": {"editReason": "Increased attendee number"}}' \
   https://dev1.microco.sm/api/v1/events/1</code></pre>
 
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 10:43:28 GMT
 Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
 Location: /api/v1/events/1
-Content-Length: 52
 
 {
-  "context":"",
-  "status":302,
-  "data":null,
-  "error":null
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
 }</code></pre>
 
-          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated event.</p>
+          <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the updated event.</p>
 
           <h4 id="events-single-patch">PATCH</h4>
 
-          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of an event or a super user (Microco.sm moderator or site admin) can delete an event, but only a super user can undelete an event.</p>
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of an event or a super user (microcosm moderator or site admin) can delete an event, but only a super user can undelete an event.</p>
 
           <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
 
@@ -3105,14 +3143,21 @@ Content-Length: 52
 
           <p>Example response:</p>
 
-<pre><code>HTTP/1.1 302 Found
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:45:52 GMT
 Content-Type: application/json
-Content-Length: 52
-Location: /api/v1/events/1
+Content-Length: 66
+Connection: keep-alive
 
-{"context":"","status":302,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
-          <p>That request will set the <code>sticky</code> property of an event to <code>true</code>. You will need to follow the redirect to GET the updated resource to see the change reflected.</p>
+          <p>That request will set the <code>sticky</code> property of an event to <code>true</code>. You will need to perform a GET of the updated resource to see the change.</p>
 
           <p>Event fragment before:</p>
 <pre><code>{
@@ -3145,40 +3190,38 @@ Location: /api/v1/events/1
     "id":1,
     ...
     "meta":{
-      ...
-      "edited": "2013-04-09T11:25:48.715438Z",
-      "editedBy": {
-        "id": 1,
-        "userId": 1,
-        "profileName": "motter",
-        "visible": true,
-        "avatar": "http://s.gravatar.com/avatar/e9dbb0ec77ba164b51f6d2c8e62869ba?s=80",
-        "banned": false,
-        "moderator": false,
-        "admin": true,
-        "meta": {
-          "links": [
-            {rel: "self", href: "/api/v1/profiles/1"},
-            {rel: "site", href: "/api/v1/sites/1"}
-          ]
-        }
-      },
-      "editReason": "Set sticky to true",
-      "flags":{
-        "sticky":true,
-        "open":true,
-        "deleted":false,
-        "moderated":false,
-        "visible":true,
-        "isread": true
+     ...
+     "edited": "2013-11-22T10:45:52.3653Z",
+     "editedBy": {
+      "id": 1,
+      "siteId": 1,
+      "userId": 1,
+      "profileName": "Frodo",
+      "visible": true,
+      "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+      "meta": {
+       "links": [
+       ...
+       ]
       }
-      ...
+     },
+     "editReason": "Set sticky to true",
+     "flags": {
+      "sticky": true,
+      "open": true,
+      "deleted": false,
+      "moderated": false,
+      "visible": true,
+      "unread": false,
+      "watched": false
+     },
+     ...
     }
   },
   "error":null
 }</code></pre>
 
-          <p>The modified resource now reflects <code>"sticky":true</code> and the edited properties are populated describing the change to the resource.</p>
+          <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
 
           <h4 id="events-single-delete">DELETE</h4>
 
@@ -3194,10 +3237,18 @@ Location: /api/v1/events/1
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:47:40 GMT
 Content-Type: application/json
-Content-Length: 52
+Content-Length: 66
+Connection: keep-alive
 
-{"context":"","status":200,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
         </div>
 
@@ -4395,7 +4446,7 @@ Content-Length: 52
 
           <h4 id="comments-single-patch">PATCH</h4>
 
-          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a comment or a super user (Microco.sm moderator or site admin) can delete a comment, but only a super user can undelete a comment.</p>
+          <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a comment or a super user (microcosm moderator or site admin) can delete a comment, but only a super user can undelete a comment.</p>
 
           <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
 

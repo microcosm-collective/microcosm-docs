@@ -1,10 +1,10 @@
 # Proposed event
-curl -i \
-  -X POST \
-  -H "Authorization: Bearer letmein" \
-  -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1,"title": "Ale tasting?"}' \
-	https://dev1.microco.sm/api/v1/events
+#curl -i \
+#  -X POST \
+#  -H "Authorization: Bearer letmein" \
+#  -H "Content-Type: application/json" \
+#  -d '{"microcosmId": 1,"title": "Ale tasting?"}' \
+#	https://dev1.microco.sm/api/v1/events
 
 # Upcoming event
 curl -i \
