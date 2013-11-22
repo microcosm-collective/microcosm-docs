@@ -2,7 +2,5 @@ curl -i \
 	-X PUT \
 	-H "Authorization: Bearer letmein" \
 	-H "Content-Type: application/json" \
-	-d '{"itemType": "conversation","itemId": 1,"markdown": "Some text and a link to [Yahoo](http://www.yahoo.com/)"}' \
-	https://dev1.microco.sm/api/v1/comments
-
-# Update a comment in reply to existing comment is identical to updating a normal comment. inReplyTo is ignored on PUT
+	-d '{"itemType": "conversation","itemId": 1,"markdown": "The [ring](http://lotr.wikia.com/wiki/One_Ring) is taking me. If I put it on [he](http://lotr.wikia.com/wiki/Sauron) will find me."}' \
+	https://dev1.microco.sm/api/v1/comments/2
