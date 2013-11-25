@@ -4686,8 +4686,8 @@ Location: /api/v1/profiles/1
 
         </div>
 
-          <h3 id="profiles-collection">Collection</h3>
-          <h4 id="profiles-collection-options">OPTIONS</h4>
+          <h3 id="whoami-single">Single</h3>
+          <h4 id="whoami-single-options">OPTIONS</h4>
 
 
           <p>Example request:</p>
@@ -4705,7 +4705,7 @@ Content-Length: 0
 Connection: keep-alive
 Allow: OPTIONS,GET</code></pre>
 
-          <h4 id="profiles-collection-get">GET</h4>
+          <h4 id="whoami-single-get">GET</h4>
 
           <p>If you call this without an access_token you should expect to deal with a <code>HTTP 401 Unauthorized</code> error.</p>
 
@@ -5228,53 +5228,119 @@ Connection: keep-alive
 
           <h3 id="files-collection">Collection</h3>
 
+          <h4 id="files-collection-options">OPTIONS</h4>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/files</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:34:15 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST</code></pre>
+
           <h4 id="files-collection-post">POST</h4>
 
           <p>Example request:</p>
 
-<pre><code>curl -H "Authorization: Bearer letmein" -F file=@IMG1.jpg -F file=@IMG2.jpg https://dev1.microco.sm/api/v1/files</code></pre>
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X POST \
+  -F file=@red.jpg \
+  -F file=@blue.jpg \
+  https://dev1.microco.sm/api/v1/files</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>{
-  "context": "",
-  "status": 200,
-  "data": [
-    {
-      "created": "2013-07-29T15:49:11.764079716Z",
-      "fileSize": 305736,
-      "fileHash": "IMG1-SHA1",
-      "mimeType": "image/jpeg"
-    },
-    {
-      "created": "2013-07-29T15:49:14.594377343Z",
-      "fileSize": 62625,
-      "fileHash": "IMG2-SHA1",
-      "mimeType": "image/jpeg"
-    }
-  ],
-  "error": null
+<pre><code>HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:56:36 GMT
+Content-Type: application/json
+Content-Length: 465
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": [
+  {
+   "created": "2013-11-25T15:56:36.130607166Z",
+   "fileSize": 1044,
+   "fileHash": "6dfa7765c0426db8d27fda63fa9671794dd730a3",
+   "mimeType": "image/jpeg",
+   "width": 150,
+   "height": 150
+  },
+  {
+   "created": "2013-11-25T15:56:36.391334395Z",
+   "fileSize": 2887,
+   "fileHash": "f1f2f140aca0da4f49dce4fe5e92ffa3d5cfb19f",
+   "mimeType": "image/jpeg",
+   "width": 280,
+   "height": 280
+  }
+ ],
+ "error": null
+}
 </code></pre>
 
           <h3 id="files-single">Single Resource</h3>
 
-          <h4 id="files-single-get">GET</h4>
+          <h4 id="files-single-options">OPTIONS</h4>
+
+          <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
           <p>Example request:</p>
 
-<pre><code>curl https://dev1.microco.sm/api/v1/files/IMG1-SHA1</code></pre>
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3
+</code></pre>
 
           <p>Example response:</p>
 
-<pre><code>[binary image data]</code></pre>
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:59:06 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET</code></pre>
+
+          <h4 id="files-single-get">GET</h4>
+
+          <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:01:50 GMT
+Content-Type: image/jpeg
+Content-Length: 1044
+Connection: keep-alive
+
+[binary image data that a browser would render or you could pass to a native image renderer]
+</code></pre>
+
         </div>
 
         <!-- /attachments -->
         <div class="bs-docs-section" id="attachments">
           <h2>/{type}/{id}/attachments</h2>
 
-          <p>An attachment represents a link between an item and a file. To create an attachment, the file must already have been uploaded to <code>/files</code> and the item
-            must also exist.</p>
+          <p>An attachment represents a link between an item and a file. To create an attachment, the file must already have been uploaded to <code>/files</code> and the item must also exist.</p>
 
           <p>Attachments can be created on a comment or a profile (in which case it becomes the profile's avatar). Attachments are always accessed through the path of the
             parent object, e.g. <code>/comments/1/attachments</code> or <code>/profiles/1/attachments</code>.</p>
