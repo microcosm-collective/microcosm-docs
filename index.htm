@@ -4433,9 +4433,11 @@ Location: /api/v1/conversations/1?comment_id=2
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET
+Date: Mon, 25 Nov 2013 14:43:50 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
           <h4 id="profiles-collection-get">GET</h4>
 
@@ -4453,22 +4455,19 @@ Content-Length: 0</code></pre>
 
             <p>Example response:</p>
 
-<pre><code>
-HTTP/1.1 200 OK
-Server: nginx
-Date: Wed, 06 Nov 2013 11:25:54 GMT
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 14:44:07 GMT
 Content-Type: application/json
-Content-Length: 1511
+Content-Length: 1091
 Connection: keep-alive
 Cache-Control: no-cache, max-age=0
-Time-Spent: 33.311053ms
 
 {
  "context": "",
  "status": 200,
  "data": {
   "profiles": {
-   "total": 2,
+   "total": 1,
    "limit": 25,
    "offset": 0,
    "maxOffset": 0,
@@ -4477,43 +4476,23 @@ Time-Spent: 33.311053ms
    "links": [
     {
      "rel": "self",
-     "href": "/api/v1/profiles?q=u&top=true"
+     "href": "/api/v1/profiles"
     }
    ],
    "type": "/api/v1/profiles",
    "items": [
     {
-     "id": 5,
+     "id": 1,
      "siteId": 1,
-     "userId": 3,
-     "profileName": "user5833",
+     "userId": 1,
+     "profileName": "Frodo",
      "visible": true,
-     "avatar": "/api/v1/files/159e405e607e689500318ca46e28c93dc947323c",
+     "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
      "meta": {
       "links": [
        {
         "rel": "self",
-        "href": "/api/v1/profiles/5"
-       },
-       {
-        "rel": "site",
-        "href": "/api/v1/sites/1"
-       }
-      ]
-     }
-    },
-    {
-     "id": 6,
-     "siteId": 1,
-     "userId": 4,
-     "profileName": "user5834",
-     "visible": true,
-     "avatar": "/api/v1/files/18abe7b186a04ab252df3005f481c8980fabc737",
-     "meta": {
-      "links": [
-       {
-        "rel": "self",
-        "href": "/api/v1/profiles/6"
+        "href": "/api/v1/profiles/1"
        },
        {
         "rel": "site",
@@ -4528,7 +4507,7 @@ Time-Spent: 33.311053ms
    "links": [
     {
      "rel": "self",
-     "href": "/api/v1/profiles?q=u&top=true"
+     "href": "/api/v1/profiles"
     }
    ],
    "permissions": {
@@ -4548,7 +4527,8 @@ Time-Spent: 33.311053ms
   }
  },
  "error": null
-}</code></pre>
+}
+</code></pre>
 
           <h3 id="profiles-single">Single Resource</h3>
           <h4 id="profiles-single-options">OPTIONS</h4>
@@ -4563,15 +4543,11 @@ Time-Spent: 33.311053ms
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Server: nginx
-Date: Wed, 06 Nov 2013 11:36:31 GMT
+Date: Mon, 25 Nov 2013 15:01:09 GMT
 Content-Type: text/plain; charset=utf-8
 Content-Length: 0
 Connection: keep-alive
-Access-Control-Allow-Headers: 
-Access-Control-Allow-Origin: *
-Allow: OPTIONS,GET,PUT
-Time-Spent: 2.064575ms</code></pre>
+Allow: OPTIONS,HEAD,GET,PUT,DELETE</code></pre>
 
           <h4 id="profiles-single-get">GET</h4>
 
@@ -4586,13 +4562,11 @@ Time-Spent: 2.064575ms</code></pre>
           <p>Example response:</p>
 
           <pre><code>HTTP/1.1 200 OK
-Server: nginx
-Date: Wed, 06 Nov 2013 11:41:28 GMT
+Date: Mon, 25 Nov 2013 15:01:41 GMT
 Content-Type: application/json
-Content-Length: 855
+Content-Length: 853
 Connection: keep-alive
 Cache-Control: no-cache, max-age=0
-Time-Spent: 49.970193ms
 
 {
  "context": "",
@@ -4601,14 +4575,14 @@ Time-Spent: 49.970193ms
   "id": 1,
   "siteId": 1,
   "userId": 1,
-  "profileName": "motter",
+  "profileName": "Frodo",
   "visible": true,
   "styleId": 1,
   "itemCount": 0,
-  "commentCount": 25,
-  "created": "2013-11-05T13:55:45.492937Z",
-  "lastActive": "2013-11-05T16:11:44.121511Z",
-  "avatar": "/api/v1/files/6c0b87cba4359131e79bbab6befd6ee0c51842d6",
+  "commentCount": 2,
+  "created": "2013-11-25T12:13:05.841628Z",
+  "lastActive": "2013-11-25T13:34:34.732561Z",
+  "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
   "banned": false,
   "admin": true,
   "meta": {
@@ -4654,28 +4628,27 @@ Time-Spent: 49.970193ms
   -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"profileName": "NewProfileName"}' \
+  -d '{"microcosmId": 1, "profileName": "FrodoBaggins"}' \
   https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+          <p>Note that you do not need to supply the editedBy information as the only people that can update a profile are the owner of the profile and the owner of the site.</p>
 
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
-Server: nginx
-Date: Wed, 06 Nov 2013 11:58:07 GMT
+Date: Mon, 25 Nov 2013 15:02:46 GMT
 Content-Type: application/json
 Content-Length: 66
 Connection: keep-alive
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Origin: *
 Location: /api/v1/profiles/1
-Time-Spent: 248.608426ms
 
 {
  "context": "",
  "status": 302,
  "data": null,
  "error": null
-}</code></pre>
+}
+</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated profile.</p>
         </div>
@@ -4713,6 +4686,55 @@ Time-Spent: 248.608426ms
 
         </div>
 
+          <h3 id="profiles-collection">Collection</h3>
+          <h4 id="profiles-collection-options">OPTIONS</h4>
+
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/whoami</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:09:34 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET</code></pre>
+
+          <h4 id="profiles-collection-get">GET</h4>
+
+          <p>If you call this without an access_token you should expect to deal with a <code>HTTP 401 Unauthorized</code> error.</p>
+
+          <p>Example request:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  https://dev1.microco.sm/api/v1/whoami</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 307 Temporary Redirect
+Date: Mon, 25 Nov 2013 15:12:04 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/profiles/1
+
+{
+ "context": "",
+ "status": 307,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+        <p>Visit the destination in the Location header to view your profile.</p>
+
         <!-- /{type}/{id}/attributes -->
         <div class="bs-docs-section" id="attributes">
           <h2>/{type}/{id}/attributes</h2>
@@ -4721,7 +4743,7 @@ Time-Spent: 248.608426ms
 
           <p>Attributes can be stored against any of these high-level types: Site, Microcosms, Conversations, Events, Polls, Comments and Profiles. You can store numbers, booleans, strings and dates that are in YYYY-MM-DD format (and provided as a string).</p>
 
-          <p>Attributes are not secret and have no special permissions. If a user has access to an entity, then the user can read all of the properties of that entity. Likewise, if a user has the ability to update the entity, then the user can modify all of the existing attributes as well as add new ones.</p>
+          <p>Attributes defined by the owner of an item are not secret and have no special permissions. If a user has access to an entity, then the user can read all of the properties of that entity. Likewise, if a user has the ability to update the entity, then the user can modify all of the existing attributes as well as add new ones.</p>
 
           <h3 id="attributes-urls">URLs and Methods</h3>
 
@@ -4792,9 +4814,11 @@ Time-Spent: 248.608426ms
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET,HEAD,PUT,DELETE,TRACE
+Date: Mon, 25 Nov 2013 15:22:56 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST,PUT,DELETE</code></pre>
 
           <h4 id="attributes-collection-put">PUT</h4>
 
@@ -4866,15 +4890,18 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:24:12 GMT
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 66
+Connection: keep-alive
 
 {
-  "context": "",
-  "status": 200,
-  "data": null,
-  "error": null
-}</code></pre>
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>The response is effectively just a <code>200 OK</code>, no redirect happens in this scenario.</p>
 
@@ -4894,50 +4921,57 @@ Content-Length: 65
 
           <p>Example response:</p>
 
-<pre><code>{
-  "context": "",
-  "status": 200,
-  "data": {
-    "attributes": {
-      "total": 5,
-      "limit": 25,
-      "offset": 0,
-      "maxOffset": 0,
-      "totalPages": 1,
-      "page": 1,
-      "links": [
-        {
-          "rel": "self",
-          "href": "/api/v1/microcosms/1/attributes"
-        }
-      ],
-      "type": "/api/v1/microcosms/0/attributes",
-      "items": [
-        {
-          "key": "MyBoolean",
-          "value": true
-        },
-        {
-          "key": "MyDate",
-          "value": "2007-01-27"
-        },
-        {
-          "key": "MyFloat",
-          "value": 3.141593
-        },
-        {
-          "key": "MyInt",
-          "value": 42
-        },
-        {
-          "key": "MyString",
-          "value": "an example string"
-        }
-      ]
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:24:36 GMT
+Content-Type: application/json
+Content-Length: 651
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attributes": {
+   "total": 5,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms/1/attributes"
     }
-  },
-  "error": null
-}</code></pre>
+   ],
+   "type": "/api/v1/microcosms/0/attributes",
+   "items": [
+    {
+     "key": "MyBoolean",
+     "value": true
+    },
+    {
+     "key": "MyDate",
+     "value": "2007-01-27"
+    },
+    {
+     "key": "MyFloat",
+     "value": 3.141593
+    },
+    {
+     "key": "MyInt",
+     "value": 42
+    },
+    {
+     "key": "MyString",
+     "value": "an example string"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
 
           <h4 id="attributes-collection-delete">DELETE</h4>
 
@@ -4998,15 +5032,18 @@ Content-Length: 65
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:25:11 GMT
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 66
+Connection: keep-alive
 
 {
-  "context": "",
-  "status": 200,
-  "data": null,
-  "error": null
-}</code></pre>
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>The response is effectively just a <code>200 OK</code>, no redirect happens in this scenario.</p>
 
@@ -5023,15 +5060,17 @@ Content-Length: 65
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
-Allow: OPTIONS,GET,HEAD,PUT,DELETE,TRACE
+Date: Mon, 25 Nov 2013 15:25:30 GMT
 Content-Type: text/plain; charset=utf-8
-Content-Length: 0</code></pre>
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST,PUT,DELETE</code></pre>
 
           <h4 id="attributes-single-put">PUT</h4>
 
           <p>Request:</p>
 
-          <p>The flow for creating or updating an attributes is to either create a single attribute or to create a whole collection at once. This method allows you to a single attribute at a time, and if an attributes exist with the same key, then that attribute is updated to reflect the new value.</p>
+          <p>The flow for creating or updating a single attribute is to either create a single attribute or to create a whole collection at once. This method allows you to a single attribute at a time, and if an attributes exist with the same key, then that attribute is updated to reflect the new value. Only one attribute can exist for a given key.</p>
 
           <p>The structure of the JSON to create an attribute is:</p>
 
@@ -5074,16 +5113,19 @@ Content-Length: 0</code></pre>
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 15:26:29 GMT
 Content-Type: application/json
-Content-Length: 65
+Content-Length: 66
+Connection: keep-alive
 Location: /api/v1/microcosms/1/attributes/MyString
 
 {
-  "context": "",
-  "status": 302,
-  "data": null,
-  "error": null
-}</code></pre>
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
 
           <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attribute.</p>
 
@@ -5099,15 +5141,22 @@ Location: /api/v1/microcosms/1/attributes/MyString
 
           <p>Example response:</p>
 
-<pre><code>{
-  "context": "",
-  "status": 200,
-  "data": {
-    "key": "MyString",
-    "value": "an example string"
-  },
-  "error": null
-}</code></pre>
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:26:44 GMT
+Content-Type: application/json
+Content-Length: 118
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "key": "MyString",
+  "value": "an example string"
+ },
+ "error": null
+}
+</code></pre>
 
           <h4 id="attributes-single-delete">DELETE</h4>
 
@@ -5123,10 +5172,18 @@ Location: /api/v1/microcosms/1/attributes/MyString
           <p>Example response:</p>
 
 <pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:26:57 GMT
 Content-Type: application/json
-Content-Length: 52
+Content-Length: 66
+Connection: keep-alive
 
-{"context":"","status":200,"data":null,"error":null}</code></pre>
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
         </div>
 
         <!-- /files -->
