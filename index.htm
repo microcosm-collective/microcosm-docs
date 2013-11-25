@@ -54,7 +54,7 @@
             <li><a href="#basics-pagination">Pagination</a></li>
             <li><a href="#basics-meta">Metadata</a>
               <ul class="nav">
-                <li><a href="#basics-meta-author">Author</a></li>
+                <li><a href="#basics-meta-author">Author Information</a></li>
                 <li><a href="#basics-meta-flags">Flags</a></li>
                 <li><a href="#basics-meta-links">Links</a></li>
                 <li><a href="#basics-meta-permissions">Permissions</a></li>
@@ -210,12 +210,19 @@
                 <li><a href="#profiles-single-get">GET</a></li>
                 <li><a href="#profiles-single-put">PUT</a></li>
               </ul>
+            </li>
           </ul>
         </li>
 
         <li><a href="#whoami">/whoami</a>
           <ul class="nav">
             <li><a href="#whoami-urls">URLS and Methods</a></li>
+            <li><a href="#whoami-single">Single Resource</a>
+              <ul class="nav">
+                <li><a href="#whoami-single-options">OPTIONS</a></li>
+                <li><a href="#whoami-single-get">GET</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
 
@@ -252,6 +259,7 @@
             </li>
             <li><a href="#files-single">Single Resource</a>
               <ul class="nav">
+                <li><a href="#files-single-options">OPTIONS</a></li>
                 <li><a href="#files-single-get">GET</a></li>
               </ul>
             </li>
@@ -265,10 +273,12 @@
               <ul class="nav">
                 <li><a href="#attachments-collection-options">OPTIONS</a></li>
                 <li><a href="#attachments-collection-post">POST</a></li>
+                <li><a href="#attachments-collection-get">GET</a></li>
               </ul>
             </li>
             <li><a href="#attachments-single">Single Resource</a>
               <ul class="nav">
+                <li><a href="#attachments-single-options">OPTIONS</a></li>
                 <li><a href="#attachments-single-delete">DELETE</a></li>
               </ul>
             </li>
@@ -5425,7 +5435,7 @@ Location: /api/v1/comments/1/attachments
 }
 </code></pre>
 
-          <h4 id="attachments-collection-post">GET</h4>
+          <h4 id="attachments-collection-get">GET</h4>
 
           <p>Attachments are returned as a paginated list, with a <code>related</code> link that references the file directly and can be used to inline the image into HTML or a native control.</p>
 
