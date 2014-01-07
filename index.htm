@@ -153,7 +153,7 @@
             <li><a href="#attendees-collection">Collection</a>
               <ul class="nav">
                 <li><a href="#attendees-collection-options">OPTIONS</a></li>
-                <li><a href="#attendees-collection-post">POST</a></li>
+                <li><a href="#attendees-collection-put">PUT</a></li>
                 <li><a href="#attendees-collection-get">GET</a></li>
               </ul>
             </li>
@@ -3298,8 +3298,8 @@ Connection: keep-alive
               </tr>
               <tr>
                 <td>/api/v1/events/{id:[0-9]+}/attendees</td>
-                <td>POST</td>
-                <td>Creates a new attendee for the current event. Depending on the data sent, this is an invitation to an event, or a confirmation that someone will attend.</td>
+                <td>PUT</td>
+                <td>Creates or updates a collection of attendees for the current event. Depending on the data sent, this is an invitation to an event, or a confirmation that someone will attend.</td>
               </tr>
               <tr>
                 <td>/api/v1/events/{id:[0-9]+}/attendees</td>
@@ -3350,7 +3350,7 @@ Content-Length: 0
 Connection: keep-alive
 Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
-          <h4 id="attendees-collection-post">POST</h4>
+          <h4 id="attendees-collection-put">PUT</h4>
 
           <p>Request:</p>
 
@@ -3358,10 +3358,12 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
           <p>The structure of the JSON to create an attendee is:</p>
 
-<pre><code>{
+<pre><code>[{
   "attendeeId": 1,
   "rsvp": "yes",
-}</code></pre>
+}]</code></pre>
+
+          <p>It's an array, feel free to provide many attendees at once.</p>
 
           <p>Where:</p>
 
@@ -3393,19 +3395,19 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
           <p>Example request to create an invitation for an attendee:</p>
 
 <pre><code>curl -i \
-  -X POST \
+  -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"attendeeId": 1}' \
+  -d '[{"attendeeId": 1}]' \
   https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example request to create a confirmation for the user whose authentication credentials token matches the <code>attendeeId</code>:</p>
 
 <pre><code>curl -i \
-  -X POST \
+  -X PUT \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"attendeeId": 1, "rsvp": "yes"}' \
+  -d '[{"attendeeId": 1, "rsvp": "yes"}]' \
   https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
 
           <p>Example response for both scenarios:</p>
@@ -3415,7 +3417,7 @@ Date: Fri, 22 Nov 2013 11:29:19 GMT
 Content-Type: application/json
 Content-Length: 66
 Connection: keep-alive
-Location: /api/v1/events/1/attendees/1
+Location: /api/v1/events/1
 
 {
  "context": "",
