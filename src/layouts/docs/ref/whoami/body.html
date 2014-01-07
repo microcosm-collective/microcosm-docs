@@ -1,0 +1,80 @@
+<!-- /whoami -->
+<div class="bs-docs-section" id="whoami">
+  <h2>/whoami</h2>
+
+  <p>A convenience resource that will acts like the *nix <a href="http://linux.die.net/man/1/whoami">whoami</a> command by determining your identity from the authentication token and issuing a redirect to the <code>/api/v1/profiles</code> of the currently authenticated user.</p>
+
+  <h3 id="whoami-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/whoami</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/whoami</td>
+        <td>GET</td>
+        <td>Given a valid authentication token, will redirect to the applicable <code>/api/v1/profiles</code> for the authenticated user profiles.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h3 id="whoami-single">Single</h3>
+  <h4 id="whoami-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/whoami</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:09:34 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET</code></pre>
+
+  <h4 id="whoami-single-get">GET</h4>
+
+  <p>If you call this without an access_token you should expect to deal with a <code>HTTP 401 Unauthorized</code> error.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  https://dev1.microco.sm/api/v1/whoami</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 307 Temporary Redirect
+Date: Mon, 25 Nov 2013 15:12:04 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/profiles/1
+
+{
+ "context": "",
+ "status": 307,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Visit the destination in the Location header to view your profile.</p>
+
+</div>

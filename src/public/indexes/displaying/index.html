@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+  <head>
+  <title>Rendering Indexes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <link href="http://localhost:1313/static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="http://localhost:1313/static/css/styles.css" rel="stylesheet"/>
+    <link href="http://localhost:1313/static/css/hugoicon.css" rel="stylesheet"/>
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="http://localhost:1313/"><i class="icon-rocket "></i>&nbsp; Hugo</a>
+  </div>
+
+  
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Getting Started <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Content <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Indexes <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Extras <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Meta <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li><a href="http://github.com/spf13/hugo/releases"><i class="icon-arrow-down "> </i></a></li>
+      <li><a href="http://github.com/spf13/hugo"><i class="icon-octocat icon-2x"> </i></a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <div class="container" id="main">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h1>Rendering Indexes</h1>
+          <h1>For Content</h1>
+
+<h3>Index values assigned to this content</h3>
+
+<p>Within your content templates you may wish to display
+the indexes that that piece of content is assigned to.</p>
+
+<p>Because we are leveraging the front matter system to
+define indexes for content, the indexes assigned to
+each content piece are located in the usual place
+(.Params.<code>plural</code>)</p>
+
+<h4>Example</h4>
+
+<pre><code>&lt;ul id=&quot;tags&quot;&gt;
+  {{ range .Params.tags }}
+    &lt;li&gt;&lt;a href=&quot;tags/{{ . | urlize }}&quot;&gt;{{ . }}&lt;/a&gt; &lt;/li&gt;
+  {{ end }}
+&lt;/ul&gt;
+</code></pre>
+
+<h1>Anywhere</h1>
+
+<h3>Displaying all keys for an index</h3>
+
+<p>If you wish to display the list of all keys for an index you can
+find retrieve them from the <code>.Site</code> variable.</p>
+
+<p>This may take the form of a tag cloud, a menu or simply a list.</p>
+
+<p>The following example displays all tag keys:</p>
+
+<h4>Example</h4>
+
+<pre><code>&lt;ul id=&quot;all-tags&quot;&gt;
+  {{ range .Site.Indexes.tags }}
+    &lt;li&gt;&lt;a href=&quot;/tags/{{ .Name | urlize }}&quot;&gt;{{ .Name }}&lt;/a&gt;&lt;/li&gt;  
+  {{ end }}
+&lt;/ul&gt;
+</code></pre>
+
+<h2>Creating a menu based on indexes</h2>
+
+<p>Hugo can generate menus based on indexes by iterating and
+nesting the index keys. This can be used to build a hierarchy
+of content within your site.</p>
+
+<p>To have hugo create the menu, simply create a template in chrome
+called menu.html, then include it using the
+<code>{{ template &quot;chrome/menu.html&quot; . }}</code> syntax.</p>
+
+<p>This example will list all indexes, each of their keys and all the content assigned to each key.</p>
+
+<h4>Example complete menu.html file</h4>
+
+<pre><code>&lt;section id=&quot;menu&quot;&gt;
+  &lt;ul&gt;
+    {{ range $indexname, $index := .Site.Indexes }}
+      &lt;li&gt;&lt;a href=&quot;/{{ $indexname | urlize }}&quot;&gt;{{ $indexname }}&lt;/a&gt; 
+        &lt;ul&gt; 
+          {{ range $key, $value := $index }}
+          &lt;li&gt; {{ $key }} &lt;/li&gt;
+                &lt;ul&gt;
+                {{ range $value.Pages }}
+                    &lt;li hugo-nav=&quot;{{ .RelPermalink}}&quot;&gt;&lt;a href=&quot;{{ .Permalink}}&quot;&gt; {{ .LinkTitle }} &lt;/a&gt; &lt;/li&gt;
+                {{ end }}
+                &lt;/ul&gt;
+          {{ end }}
+        &lt;/ul&gt;
+      &lt;/li&gt; 
+    {{ end }}
+  &lt;/ul&gt;
+&lt;/section&gt;
+</code></pre>
+
+<p>It is more likely that you would want to use a single index for navigation.
+In this example we are using the <code>groups</code> index for our menu.</p>
+
+<h4>Example menu.html file using a single index</h4>
+
+<pre><code>&lt;section id=&quot;menu&quot;&gt;
+    &lt;ul&gt;
+        {{ range $key, $index := .Site.Indexes.groups }}
+        &lt;li&gt; {{ $key }} &lt;/li&gt;
+        &lt;ul&gt;
+            {{ range $index.Pages }}
+            &lt;li hugo-nav=&quot;{{ .RelPermalink}}&quot;&gt;&lt;a href=&quot;{{ .Permalink}}&quot;&gt; {{ .LinkTitle }} &lt;/a&gt; &lt;/li&gt;
+            {{ end }}
+        &lt;/ul&gt;
+        {{ end }}
+    &lt;/ul&gt;
+&lt;/section&gt;
+</code></pre>
+
+<p>Or order the keys by Popularity</p>
+
+<h4>Example menu.html file using a single index</h4>
+
+<pre><code>&lt;section id=&quot;menu&quot;&gt;
+    &lt;ul&gt;
+        {{ range .Site.Indexes.groups.ByCount }}
+        &lt;li&gt; {{ .Name }} &lt;/li&gt;
+        &lt;ul&gt;
+            {{ range .Pages }}
+            &lt;li hugo-nav=&quot;{{ .RelPermalink}}&quot;&gt;&lt;a href=&quot;{{ .Permalink}}&quot;&gt; {{ .LinkTitle }} &lt;/a&gt; &lt;/li&gt;
+            {{ end }}
+        &lt;/ul&gt;
+        {{ end }}
+    &lt;/ul&gt;
+&lt;/section&gt;
+</code></pre>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <hr>
+      <footer id="footer">
+            <p class="pull-right"><a href="#top">Back to top</a></p>
+            Made by <a href="http://spf13.com">Steve Francia</a>.<br>
+            Code licensed under the <a href="https://github.com/spf13/hugo/blob/master/LICENSE.md">Simple Public License 2.0</a>.<br>
+      </footer>
+      </div>
+      <script src="http://localhost:1313/static/js/jquery.js"></script>
+      <script src="http://localhost:1313/static/js/bootstrap.min.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-7131036-4', 'spf13.com');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+</html>
+

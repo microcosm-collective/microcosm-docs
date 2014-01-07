@@ -1,0 +1,525 @@
+<!-- /search -->
+<div class="bs-docs-section" id="search">
+  <h2>/search</h2>
+
+  <p>A search interface to allow full-text queries to be performed against all things on the given site.</p>
+
+  <h3 id="search-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/search</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/search</td>
+        <td>GET</td>
+        <td>Performs a fulltext search for a given query, filtering the results according to search options.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="search-collection">Collection</h3>
+  <h4 id="search-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/search</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 04 Dec 2013 14:54:06 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="search-collection-get">GET</h4>
+
+  <p>A full-text search is performed by simply providing the search term(s) in the query string. The search can be further restricted by providing optional parameters, and a valid access token will return any non-public items that the given user has permission to see (conversations in a non-public microcosm, for example).</p>
+
+  <p>The following query string params are supported:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Querystring Key</th>
+        <th>Type</th>
+        <th>Default Value</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+      <tr>
+        <td>Key</td>
+        <td>Value</td>
+        <td>Default value if not supplied</td>
+        <td>Description</td>
+      </tr>
+      <tr>
+        <td>q</td>
+        <td>string</td>
+        <td>null</td>
+        <td>The user submitted search terms. This is a required field.</td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>[]string</td>
+        <td>null (search everything)</td>
+        <td>The capability to filter the search to only items of a given type.
+    type=conversations&amp;type=events would filter the results to *only* conversations AND events. Valid values for type are <code>comment</code>, <code>conversation</code>, <code>event</code>, <code>huddle</code>, <code>microcosm</code>, <code>poll</code>, and <code>profile</code>. If you filter to a commentable type such as <code>conversation</code> then the query includes the comments of that conversation.</td>
+      </tr>
+      <tr>
+        <td>inTitle</td>
+        <td>boolean</td>
+        <td>false</td>
+        <td>If <code>true</code> then the search will only be performed against the titles of entities. In the case of something like an event this means that only the event title is searched and not the event comments.</td>
+      </tr>
+      <tr>
+        <td>authorId</td>
+        <td>integer</td>
+        <td>null</td>
+        <td>If greater than 0 then the search will be restricted to all items authored by this profile ID. If the profile ID does not exist on this site, then nothing is returned.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Of the above, only <code>q</code> is required. If any of the others are supplied, then they will be applied to the search in addition to the search terms within <code>q</code>.</p>
+
+  <p>All of the query paramaters can also be supplied via the search parameter <code>q</code>. To do so simply format them as <code>key:value</code> and space separate them. So the query <code>?q=ale&amp;inTitle=true&amp;type=event</code> can also be represented as <code>ale inTitle:true type:event</code>. This functionality enables omnibox style searching, and permalink searching (the ability to link to a complex search and for that search to be re-run).</p>
+
+  <p>Example request showing all params:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  "https://dev1.microco.sm/api/v1/search?q=ale&inTitle=true&type=event&authorId=1"</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 04 Dec 2013 15:20:40 GMT
+Content-Type: application/json
+Content-Length: 2103
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "query": {
+   "q": "ale",
+   "type": [
+    "event"
+   ],
+   "inTitle": true,
+   "authorId": 1,
+   "searched": "ale inTitle:true type:event authorId:1"
+  },
+  "timeTakenInMs": 62,
+  "results": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/search?authorId=1\u0026inTitle=true\u0026q=ale\u0026type=event"
+    }
+   ],
+   "type": "result",
+   "items": [
+    {
+     "itemType": "event",
+     "item": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "Ale tasting",
+      "when": "2013-11-22T20:00:00Z",
+      "duration": 180,
+      "where": "Green Dragon Inn",
+      "lat": 51.674871,
+      "lon": -0.216352,
+      "north": 51.679581,
+      "east": -0.208955,
+      "south": 51.66984,
+      "west": -0.227494,
+      "status": "upcoming",
+      "rsvpLimit": 5,
+      "rsvpSpaces": 5,
+      "meta": {
+       "created": "2013-12-04T14:28:24.858836Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/events/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "Rivendell"
+        }
+       ]
+      }
+     },
+     "rank": 0.12618599832057953,
+     "lastModified": "2013-12-04T15:16:51.029779Z",
+     "highlight": "\u003cb\u003eAle\u003c/b\u003e tasting"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <p>Example request showing just the <code>q</code> param:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  "https://dev1.microco.sm/api/v1/search?q=road"</code></pre>
+
+  <p>Example response:</p>
+
+  <pre><code>HTTP/1.1 200 OK
+Date: Wed, 04 Dec 2013 15:32:45 GMT
+Content-Type: application/json
+Content-Length: 6571
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "query": {
+   "q": "road",
+   "searched": "road"
+  },
+  "timeTakenInMs": 68,
+  "results": {
+   "total": 2,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/search?q=road"
+    }
+   ],
+   "type": "result",
+   "items": [
+    {
+     "itemType": "comment",
+     "item": {
+      "id": 2,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "inReplyTo": 1,
+      "markdown": "Get off the road! **Quick!**",
+      "html": "\u003cp\u003eGet off the road! \u003cstrong\u003eQuick!\u003c/strong\u003e\u003c/p\u003e\n",
+      "meta": {
+       "created": "2013-12-04T14:28:30.235965Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "edited": "2013-12-04T14:28:30.235965Z",
+       "editedBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/2"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "There are whisperings that the Nazgûl are abroad",
+      "meta": {
+       "created": "2013-12-04T14:28:20.13916Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "Rivendell"
+        }
+       ]
+      }
+     },
+     "rank": 0.05000000074505806,
+     "lastModified": "2013-12-04T14:28:30.273775Z",
+     "highlight": "Get off the \u003cb\u003eroad\u003c/b\u003e! **Quick!**"
+    },
+    {
+     "itemType": "comment",
+     "item": {
+      "id": 1,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "markdown": "I think we should get off the road",
+      "html": "\u003cp\u003eI think we should get off the road\u003c/p\u003e\n",
+      "meta": {
+       "created": "2013-12-04T14:28:29.389481Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "edited": "2013-12-04T14:28:29.389481Z",
+       "editedBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/1"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "There are whisperings that the Nazgûl are abroad",
+      "meta": {
+       "created": "2013-12-04T14:28:20.13916Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "Rivendell"
+        }
+       ]
+      }
+     },
+     "rank": 0.05000000074505806,
+     "lastModified": "2013-12-04T14:28:29.407767Z",
+     "highlight": "I think we should get off the \u003cb\u003eroad\u003c/b\u003e"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+</div>

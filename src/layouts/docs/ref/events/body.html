@@ -1,0 +1,1291 @@
+<!-- /events -->
+<div class="bs-docs-section" id="events">
+  <h2>/events</h2>
+
+  <p>Provides an interface to the events that exist on a site and the comments contained within them. An event describes some thing that happens some where at some time, and can be attended by some people. A collection of comments may be attached to an event.</p>
+
+  <h3 id="events-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/events</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events</td>
+        <td>POST</td>
+        <td>Creates a new event on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events</td>
+        <td>GET</td>
+        <td>Returns information about the events that exist on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the event specified by the numeric identifier and a collection of comments related to this event.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the event specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>PATCH</td>
+        <td>Updates specific fragments of a event resource specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the event specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/lastcomment</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/lastcomment</td>
+        <td>GET</td>
+        <td>Returns a redirect with a location linking to the last comment in the event.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/newcomment</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/newcomment</td>
+        <td>GET</td>
+        <td>Returns a redirect with a location linking to the first new comment in the event, or if there are no new comments then the last comment in the event.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>eventId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+
+  <h3 id="events-collection">Collection</h3>
+  
+  <h4 id="events-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:55:22 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="events-collection-post">POST</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating an event is to create the event item, and then to create comments against the event. An event is simply an empty container for a list of comments, but with additional structure to describe the event and manage attendees. An event is something that occurs at a moment in time, at some place in space. It is perfectly fine to create an event without knowing the location for it and/or when it occurs.</p>
+
+  <p>The structure of the JSON to create an event is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "rsvpLimit": 5
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>microcosmId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the event that usually encapsulates the topic of the event. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>when</code></td>
+        <td>ISO8601 Datetime</td>
+        <td>Optional</td>
+        <td>The scheduled date for that the event occurs on.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td>Integer</td>
+        <td>Optional</td>
+        <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 60 minutes = 1 hour.</td>
+      </tr>
+      <tr>
+        <td><code>where</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>A short textual description of the location of the event. This may be an address or just the title of the location. No geolocation will be done on this, it can be a useful label "Tower of London, UK" or a meaningless one "In the middle of a field".</td>
+      </tr>
+      <tr>
+        <td><code>lat</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The latitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>lon</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The longitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>north</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Northerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>east</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>An Easterly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>south</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Southerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>west</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Westerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>rsvpLimit</code></td>
+        <td>Integer</td>
+        <td>Optional</td>
+        <td>For events that are space constrained, this is the maximum number of people that can attend the event.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>If you supply a time then we expect a duration. Likewise if you supply a location then we expect all of the location fields to be valid and logical (the pin outside of the bounding box isn't helpful to a user, etc).</p>
+
+  <p>Example request to create a proposed event:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "Ale tasting?"}' \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example request to create a confirmed/upcoming event:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "Ale tasting", "when": "2013-11-22T20:00:00Z", "duration": 180, "where": "Green Dragon Inn", "lat": 51.674871, "lon": -0.216352, "north": 51.679581, "east": -0.208955, "south": 51.66984, "west": -0.227494, "rsvpLimit": 5}' \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example response for both scenarios:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 17:35:14 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created event.</p>
+
+  <h4 id="events-collection-get">GET</h4>
+
+  <p>Fetches a collection of events across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain events that exist in private Microcosms not visible to guests.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:36:58 GMT
+Content-Type: application/json
+Content-Length: 1960
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "events": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events"
+    }
+   ],
+   "type": "/api/v1/events",
+   "items": [
+    {
+     "id": 1,
+     "microcosmId": 1,
+     "title": "Ale tasting",
+     "when": "2013-11-22T20:00:00Z",
+     "duration": 180,
+     "where": "Green Dragon Inn",
+     "lat": 51.674871,
+     "lon": -0.216352,
+     "north": 51.679581,
+     "east": -0.208955,
+     "south": 51.66984,
+     "west": -0.227494,
+     "status": "upcoming",
+     "meta": {
+      "created": "2013-11-22T10:28:46.261132Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/events/1"
+       },
+       {
+        "rel": "microcosm",
+        "href": "/api/v1/microcosms/1",
+        "title": "Rivendell"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="events-single">Single Resource</h3>
+
+  <h4 id="events-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:40:42 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
+
+  <h4 id="events-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow to you traverse the collection of comments.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:41:03 GMT
+Content-Type: application/json
+Content-Length: 1722
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "status": "upcoming",
+  "rsvpLimit": 5,
+  "rsvpSpaces": 5,
+  "comments": {
+   "total": 0,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 0,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1"
+    }
+   ],
+   "type": "/api/v1/comments",
+   "items": []
+  },
+  "meta": {
+   "created": "2013-11-22T10:28:46.261132Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "flags": {
+    "sticky": false,
+    "open": true,
+    "deleted": false,
+    "moderated": false,
+    "visible": true,
+    "unread": false,
+    "watched": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms/1",
+     "title": "Rivendell"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}</code></pre>
+  
+  <h4 id="events-single-put">PUT</h4>
+
+  <p>Updates an event. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "rsvpLimit": 25,
+  "meta": {
+    "editReason": "Increased attendee number"
+  }
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>microcosmId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the event that usually encapsulates the topic of the event. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>when</code></td>
+        <td>ISO8601 Datetime</td>
+        <td>Required</td>
+        <td>The scheduled date for that the event occurs on.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 60 minutes = 1 hour.</td>
+      </tr>
+      <tr>
+        <td><code>where</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the location of the event. This may be an address, and this value will be mapped based on the first result from a Google maps search of this value.</td>
+      </tr>
+      <tr>
+        <td><code>lat</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The latitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>lon</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The longitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>north</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Northerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>east</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>An Easterly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>south</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Southerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>west</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Westerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>rsvpLimit</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>For events that are space constrained, this is the maximum number of people that can attend the event.</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>One of: 'proposed', 'upcoming', 'postponed' or 'cancelled'.</td>
+      </tr>
+      <tr>
+        <td><code>editReason</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>The reason the event is being updated.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "Ale tasting", "when": "2013-11-22T20:00:00Z", "duration": 180, "where": "Green Dragon Inn", "lat": 51.674871, "lon": -0.216352, "north": 51.679581, "east": -0.208955, "south": 51.66984, "west": -0.227494, "rsvpLimit": 25, "meta": {"editReason": "Increased attendee number"}}' \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 10:43:28 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the updated event.</p>
+
+  <h4 id="events-single-patch">PATCH</h4>
+
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of an event or a super user (microcosm moderator or site admin) can delete an event, but only a super user can undelete an event.</p>
+
+  <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+  <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/sticky</code>, <code>/meta/flags/deleted</code>, <code>/meta/flags/moderated</code>, and <code>/meta/flags/open</code>.</p>
+
+  <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/sticky", "value": true},
+  {"op":"replace", "path":"/meta/flags/open", "value": true},
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+  <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+  <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
+  https://dev1.microco.sm/api/v1/events/1
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:45:52 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>That request will set the <code>sticky</code> property of an event to <code>true</code>. You will need to perform a GET of the updated resource to see the change.</p>
+
+  <p>Event fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags":{
+        "sticky":false,
+        "open":true,
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+        "isread": true
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>Event fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+     ...
+     "edited": "2013-11-22T10:45:52.3653Z",
+     "editedBy": {
+      "id": 1,
+      "siteId": 1,
+      "userId": 1,
+      "profileName": "Frodo",
+      "visible": true,
+      "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+      "meta": {
+       "links": [
+       ...
+       ]
+      }
+     },
+     "editReason": "Set sticky to true",
+     "flags": {
+      "sticky": true,
+      "open": true,
+      "deleted": false,
+      "moderated": false,
+      "visible": true,
+      "unread": false,
+      "watched": false
+     },
+     ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
+
+  <h4 id="events-single-delete">DELETE</h4>
+
+  <p>Deletes an event.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:47:40 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+</div>
+
+<!-- /events/{id}/attendees -->
+<div class="bs-docs-section" id="attendees">
+  <h2>/events/{id}/attendees</h2>
+
+  <p>Provides an interface to describe who is attending which events, who has been invited and who has declined invitations.</p>
+
+  <h3 id="attendees-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+        <td>PUT</td>
+        <td>Creates or updates a collection of attendees for the current event. Depending on the data sent, this is an invitation to an event, or a confirmation that someone will attend.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+        <td>GET</td>
+        <td>Returns information about the attendees for event.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about a specific attendee for an event. The information returned describes whether this is an invite, a maybe, a declined invite, or a confirmation of attendance.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates attendance resource. This is how you change the status to reflect attendance, or not, of the attendee.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the attendance resource specified.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">Whilst the <code>eventId</code> is based on a sequential number (that spans all sites in the microcosm network), the <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. This means that if you have profile 27 and event 86574, and even if there are no other attendees, the URL would be <code>/api/v1/events/86574/attendees/27</code>.</p>
+
+  <h3 id="attendees-collection">Collection</h3>
+  
+  <h4 id="attendees-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:25:48 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="attendees-collection-put">PUT</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating an attendee is to create the event item, and then to create attendees against the event.</p>
+
+  <p>The structure of the JSON to create an attendee is:</p>
+
+<pre><code>[{
+  "attendeeId": 1,
+  "rsvp": "yes",
+}]</code></pre>
+
+  <p>It's an array, feel free to provide many attendees at once.</p>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>attendeeId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which profile is attending the event. The <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
+      </tr>
+      <tr>
+        <td><code>rsvpd</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>Describes the RSVP state of the attendee, may be one of <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite. If not supplied this defaults to "invited".</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request to create an invitation for an attendee:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"attendeeId": 1}]' \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example request to create a confirmation for the user whose authentication credentials token matches the <code>attendeeId</code>:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"attendeeId": 1, "rsvp": "yes"}]' \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example response for both scenarios:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:29:19 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attendee resource.</p>
+
+  <h4 id="attendees-collection-get">GET</h4>
+
+  <p>Fetches a collection of attendees for the current event.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:29:40 GMT
+Content-Type: application/json
+Content-Length: 2044
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attendees": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees"
+    }
+   ],
+   "type": "/api/v1/events/0/attendees",
+   "items": [
+    {
+     "attendeeId": 1,
+     "attendee": {
+      "id": 1,
+      "siteId": 1,
+      "userId": 1,
+      "profileName": "Frodo",
+      "visible": true,
+      "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+      "meta": {
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/profiles/1"
+        },
+        {
+         "rel": "site",
+         "href": "/api/v1/sites/1"
+        }
+       ]
+      }
+     },
+     "rsvp": "invited",
+     "rsvpdOn": "2013-11-22T11:29:19.137938Z",
+     "meta": {
+      "created": "2013-11-22T11:29:19.137938Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/events/1/attendees/1"
+       },
+       {
+        "rel": "profile",
+        "href": "/api/v1/profiles/1"
+       },
+       {
+        "rel": "event",
+        "href": "/api/v1/events/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}</code></pre>
+
+  <h3 id="attendees-single">Single Resource</h3>
+
+  <h4 id="attendees-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:30:23 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,DELETE</code></pre>
+
+  <h4 id="attendees-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single attendee for an event.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:32:14 GMT
+Content-Type: application/json
+Content-Length: 1467
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attendeeId": 1,
+  "attendee": {
+   "id": 1,
+   "siteId": 1,
+   "userId": 1,
+   "profileName": "Frodo",
+   "visible": true,
+   "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+   "meta": {
+    "links": [
+     {
+      "rel": "self",
+      "href": "/api/v1/profiles/1"
+     },
+     {
+      "rel": "site",
+      "href": "/api/v1/sites/1"
+     }
+    ]
+   }
+  },
+  "rsvp": "invited",
+  "rsvpdOn": "2013-11-22T11:29:19.137938Z",
+  "meta": {
+   "created": "2013-11-22T11:29:19.137938Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees/1"
+    },
+    {
+     "rel": "profile",
+     "href": "/api/v1/profiles/1"
+    },
+    {
+     "rel": "event",
+     "href": "/api/v1/events/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attendees-single-put">PUT</h4>
+
+  <p>Updates the attendee resource to reflect the new attendance state.</p>
+
+  <p>The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+   "rsvp": "maybe"
+}</code></pre>
+
+  <p>Where the <code>rsvp</code> property is one of: <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite.</p>
+
+  <p>Example request to set as attending:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"rsvp":"yes"}' \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example request to set as not attending:</p>
+  
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"rsvp":"no"}' \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example request to set as maybe attending:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"rsvp":"maybe"}' \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:33:17 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1/attendees/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attendees-single-delete">DELETE</h4>
+
+  <p>Deletes an attendee resource.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:33:36 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+</div>

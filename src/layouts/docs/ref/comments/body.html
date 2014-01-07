@@ -1,0 +1,633 @@
+<!-- /comments -->
+<div class="bs-docs-section" id="comments">
+  <h2>/comments</h2>
+
+  <p>Provides an interface to comments. These are the bread and butter of a community web site, each comment is a piece of content attached to some other item (a conversation, an event, a poll, etc.) that discusses the item. Comments can be generally in response to the item, or specifically in response to another comment.</p>
+
+  <p>The format for the body of a comment is <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, with some minor additions to do things link recognising usernames when preceded with an @ or +, and embedding rich content about linked items where we are able to. There are also some restrictions on unsafe HTML such as the use of JavaScript and CSS.</p>
+
+  <p>General rule of thumb: Take text through a standard textbox or textarea and send it to us and we'll worry about formatting it.</p>
+
+  <h3 id="comments-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/comments</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments</td>
+        <td>POST</td>
+        <td>Creates a new comment on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the comment specified by the numeric identifier and the HTML to show when rendering the comment.  Also includes the parents and children for the comment to enable a threaded view.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the comment specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>PATCH</td>
+        <td>Updates specific fragments of a comment resource specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the comment specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/comments/{id:[0-9]+}/incontext</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}/incontext</td>
+        <td>GET</td>
+        <td>Returns a redirect to the API of the item that this comment belongs to, with the <code>offset</code> and <code>limit</code> set to ensure that the page on which this comment belongs is returned..</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>commentId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+
+  <h3 id="comments-collection">Collection</h3>
+  
+  <h4 id="comments-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:07:00 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST</code></pre>
+
+  <h4 id="comments-collection-post">POST</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating a comment is that you must already have some other item, and comments are attached to that. For this reason when you create a comment you also need to provide the <code>itemType</code> and <code>itemId</code> for the item that this comment will be attached to.</p>
+
+  <p>The structure of the JSON to create a comment is:</p>
+
+<pre><code>{
+   "itemType": "conversation",
+   "itemId": 1,
+   "markdown": "Some text and a link to [vBulletin](http://www.vbulletin.com/)"
+}</code></pre>
+
+  <p>And if you were creating a comment that is a direct reply to another comment, then you should additionally provide the identifier of the comment you are replying to:</p>
+
+<pre><code>{
+   "itemType": "conversation",
+   "itemId": 1,
+   "inReplyTo": 1,
+   "markdown": "A rebuttal and a link Some text and a link to [Microcosm](http://microco.sm/)"
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>itemType</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the type of item that this comment is attached to. Must be one of: <code>conversation</code>, <code>event</code>, <code>huddle</code> or <code>poll</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemType</code> is <code>conversation</code>.</td>
+      </tr>
+      <tr>
+        <td><code>itemId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>The identifier for the given type of item described by <code>itemType</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemId</code> is <code>1</code>.</td>
+      </tr>
+      <tr>
+        <td><code>inReplyTo</code></td>
+        <td>Integer</td>
+        <td>Optional</td>
+        <td>If the comment is an explicit response to an existing comment, then this is the identifier for that comment.</td>
+      </tr>
+      <tr>
+        <td><code>markdown</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>The textual content of the comment, markdown formatted. This will be converted automatically into HTML and any @mentions or links detected, HTML processed, etc. Note that all fields are scrubbed for bad input, and bad input is HTML or other formatting instructions that could affect the rendering of the content, or that makes a client vulnerable to cross-site scripting attacks.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"markdown": "I think we should get off the road"}' \
+  https://dev1.microco.sm/api/v1/comments</code></pre>
+
+  <p>And a reply to an existing comment:</p>
+
+<pre><code>
+curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"inReplyTo": 1, "markdown": "Get off the road! **Quick!**"}' \
+  https://dev1.microco.sm/api/v1/comments
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 13:27:27 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/comments/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created comment.</p>
+
+  <h3 id="comments-single">Single Resource</h3>
+
+  <h4 id="comments-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:42:20 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
+
+  <h4 id="comments-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single comment. If this comment was <code>inReplyTo</code> another comment then it will also fetch the parents of this comment. Additionally if other comments are <code>inReplyTo</code> this comment then it will fetch up to a maximum of 5 replies.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:44:00 GMT
+Content-Type: application/json
+Content-Length: 3617
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "itemType": "conversation",
+  "itemId": 1,
+  "revisions": 1,
+  "inReplyTo": 0,
+  "attachments": 0,
+  "firstLine": "",
+  "markdown": "I think we should get off the road",
+  "html": "\u003cp\u003eI think we should get off the road\u003c/p\u003e\n",
+  "meta": {
+   "created": "2013-11-22T13:28:09.094412Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "edited": "2013-11-22T13:28:09.094412Z",
+   "editedBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "parents": null,
+   "children": [
+    {
+     "id": 2,
+     "itemType": "conversation",
+     "itemId": 1,
+     "revisions": 1,
+     "inReplyTo": 1,
+     "markdown": "Get off the road! **Quick!**",
+     "html": "\u003cp\u003eGet off the road! \u003cstrong\u003eQuick!\u003c/strong\u003e\u003c/p\u003e\n",
+     "meta": {
+      "created": "2013-11-22T13:28:09.704428Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "edited": "2013-11-22T13:28:09.704428Z",
+      "editedBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "deleted": false,
+       "moderated": false,
+       "visible": false,
+       "unread": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/comments/2"
+       },
+       {
+        "rel": "conversation",
+        "href": "/api/v1/conversations/1"
+       },
+       {
+        "rel": "up",
+        "href": "/api/v1/conversations/1"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "deleted": false,
+    "moderated": false,
+    "visible": false,
+    "unread": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/comments/1"
+    },
+    {
+     "rel": "conversation",
+     "href": "/api/v1/conversations/1"
+    },
+    {
+     "rel": "up",
+     "href": "/api/v1/conversations/1"
+    },
+    {
+     "rel": "commentPage",
+     "href": "/api/v1/conversations/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+  
+  <h4 id="comments-single-put">PUT</h4>
+
+  <p>Updates a comment. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "itemType": "conversation",
+  "itemId": 1,
+  "markdown": "The [ring](http://lotr.wikia.com/wiki/One_Ring) is taking me. If I put it on [he](http://lotr.wikia.com/wiki/Sauron) will find me."
+}</code></pre>
+
+  <p>You do not need to supply <code>inReplyTo</code> as it is immutable and it is not updated when you change the content of a comment nor the item that the comment is attached to. If you do supply it, it will be ignored.</p>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>itemType</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the type of item that this comment is attached to. Must be one of: <code>conversation</code>, <code>event</code>, <code>huddle</code> or <code>poll</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemType</code> is <code>conversation</code>.</td>
+      </tr>
+      <tr>
+        <td><code>itemId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>The identifier for the given type of item described by <code>itemType</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemId</code> is <code>1</code>.</td>
+      </tr>
+      <tr>
+        <td><code>markdown</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>The textual content of the comment, markdown formatted.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"markdown": "The [ring](http://lotr.wikia.com/wiki/One_Ring) is taking me. If I put it on [he](http://lotr.wikia.com/wiki/Sauron) will find me."}' \
+  https://dev1.microco.sm/api/v1/comments/2</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 13:49:25 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/comments/2
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated comment.</p>
+
+  <h4 id="comments-single-patch">PATCH</h4>
+
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a comment or a super user (microcosm moderator or site admin) can delete a comment, but only a super user can undelete a comment.</p>
+
+  <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+  <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/deleted</code>, and <code>/meta/flags/moderated</code>.</p>
+
+  <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+  <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+  <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/moderated", "value": true}]' \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:49:47 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>That request will set the <code>moderated</code> property of a comment to <code>true</code>. You will need to GET the comment to see the change reflected.</p>
+
+  <p>Comment fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags":{
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>Comment fragment after:</p>
+<pre><code>HTTP/1.1 404 Not Found
+Date: Fri, 22 Nov 2013 13:50:33 GMT
+Content-Type: application/json
+Content-Length: 88
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 404,
+ "data": null,
+ "error": [
+  "Comment not found"
+ ]
+}
+</code></pre>
+
+  <p>As the modified comment now reflects <code>"moderated": true</code> the comment is not returned to an unauthenticated account or an account that does not have the right to view moderated comments.</p>
+
+  <h4 id="comments-single-delete">DELETE</h4>
+
+  <p>Deletes a comment.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:52:10 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <h3 id="comments-single-incontext">Single Resource In Context</h3>
+
+  <h4 id="comments-single-incontext-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1/incontext</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 14:12:22 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD</code></pre>
+
+  <h4 id="comments-single-incontext-get">GET</h4>
+
+  <p>For a given comment ID, will return a Location header that redirects to the API for the item that the comment is attached to, with the applicable <code>limit</code> and <code>offset</code> querystring to ensure that the comment is visible in the page of comments on the item.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/comments/1/incontext</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 307 Temporary Redirect
+Date: Fri, 22 Nov 2013 14:14:18 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/conversations/1?comment_id=2
+
+{
+ "context": "",
+ "status": 307,
+ "data": null,
+ "error": null
+}
+</code></pre>
+</div>

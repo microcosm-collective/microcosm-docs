@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+  <head>
+  <title>Shortcodes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <link href="http://localhost:1313/static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="http://localhost:1313/static/css/styles.css" rel="stylesheet"/>
+    <link href="http://localhost:1313/static/css/hugoicon.css" rel="stylesheet"/>
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="http://localhost:1313/"><i class="icon-rocket "></i>&nbsp; Hugo</a>
+  </div>
+
+  
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Getting Started <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Content <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Indexes <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Extras <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Meta <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li><a href="http://github.com/spf13/hugo/releases"><i class="icon-arrow-down "> </i></a></li>
+      <li><a href="http://github.com/spf13/hugo"><i class="icon-octocat icon-2x"> </i></a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <div class="container" id="main">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h1>Shortcodes</h1>
+          <p>Because Hugo uses markdown for its content format, it was clear that there&rsquo;s a lot of things that
+markdown doesn&rsquo;t support well. This is good, the simple nature of markdown is exactly why we chose it.</p>
+
+<p>However we cannot accept being constrained by our simple format. Also unacceptable is writing raw
+html in our markdown every time we want to include unsupported content such as a video. To do
+so is in complete opposition to the intent of using a bare bones format for our content and
+utilizing templates to apply styling for display.</p>
+
+<p>To avoid both of these limitations Hugo has full support for shortcodes.</p>
+
+<h3>What is a shortcode?</h3>
+
+<p>A shortcode is a simple snippet inside a markdown file that Hugo will render using a template.</p>
+
+<p>Short codes are designated by the opening and closing characters of &lsquo;{{&#37;&rsquo; and &lsquo;%}}&rsquo; respectively.
+Short codes are space delimited. The first word is always the name of the shortcode.  Following the
+name are the parameters. The author of the shortcode can choose if the short code
+will use positional parameters or named parameters (but not both). A good rule of thumb is that if a
+short code has a single required value in the case of the youtube example below then positional
+works very well. For more complex layouts with optional parameters named parameters work best.</p>
+
+<p>The format for named parameters models that of html with the format name=&ldquo;value&rdquo;</p>
+
+<h3>Example: youtube</h3>
+
+<p><em>Example has an extra space so Hugo doesn&rsquo;t actually render it</em></p>
+
+<pre><code>{{ % youtube 09jf3ow9jfw %}}
+</code></pre>
+
+<p>Would load the template /layouts/shortcodes/youtube.html</p>
+
+<pre><code>&lt;div class=&quot;embed video-player&quot;&gt;
+&lt;iframe class=&quot;youtube-player&quot; type=&quot;text/html&quot; width=&quot;640&quot; height=&quot;385&quot; src=&quot;http://www.youtube.com/embed/{{ index .Params 0 }}&quot; allowfullscreen frameborder=&quot;0&quot;&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>This would be rendered as</p>
+
+<pre><code>&lt;div class=&quot;embed video-player&quot;&gt;
+&lt;iframe class=&quot;youtube-player&quot; type=&quot;text/html&quot;
+    width=&quot;640&quot; height=&quot;385&quot; 
+    src=&quot;http://www.youtube.com/embed/09jf3ow9jfw&quot;
+    allowfullscreen frameborder=&quot;0&quot;&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h3>Example: image with caption</h3>
+
+<p><em>Example has an extra space so Hugo doesn&rsquo;t actually render it</em></p>
+
+<pre><code>{{ % img src=&quot;/media/spf13.jpg&quot; title=&quot;Steve Francia&quot; %}}
+</code></pre>
+
+<p>Would load the template /layouts/shortcodes/img.html</p>
+
+<pre><code>&lt;!-- image --&gt;
+&lt;figure {{ if isset .Params &quot;class&quot; }}class=&quot;{{ index .Params &quot;class&quot; }}&quot;{{ end }}&gt;
+    {{ if isset .Params &quot;link&quot;}}&lt;a href=&quot;{{ index .Params &quot;link&quot;}}&quot;&gt;{{ end }}
+        &lt;img src=&quot;{{ index .Params &quot;src&quot; }}&quot; {{ if or (isset .Params &quot;alt&quot;) (isset .Params &quot;caption&quot;) }}alt=&quot;{{ if isset .Params &quot;alt&quot;}}{{ index .Params &quot;alt&quot;}}{{else}}{{ index .Params &quot;caption&quot; }}{{ end }}&quot;{{ end }} /&gt;
+    {{ if isset .Params &quot;link&quot;}}&lt;/a&gt;{{ end }}
+    {{ if or (or (isset .Params &quot;title&quot;) (isset .Params &quot;caption&quot;)) (isset .Params &quot;attr&quot;)}}
+    &lt;figcaption&gt;{{ if isset .Params &quot;title&quot; }}
+        &lt;h4&gt;{{ index .Params &quot;title&quot; }}&lt;/h4&gt;{{ end }}
+        {{ if or (isset .Params &quot;caption&quot;) (isset .Params &quot;attr&quot;)}}&lt;p&gt;
+        {{ index .Params &quot;caption&quot; }}
+        {{ if isset .Params &quot;attrlink&quot;}}&lt;a href=&quot;{{ index .Params &quot;attrlink&quot;}}&quot;&gt; {{ end }}
+            {{ index .Params &quot;attr&quot; }}
+        {{ if isset .Params &quot;attrlink&quot;}}&lt;/a&gt; {{ end }}
+        &lt;/p&gt; {{ end }} 
+    &lt;/figcaption&gt;
+    {{ end }}
+&lt;/figure&gt;
+&lt;!-- image --&gt;
+</code></pre>
+
+<p>Would be rendered as:</p>
+
+<pre><code>&lt;figure &gt;
+    &lt;img src=&quot;/media/spf13.jpg&quot;  /&gt;
+    &lt;figcaption&gt;
+        &lt;h4&gt;Steve Francia&lt;/h4&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+</code></pre>
+
+<h3>Creating a shortcode</h3>
+
+<p>All that you need to do to create a shortcode is place a template in the layouts/shortcodes directory.</p>
+
+<p>The template name will be the name of the shortcode.</p>
+
+<p><strong>Inside the template</strong></p>
+
+<p>To access a parameter by either position or name the index method can be used.</p>
+
+<pre><code>{{ index .Params 0 }}
+or
+{{ index .Params &quot;class&quot; }}
+</code></pre>
+
+<p>To check if a parameter has been provided use the isset method provided by Hugo.</p>
+
+<pre><code>{{ if isset .Params &quot;class&quot;}} class=&quot;{{ index .Params &quot;class&quot;}}&quot; {{ end }}
+</code></pre>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <hr>
+      <footer id="footer">
+            <p class="pull-right"><a href="#top">Back to top</a></p>
+            Made by <a href="http://spf13.com">Steve Francia</a>.<br>
+            Code licensed under the <a href="https://github.com/spf13/hugo/blob/master/LICENSE.md">Simple Public License 2.0</a>.<br>
+      </footer>
+      </div>
+      <script src="http://localhost:1313/static/js/jquery.js"></script>
+      <script src="http://localhost:1313/static/js/bootstrap.min.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-7131036-4', 'spf13.com');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+</html>
+

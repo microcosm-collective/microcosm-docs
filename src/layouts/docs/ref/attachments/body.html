@@ -1,0 +1,215 @@
+<!-- /attachments -->
+<div class="bs-docs-section" id="attachments">
+  <h2>/{type}/{id}/attachments</h2>
+
+  <p>An attachment represents a link between an item and a file. To create an attachment, the file must already have been uploaded to <code>/files</code> and the item must also exist.</p>
+
+  <p>Attachments can be created on a <code>comment</code> or a <code>profile</code> (in which case it becomes the profile's avatar). Attachments are always accessed through the path of the parent object, e.g. <code>/comments/1/attachments</code> or <code>/profiles/1/attachments</code>.</p>
+
+  <p>Once created on a comment or profile, the attachments can be listed by fetching <code>/{type}/{id}/attachments</code> which returns a paginated list of attachments on the item, e.g. <code>/profiles/1/attachments</code>.
+
+  <h3 id="attachments-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/files</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type}/{id}/attachments</td>
+        <td>POST</td>
+        <td>Given a valid access token with write permissions on the item, allows creation of an attachment (i.e. an association between a file and an item).</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type}/{id}/attachments</td>
+        <td>GET</td>
+        <td>Given a valid access token, fetch the attachments for a given item.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="attachments-collection">Collection</h3>
+
+  <h4 id="attachments-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1/attachments</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:19:47 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="attachments-collection-post">POST</h4>
+
+  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3"}' \
+  https://dev1.microco.sm/api/v1/comments/1/attachments
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 16:21:28 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/comments/1/attachments
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attachments-collection-get">GET</h4>
+
+  <p>Attachments are returned as a paginated list, with a <code>related</code> link that references the file directly and can be used to inline the image into HTML or a native control.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/comments/1/attachments</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:22:40 GMT
+Content-Type: application/json
+Content-Length: 1069
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attachments": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/comments/1/attachments"
+    }
+   ],
+   "type": "attachments",
+   "items": [
+    {
+     "profileId": 1,
+     "fileHash": "6dfa7765c0426db8d27fda63fa9671794dd730a3",
+     "created": "2013-11-25T16:21:28.134366Z",
+     "meta": {
+      "links": [
+       {
+        "rel": "related",
+        "href": "/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3",
+        "title": "File resource"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/comments/1/attachments"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="attachments-single">Single Resource</h3>
+
+  <h4 id="attachments-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1/attachments/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:31:27 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,DELETE</code></pre>
+
+  <h4 id="attachments-single-delete">DELETE</h4>
+
+  <p>To remove an attachment from comment or profile, issue a DELETE request using the fileHash as the identifier.</p>
+
+<pre><code>curl -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/comments/1/attachments/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:32:14 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Currently attachments can't be deleted from profiles, so to replace an avatar upload the file and link it as an attachment to the appropriate profile. This will override the existing avatar. In future an avatar picker will allow users see previous avatars they have used and delete them if needed.</p>
+</div>

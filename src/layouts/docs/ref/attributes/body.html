@@ -1,0 +1,450 @@
+<!-- /{type}/{id}/attributes -->
+<div class="bs-docs-section" id="attributes">
+  <h2>/{type}/{id}/attributes</h2>
+
+  <p>Provides the ability to store arbritrary key:value pairs of data against the most common entities. For example, you could store "Location = London, UK" against a profile or "Type = Festival" against an event.</p>
+
+  <p>Attributes can be stored against any of these high-level types: Site, Microcosms, Conversations, Events, Polls, Comments and Profiles. You can store numbers, booleans, strings and dates that are in YYYY-MM-DD format (and provided as a string).</p>
+
+  <p>Attributes defined by the owner of an item are not secret and have no special permissions. If a user has access to an entity, then the user can read all of the properties of that entity. Likewise, if a user has the ability to update the entity, then the user can modify all of the existing attributes as well as add new ones.</p>
+
+  <h3 id="attributes-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>PUT</td>
+        <td>Creates or updates a collection of one or more attributes for the current entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>GET</td>
+        <td>Returns a collection of attributes for the given entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>DELETE</td>
+        <td>Deletes a collection of attributes for the given entity.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>PUT</td>
+        <td>Creates or updates an attribute for the given entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>GET</td>
+        <td>Returns a specific attribute for the given entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>DELETE</td>
+        <td>Deletes an attribute for the given entity.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>type</code> is only ever one of: <code>site</code>|<code>microcosms</code>|<code>conversations</code>|<code>events</code>|<code>polls</code>|<code>comments</code>|<code>profiles</code>.</p>
+
+  <h3 id="attributes-collection">Collection</h3>
+  
+  <h4 id="attributes-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:22:56 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST,PUT,DELETE</code></pre>
+
+  <h4 id="attributes-collection-put">PUT</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating or updating a collection of attributes is to either create a single attribute or to create a whole collection at once. This method allows you to create one or more attributes at the same time, and if any attributes exist with the same key, then those attributes are updated to reflect the new values.</p>
+
+  <p>The structure of the JSON to create an attendee is:</p>
+
+<pre><code>[
+  {
+    "key": "MyString",
+    "value": "an example string",
+  },
+  {
+    "key": "MyDate",
+    "value": "2007-01-27",
+  },
+  {
+    "key": "MyBoolean",
+    "value": true,
+  },
+  {
+    "key": "MyInt",
+    "value": 42,
+  },
+  {
+    "key": "MyFloat",
+    "value": 3.14159265359,
+  }
+]</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>key</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the attribute. Needs to conform to the regular expression <code>[0-9a-zA-Z_-]+</code> as keys surface in URLs later.</td>
+      </tr>
+      <tr>
+        <td><code>value</code></td>
+        <td>String|Number|Boolean</td>
+        <td>Required</td>
+        <td>The value to store. Any JSON string, number or boolean value is acceptable. All values are displayed to end users, so you should not be tempted to store JSON objects in here as strings or other such data that the average person wouldn't be expected to see.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request to create a collection of attributes:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"key": "MyString","value": "an example string"},{"key": "MyDate","value": "2007-01-27"},{"key": "MyBoolean","value": true},{"key": "MyInt","value": 42},{"key": "MyFloat","value": 3.14159265359}]' \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:24:12 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>The response is effectively just a <code>200 OK</code>, no redirect happens in this scenario.</p>
+
+  <h4 id="attributes-collection-get">GET</h4>
+
+  <p>Fetches a collection of attributes for the given entity.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:24:36 GMT
+Content-Type: application/json
+Content-Length: 651
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attributes": {
+   "total": 5,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms/1/attributes"
+    }
+   ],
+   "type": "/api/v1/microcosms/0/attributes",
+   "items": [
+    {
+     "key": "MyBoolean",
+     "value": true
+    },
+    {
+     "key": "MyDate",
+     "value": "2007-01-27"
+    },
+    {
+     "key": "MyFloat",
+     "value": 3.141593
+    },
+    {
+     "key": "MyInt",
+     "value": 42
+    },
+    {
+     "key": "MyString",
+     "value": "an example string"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attributes-collection-delete">DELETE</h4>
+
+  <p>Request:</p>
+
+  <p>To delete attributes simply supply an array of the attributes to be deleted. You do not need to supply the <code>value</code>.</p>
+
+  <p>The structure of the JSON to delete one or more attributes is:</p>
+
+<pre><code>[
+  {
+    "key": "MyString",
+  },
+  {
+    "key": "MyDate",
+  },
+  {
+    "key": "MyBoolean",
+  },
+  {
+    "key": "MyInt",
+  },
+  {
+    "key": "MyFloat",
+  }
+]</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>key</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the attribute. Needs to conform to the regular expression <code>[0-9a-zA-Z_-]+</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request to delete one or more attributes:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"key": "MyString"},{"key": "MyDate"},{"key": "MyBoolean"},{"key": "MyInt"},{"key": "MyFloat"}]' \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:25:11 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>The response is effectively just a <code>200 OK</code>, no redirect happens in this scenario.</p>
+
+  <h3 id="attributes-single">Single Resource</h3>
+
+  <h4 id="attributes-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:25:30 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST,PUT,DELETE</code></pre>
+
+  <h4 id="attributes-single-put">PUT</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating or updating a single attribute is to either create a single attribute or to create a whole collection at once. This method allows you to a single attribute at a time, and if an attributes exist with the same key, then that attribute is updated to reflect the new value. Only one attribute can exist for a given key.</p>
+
+  <p>The structure of the JSON to create an attribute is:</p>
+
+<pre><code>{
+  "value": "an example string",
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td>String|Number|Boolean</td>
+        <td>Required</td>
+        <td>The value to store. Any JSON string, number or boolean value is acceptable. All values are displayed to end users, so you should not be tempted to store JSON objects in here as strings or other such data that the average person wouldn't be expected to see.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The <code>key</code> is supplied via the URL, hence it is ignored if supplied in the JSON.</p>
+
+  <p>Example request to create an attribute:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"value": "an example string"}' \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 15:26:29 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/microcosms/1/attributes/MyString
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attribute.</p>
+
+  <h4 id="attributes-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single attendee for an attribute.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:26:44 GMT
+Content-Type: application/json
+Content-Length: 118
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "key": "MyString",
+  "value": "an example string"
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attributes-single-delete">DELETE</h4>
+
+  <p>Deletes an attribute.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:26:57 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+</div>

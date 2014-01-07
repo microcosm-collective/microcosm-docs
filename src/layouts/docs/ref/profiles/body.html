@@ -1,0 +1,276 @@
+<!-- /profiles -->
+<div class="bs-docs-section" id="profiles">
+  <h2>/profiles</h2>
+  <p>Provides an interface to the set of profiles associated with the site.</p>
+
+  <h3 id="profiles-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/profiles</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles</td>
+        <td>GET</td>
+        <td>Returns summaries for the profiles associated with the site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns the specified profile.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the specified profile.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="profiles-collection">Collection</h3>
+  <h4 id="profiles-collection-options">OPTIONS</h4>
+
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/profiles</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 14:43:50 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="profiles-collection-get">GET</h4>
+
+  <p>Fetches a collection of profiles for the given site.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned.  There are two additional options:  A boolean 'top' which will order the profiles by comment count (rather than the default alphanumerical ordering), and a string 'q' which filters the profiles returned by profile name.</p>
+
+  <p>Example request - usernames beginning with the letter 'u', ordered by comment count:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/profiles?q=u&top=true</code></pre>
+
+    <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 14:44:07 GMT
+Content-Type: application/json
+Content-Length: 1091
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "profiles": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles"
+    }
+   ],
+   "type": "/api/v1/profiles",
+   "items": [
+    {
+     "id": 1,
+     "siteId": 1,
+     "userId": 1,
+     "profileName": "Frodo",
+     "visible": true,
+     "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+     "meta": {
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/profiles/1"
+       },
+       {
+        "rel": "site",
+        "href": "/api/v1/sites/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="profiles-single">Single Resource</h3>
+  <h4 id="profiles-single-options">OPTIONS</h4>
+
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:01:09 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,DELETE</code></pre>
+
+  <h4 id="profiles-single-get">GET</h4>
+
+  <p>Fetches the specified profile.</p>
+
+  <p>Example request:</p>
+
+  <pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+  <p>Example response:</p>
+
+  <pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:01:41 GMT
+Content-Type: application/json
+Content-Length: 853
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "siteId": 1,
+  "userId": 1,
+  "profileName": "Frodo",
+  "visible": true,
+  "styleId": 1,
+  "itemCount": 0,
+  "commentCount": 2,
+  "created": "2013-11-25T12:13:05.841628Z",
+  "lastActive": "2013-11-25T13:34:34.732561Z",
+  "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+  "banned": false,
+  "admin": true,
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles/1"
+    },
+    {
+     "rel": "site",
+     "href": "/api/v1/sites/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="profiles-single-put">PUT</h4>
+
+  <p>Updates a profile. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{"profileName": "NewProfileName"}</code></pre>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "profileName": "FrodoBaggins"}' \
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+  <p>Note that you do not need to supply the editedBy information as the only people that can update a profile are the owner of the profile and the owner of the site.</p>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 15:02:46 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/profiles/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated profile.</p>
+</div>

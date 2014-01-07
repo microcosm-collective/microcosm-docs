@@ -1,0 +1,2 @@
+hugo --source=src --destination=../
+

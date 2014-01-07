@@ -1,0 +1,156 @@
+<!-- /site -->
+<div class="bs-docs-section" id="site">
+  <h2>/site</h2>
+
+  <p>Provides information about the site that you are currently on: the name of the site, the site logo, who created the site, and who owns the site.</p>
+
+  <h3 id="site-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/site</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/site</td>
+        <td>GET</td>
+        <td>Returns information about the current site.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="site-single">Single Resource</h3>
+  
+  <h4 id="site-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/site</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 14:12:26 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="site-single-get">GET</h4>
+
+  <p>There are no query string paramaters, the response of this API call describes the basic properties of a web site.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/site</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 14:12:57 GMT
+Content-Type: application/json
+Content-Length: 1716
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "siteId": 1,
+  "title": "Middle Earth",
+  "description": "Middle Earth is the central continent of the world in the third age.",
+  "subdomainKey": "dev1",
+  "domain": "",
+  "ownedBy": {
+   "id": 1,
+   "siteId": 1,
+   "userId": 1,
+   "profileName": "Frodo",
+   "visible": true,
+   "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+   "meta": {
+    "links": [
+     {
+      "rel": "self",
+      "href": "/api/v1/profiles/1"
+     },
+     {
+      "rel": "site",
+      "href": "/api/v1/sites/1"
+     }
+    ]
+   }
+  },
+  "themeId": 1,
+  "logoUrl": "https://dev1.microco.sm/api/v1/files/30ff6e4d33e1ff64deb3cc6f2be8a97e8abaa77f",
+  "headerBackgroundUrl": "/static/themes/1/background.png",
+  "meta": {
+   "created": "2013-11-21T11:34:01.857651Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/sites/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms"
+    },
+    {
+     "rel": "profile",
+     "href": "/api/v1/profiles"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+</div>

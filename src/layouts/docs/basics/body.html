@@ -1,0 +1,646 @@
+<!-- Basics -->
+<div class="bs-docs-section" id="basics">
+  <div class="page-header">
+    <h1>Basics</h1>
+  </div>
+
+  <h2 id="basics-api-flow">API Flow</h2>
+  
+  <p>At the highest level you can imagine that the core flow through the API is this:
+    <img src="img/flow.png" alt="Image showing the high level flow through the API." />
+  </p>
+
+  <p>Sites have Microcosms. Microcosms have types of content that include Conversations, Events and Polls. Those types of content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+
+  <p>That is overly simplistic, of course; Comments are made by Profiles, and an Event describes which Microco.sm it is in, etc. but as a high-level view it suffices.</p>
+
+  <h2 id="basics-terminology">Terminology</h2>
+
+  <p>If you're coming from other forum/community software then you can translate things in this way:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Common Terminology</th>
+        <th>Microco.sm Terminology</th>
+        <th>Differences</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Forum</td>
+        <td>Site</td>
+        <td>
+          <p>In vBulletin, phpBB, and so on, the 'forum' is the over-arching instance of the software and the software runs on a single web domain.</p>
+          <p>Microco.sm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Forums or subforums</td>
+        <td>Microcosms</td>
+        <td>
+          <p>Within traditional forum software many forums can exist and they may be nested (subforums inside forums). These 'forums' are created by administrators and the users create conversations within an individual forum.</p>
+          <p>We have Microcosms instead of forums, and these are provided as a list rather than a tree-structure. The name Microcosm was chosen as they can contain everything a group may need, the events, polls, conversations, etc... they represent a smaller microcosm of the whole community.</p>
+          <p>Users are able to create these Microcosms, the structure of the site is not necessarily dictated by the site administrator.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Threads</td>
+        <td>Conversations</td>
+        <td>
+          <p>Threads are the bread and butter of a traditional forum, and within a Microcosm we have a conversation as the direct equivalent.</p>
+          <p>A conversation is simply a collection of comments on a topic.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Posts</td>
+        <td>Comments</td>
+        <td>
+          <p>Within traditional forum software threads have posts, and that's it.</p>
+          <p>Microco.sm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
+          <p>Comments are pieces of user generated content attached in the form of a list to some other content.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="basics-boiler">Boiler Plate</h2>
+
+  <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support the use of JSONP to those who need it.</p>
+
+  <p>All responses are wrapped in this:</p>
+
+<pre><code>{
+  "context": "",
+  "status": 200,
+  "data": null
+  "error": null
+}</code></pre>
+
+  <ul>
+    <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to include a token that can identify which request this response relates to.</li>
+    <li><code>status</code> = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
+    <li><code>data</code> = The actual JSON representation of the resource requested.</li>
+    <li><code>error</code> = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
+  </ul>
+
+  <p>All of the above will be returned on every call, null and "" are used to represent an absense of data (no context supplied, no data retrieved, and no error).</p>
+
+  <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code> or within a HTTP header like this: <code>X-Disable-Boiler: true</code>. With either of those set only the data object would be returned in the body of the response.</p>
+
+  <h2 id="basics-statuscodes">HTTP Status Codes</h2>
+
+  <p>We only return a few <a href="http://www.ietf.org/rfc/rfc2616.txt" title="RFC 2616">HTTP status codes</a> that generally describe the state of a request, your application need only handle these status codes:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>HTTP</th>
+        <th>Status</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>200</td>
+        <td>OK</td>
+        <td>Standard response for successful HTTP requests.</td>
+      </tr>
+      <tr>
+        <td>301</td>
+        <td>Permanently Moved</td>
+        <td>The requested resource is now to be found at the location described in the HTTP Location header, all future requests should be sent to that URL.</td>
+      </tr>
+      <tr>
+        <td>302</td>
+        <td>Found</td>
+        <td>The requested resource is now to be found at the location described in the HTTP Location header. After using a POST or UPDATE we may return a 302 to point you to the newly created resource. Your client should follow HTTP redirects, but future requests should not cache this redirect and should be sent to the original location.</td>
+      </tr>
+      <tr>
+        <td>303</td>
+        <td>See Other</td>
+        <td>The response to the request can be found under another URL using a separate GET method. When received in response to a POST (or PUT/DELETE), it should be assumed that the server has received the data OK and the new GET request starts a new request chain.</td>
+      </tr>
+      <tr>
+        <td>400</td>
+        <td>Bad Request</td>
+        <td>The client has made a bad request, which includes requests with malformed JSON, or invalid data values as well as requests in which the URL contains incorrect values (such as providing a string for an ID when an integer is expected).</td>
+      </tr>
+      <tr>
+        <td>401</td>
+        <td>Unauthorized</td>
+        <td>You lack the permission to do whatever you were trying to do. But, if you are able to authenticate as a user with that permission then you will be allowed to do this. That is, if your user is not logged in then prompt them to login, or if your user is logged in then they may need a different user or a higher privileged user to perform the task for them (such as editing content owned by someone else).</td>
+      </tr>
+      <tr>
+        <td>403</td>
+        <td>Forbidden</td>
+        <td>You aren't allowed to do what you were trying to do, and logging in is not going to help you. For example, you are not allowed to delete a whole collection of resources.</td>
+      </tr>
+      <tr>
+        <td>404</td>
+        <td>Not Found</td>
+        <td>We cannot find what you requested, though the request looks good. Note that we do not differentiate between resources that have never existed and ones that once existed but are now deleted... if we can't return it to you, then we return 'not found'.</td>
+      </tr>
+      <tr>
+        <td>405</td>
+        <td>Method Not Allowed</td>
+        <td>A request was made of a resource using a request method not supported by that resource; for example, using GET on a form which requires data to be presented via POST, or using PUT on a read-only resource.</td>
+      </tr>
+      <tr>
+        <td>500</td>
+        <td>Server Error</td>
+        <td>Something bad has happened at our end and it's not your fault. You made a good request, but we've failed you. Please try again later, or send us a bug report: <a href="mailto:hello@microcosm.cc">hello@microcosm.cc</a> with an example of both the request and response and we will definitely look into it.</td>
+      </tr>
+      <tr>
+        <td>501</td>
+        <td>Not Implemented</td>
+        <td>The server either does not recognize the request method, or it lacks the ability to fulfill the request. This is a very rare event and should not happen in normal circumstances, but may happen if we add a basic functionality for a new feature and a request is made to some unimplemented part of that feature.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="basics-callbacks">Callbacks</h2>
+
+  <p>We support callbacks using JSONP. To achieve that 3 things are needed:</p>
+  <ol>
+    <li>The ability to wrap the returned JSON in a callback function.</li>
+    <li>The ability to override the HTTP method so that you can perform the action of HTTP PUT and HTTP DELETE via HTTP POST.</li>
+    <li>The ability to only ever return a HTTP 200 OK status.</li>
+  </ol>
+
+  <p>To fulfil the first requirement you can wrap the response in a callback function name you provide by adding <code>callback=funcName</code> to the querystring of your request.</p>
+
+  <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring. You also have the option to use the standard <code>X-HTTP-Method-Override</code> HTTP header.</p>
+
+  <p class="well well-small">Note: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
+
+  <p>To fulfil the third requirement you may add <code>always200</code> to the querystring or <code>X-Always-200: true</code> to the HTTP headers and this will force the API to only ever return a HTTP 200 OK header regardless of what happened. The <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
+
+  <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
+
+  <p class="well well-small">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
+
+  <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
+
+  <h2 id="basics-urls">URL Patterns</h2>
+
+  <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code>. Even if a site has a CNAMEd domain such as http://example.com , the API will always be served over SSL on a {subdomain}.microco.sm URL. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
+
+  <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
+
+  <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
+
+  <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server.</p>
+
+  <p>URLs and actions for a resource collection:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>HTTP Method</th>
+        <th>URL Pattern</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GET</td>
+        <td>/api/v1/things</td>
+        <td>Returns a collection of the resource called 'things'.</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/api/v1/things</td>
+        <td>Collection updating is largely forbidden, would return HTTP 403. Please update individual resources.</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/api/v1/things</td>
+        <td>Collection deletion is largely forbidden, would return HTTP 403. Please delete individual resources.</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/api/v1/things</td>
+        <td>Would create a new resource 'thing' and return a 301 to the GET method for the newly created 'thing'.</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/v1/things/{id}</td>
+        <td>Would read a single 'thing' for the given {id}.</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/api/v1/things/{id}</td>
+        <td>Would update a single 'thing' for the given {id}.</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/api/v1/things/{id}</td>
+        <td>Would delete a single 'thing' for the given {id}.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>URLs and actions for a single resource:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>HTTP Method</th>
+        <th>URL Pattern</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>POST</td>
+        <td>/api/v1/thing</td>
+        <td>Create the resource. May be forbidden depending on the type of resource and the permissions derived from your access token.</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/v1/thing</td>
+        <td>Read the resource.</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/api/v1/thing</td>
+        <td>Update the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource unless you are the owner of the content.</td>
+      </tr>
+      <tr>
+        <td>PATCH</td>
+        <td>/api/v1/thing</td>
+        <td>Update part of the resource. Where this is available we use the format specified in <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a> to describe a list of operations that can modify the resource. We only support the <code>replace</code> operation, which allows you to make a request to replace a given value in the resource without needing knowledge of the whole resource.</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/api/v1/thing</td>
+        <td>Delete the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource unless you are the owner of the content.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
+
+  <h2 id="basics-pagination">Pagination</h2>
+
+  <p>Pagination of collections is supported using the offset approach:</p>
+  <ul>
+    <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
+    <li><code>offset</code> = <code>/api/v1/things?offset=50</code> would return up to the default number of 'things' starting at the 50th record.</li>
+    <li><code>limit</code> with <code>offset</code> = <code>/api/v1/things?limit=10&amp;offset=30</code> would return up to 10 'things' starting at the 30th record.</li>
+  </ul>
+
+  <p>The default value for <code>limit</code> is 25, and the default value for <code>offset</code> is 0. Meaning that if you do nothing, then you will get up to 25 records at the beginning of the collection.</p>
+
+  <p>The format of our collections is consistent, all resources that return a collection of resources will do so using this structure:</p>
+
+<pre><code>"collectionName": {
+  "total": 861,
+  "limit": 10,
+  "offset": 100,
+  "maxOffset" 860,
+  "totalPages": 87,
+  "page": 11,
+  "links": [
+    {"rel": "first", "href": "/api/v1/things?limit=10"},
+    {"rel": "prev", "href": "/api/v1/things?limit=10&offset=90"},
+    {"rel": "self", "href": "/api/v1/things?limit=10&offset=100"},
+    {"rel": "next", "href": "/api/v1/things?limit=10&offset=110"},
+    {"rel": "last", "href": "/api/v1/things?limit=10&offset=860"},
+  ],
+  "type": "/api/v1/things",
+  "items": [
+    ...
+  ]
+}</code></pre>
+
+  <p>Where:</p>
+  <ul>
+    <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
+    <li><code>total</code> = The total number of resources in the collection.</li>
+    <li><code>limit</code> = The maximum number of resources per page of the collection.</li>
+    <li><code>offset</code> = The current offset in the query.</li>
+    <li><code>maxOffset</code> = The maximum offset that will return a page.</li>
+    <li><code>totalPages</code> = The total number of pages in the collection.</li>
+    <li><code>page</code> = The current page in the collection.</li>
+    <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
+    <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
+    <li><code>items</code> = Contains the resources being paginated.</li>
+  </ul>
+
+  <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
+
+  <h2 id="basics-meta">Resource Metadata</h2>
+
+  <p>Most of the API calls will return a JSON object called <code>meta</code>, as part of the <code>data</code> object, that looks like this:</p>
+
+<pre><code>"meta":{
+   "created": "2013-04-11T05:52:46.362755Z",
+   "createdBy": {
+      "id": 1,
+      "userId": 1,
+      "profileName": "BillyPilgrim",
+      ...
+   },
+   "flags": {
+      "sticky": false,
+      "open": true,
+      "deleted": false,
+      "moderated": false,
+      "visible": false,
+      "unread": true
+   },
+   "links":[
+      {"rel":"self", "href":"/api/v1/site"},
+      {"rel":"microcosm", "href":"/api/v1/microcosms"},
+      {"rel":"profile", "href":"/api/v1/profiles"}
+   ],
+   "permissions":{
+      "create":false,
+      "read":true,
+      "update":false,
+      "delete":false,
+      "guest":true,
+      "superUser":false
+   }
+}</code></pre>
+
+  <h3 id="basics-meta-author">Author Information</h3>
+
+  <p>Where applicable (single items), author information will be presented in the form of:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>created</td>
+        <td>ISO8601 Datetime</td>
+        <td>When the resource was created.</td>
+      </tr>
+      <tr>
+        <td>createdBy</td>
+        <td>Profile summary object</td>
+        <td>Who created the resource and a link to that profile.</td>
+      </tr>
+      <tr>
+        <td>edited</td>
+        <td>ISO8601 Datetime</td>
+        <td>If the resource has been modified since creation, when the resource was last modified.</td>
+      </tr>
+      <tr>
+        <td>editedBy</td>
+        <td>Profile summary object</td>
+        <td>If the resource has been modified since creation, who modified the resource most recently and a link to that profile.</td>
+      </tr>
+      <tr>
+        <td>editReason</td>
+        <td>String</td>
+        <td>If the resource has been modified since creation, a one-line summary of the most recent modification.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="basics-meta-flags">Flags</h3>
+
+  <p>Where applicable (single items), generic boolean flags will be presented in a <code>flags</code> object:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sticky</td>
+        <td>bool</td>
+        <td>Whether the item is stuck to the top of any lists of items. That is, a stuck Microco.sm would appear before all unstuck Microcosms in the list of Microcosms.</td>
+      </tr>
+      <tr>
+        <td>open</td>
+        <td>bool</td>
+        <td>Whether the item is can be POSTed to. That is, an open conversation can receive new comments as replies, whereas a closed conversation still has existing comments but is not accepting new comments.</td>
+      </tr>
+      <tr>
+        <td>deleted</td>
+        <td>bool</td>
+        <td>Whether the item is deleted. For most users these will not be visible, but for super users these may be visible and may be undeletable.</td>
+      </tr>
+      <tr>
+        <td>moderated</td>
+        <td>bool</td>
+        <td>Whether the item is in the moderation queue awaiting approval (to be unmoderated) or rejection (to be unmoderated but deleted).</td>
+      </tr>
+      <tr>
+        <td>visible</td>
+        <td>bool</td>
+        <td>Summarises <code>deleted</code> and <code>moderated</code> into a single flag indicating whether the resource is currently visible on the site to most users.</td>
+      </tr>
+      <tr>
+        <td>unread</td>
+        <td>bool</td>
+        <td>If the item has previously been read before by the user. The user needs to be logged in otherwise this will return false. An item (conversation, event, poll) is marked as read if the user has read all comments in it, and a microcosm is marked as read if all items within it are read.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="basics-meta-links">Links</h3>
+
+  <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>.</p>
+
+  <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request and to provide you with that link so that you do not have to construct it yourself.</p>
+
+  <p>We currently support the following link relations:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Relation</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>self</td>
+        <td>Indicates that the containing object contains a resource equivalent to the one found at the href URL. Basically: A link to itself.</td>
+      </tr>
+      <tr>
+        <td>first</td>
+        <td>In a pagination collection, refers to the resource furthest preceding the current resource.</td>
+      </tr>
+      <tr>
+        <td>prev</td>
+        <td>In a pagination collection, refers to the resource directly preceding the current resource.</td>
+      </tr>
+      <tr>
+        <td>next</td>
+        <td>In a pagination collection, refers to the resource directly following the current resource.</td>
+      </tr>
+      <tr>
+        <td>last</td>
+        <td>In a pagination collection, refers to the resource furthest following the current resource.</td>
+      </tr>
+      <tr>
+        <td>comment</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/comments</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>conversation</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/conversations</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>event</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/events</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>microcosm</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microco.sm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
+      </tr>
+      <tr>
+        <td>poll</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/polls</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>profile</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/profiles</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>site</td>
+        <td>Refers to the resource that represents the current site and that can be found at the <code>/api/v1/site</code> URL.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="basics-meta-permissions">Permissions</h3>
+
+  <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the resource in the current context. You should interpret permissions alone these lines:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Permission</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>create</code></td>
+        <td>Whether you can perform a <code>POST</code> request in this context, and therefore whether you have permission to add resources to a collection.</td>
+      </tr>
+      <tr>
+        <td><code>read</code></td>
+        <td>Whether you can perform a <code>GET</code> request in this context. This will always be <code>true</code>, as you will have received a 401 or 403 error if you did not have permission to read this resource.</td>
+      </tr>
+      <tr>
+        <td><code>update</code></td>
+        <td>Whether you can perform a <code>PUT</code> request in this context. The general guideline is that you can only update your own content, unless you are authenticated as a super user.</td>
+      </tr>
+      <tr>
+        <td><code>delete</code></td>
+        <td>Whether you can perform a <code>DELETE</code> request in this context. In general, you can only delete your own content, unless you are authenticated as a super user.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The permissions themselves are always at the site level, microcosm level, or the item level. That is, if you are the owner of an item by virtue of authoring it, then you have certain permissions that stem from that. Otherwise your permissions are derived from a Microcosm (if the API call relates to something that relates to a Microcosm, or from the site.</p>
+
+  <p>Be sure to reflect this information within your client so that a user doesn't try to edit content when they will not have permission to do so.</p>
+
+  <h2 id="basics-authentication">Authentication</h2>
+
+  <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
+
+  <p>You can <a href="https://developer.mozilla.org/en-US/docs/Persona/Quick_Setup#Step_4.3A_Verify_the_user.E2.80.99s_credentials">read about assertions</a> on the Persona website or <a href="https://github.com/mozilla/browserid-cookbook">view example code</a>.</p>
+
+  <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
+
+  <p>To generate an access token, POST the following structure to <code>/auth</code>.
+
+  <pre><code>{
+  "Assertion": "suppliedByPersonaOnUserLogin",
+  "ClientSecret": "suppliedByMicrocosmDuringDevClientRegistration"
+}
+</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Assertion</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Assertion from Mozilla Persona signifying a successful user login for the site.</td>
+      </tr>
+      <tr>
+        <td><code>ClientSecret</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Client secret supplied when the API client was registered with Microco.sm.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <p>Example request</p>
+  <pre><code>curl -i \
+-X POST \
+-H "Content-Type: application/json" \
+-d '{"Assertion": "redacted", "ClientSecret": "redacted"}' \
+https://dev1.microco.sm/api/v1/auth
+</code></pre>
+
+          <p>Example response</p>
+
+          <pre><code>{
+    "status": 200,
+    "data": "theGeneratedAccessTokenToAuthenticateFutureRequestsByThisUser",
+    "context": "",
+    "error": null
+}
+</code></pre>
+
+  <p>The <code>data</code> attribute above contains a string which is the generated access token. You can supply this with a request to the API to authenticate the user.</p>
+
+  <p>Access tokens can be supplied as an HTTP header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form <code>access_token={redacted}</code>. If both header and querystring are provided, only the header will be examined. The header is the recommended way of providing the access token, the query string is made available to help support some clients which may not have access to the HTTP headers but the use of this is not encouraged.</p>
+
+  <p>Tokens do not currently expire, nor do they have a particular scope. These are earmarked for future development as is allowing users to revoke older access tokens whilst logged in with a more recent access token.</p>
+
+  <h2 id="basics-errors">Error Handling</h2>
+
+  <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
+
+  <p>If an error has occurred we will additionally inform you, the developer, of the cause of the error by populating the <code>error</code> property of the <a href="boiler">boiler plate</a>. The <code>error</code> property holds an array of strings to help you, the developer, to fix the issue.</p>
+  
+  <p class="well well-small">Note: The audience of the error string array is the developer implementing against the API. Please take care not to send error messages to the end user. Instead handle it in some elegant way in the UI that you present to the end user. To emphasise this: the error text is not localised, it will always be in English, it is designed to be understood by a developer and not an end user, it may change over time to be clearer to developers how to fix the error. Bottom line: Rely on HTTP status codes and nothing else.</p>
+  
+  <p>An example error (in this case for an invalid authentication access token):</p>
+  
+  <pre><code>HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+   "context":"",
+   "status":403,
+   "data":null,
+   "error":[
+      "You have supplied an invalid access token"
+   ]
+}
+</code></pre>
+
+  <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
+
+</div>

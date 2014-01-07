@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+  <head>
+  <title>Content Organization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+        <link href="http://localhost:1313/static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="http://localhost:1313/static/css/styles.css" rel="stylesheet"/>
+    <link href="http://localhost:1313/static/css/hugoicon.css" rel="stylesheet"/>
+
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="http://localhost:1313/"><i class="icon-rocket "></i>&nbsp; Hugo</a>
+  </div>
+
+  
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Getting Started <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Content <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Layout <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Indexes <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Extras <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Meta <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            
+        </ul>
+      </li>
+      <li><a href="http://github.com/spf13/hugo/releases"><i class="icon-arrow-down "> </i></a></li>
+      <li><a href="http://github.com/spf13/hugo"><i class="icon-octocat icon-2x"> </i></a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <div class="container" id="main">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h1>Content Organization</h1>
+          <p>Hugo uses markdown files with headers commonly called the front matter. Hugo respects the organization
+that you provide for your content to minimize any extra configuration, though this can be overridden
+by additional configuration in the front matter.</p>
+
+<h2>Organization</h2>
+
+<p>In Hugo the content should be arranged in the same way they are intended for the rendered website.
+Without any additional configuration the following will just work. Hugo supports
+content nested at any level. The top level is special in Hugo and is used as the
+<a href="http://localhost:1313/content/sections">section</a>.</p>
+
+<pre><code>.
+└── content
+    ├── post
+    |   ├── firstpost.md       // &lt;- http://site.com/post/firstpost/
+    |   ├── happy
+    |   |   └── happiness.md   // &lt;- http://site.com/post/happy/happiness/
+    |   └── secondpost.md      // &lt;- http://site.com/post/secondpost/
+    └── quote
+        ├── first.md           // &lt;- http://site.com/quote/first/
+        └── second.md          // &lt;- http://site.com/quote/second/
+</code></pre>
+
+<p><strong>Here&rsquo;s the same organization run with hugo --uglyurls</strong></p>
+
+<pre><code>.
+└── content
+    ├── post
+    |   ├── firstpost.md       // &lt;- http://site.com/post/firstpost.html
+    |   ├── happy
+    |   |   └── happiness.md   // &lt;- http://site.com/post/happy/happiness.html
+    |   └── secondpost.md      // &lt;- http://site.com/post/secondpost.html
+    └── quote
+        ├── first.md           // &lt;- http://site.com/quote/first.html
+        └── second.md          // &lt;- http://site.com/quote/second.html
+</code></pre>
+
+<h2>Destinations</h2>
+
+<p>Hugo thinks that you organize your content with a purpose. The same structure
+that works to organize your source content is used to organize the rendered
+site. As displayed above, the organization of the source content will be
+mirrored in the destination.</p>
+
+<p>There are times when one would need more control over their content. In these
+cases there are a variety of things that can be specified in the front matter to
+determine the destination of a specific piece of content.</p>
+
+<p>The following items are defined in order, latter items in the list will override
+earlier settings.</p>
+
+<h4>filename</h4>
+
+<p>This isn&rsquo;t in the front matter, but is the actual name of the file minus the
+extension. This will be the name of the file in the destination.</p>
+
+<h4>slug</h4>
+
+<p>Defined in the front matter, the slug can take the place of the filename for the
+destination.</p>
+
+<h4>filepath</h4>
+
+<p>The actual path to the file on disk. Destination will create the destination
+with the same path. Includes <a href="http://localhost:1313/content/sections">section</a>.</p>
+
+<h4>section</h4>
+
+<p>section can be provided in the front matter overriding the section derived from
+the source content location on disk. See <a href="http://localhost:1313/content/sections">section</a>.</p>
+
+<h4>path</h4>
+
+<p>path can be provided in the front matter. This will replace the actual
+path to the file on disk. Destination will create the destination with the same
+path. Includes <a href="http://localhost:1313/content/sections">section</a>.</p>
+
+<h4>url</h4>
+
+<p>A complete url can be provided. This will override all the above as it pertains
+to the end destination. This must be the path from the baseurl (starting with a &ldquo;/&rdquo;).
+When a url is provided it will be used exactly. Using url will ignore the
+--uglyurls setting.</p>
+
+<h2>Path breakdown in hugo</h2>
+
+<h3>Content</h3>
+
+<pre><code>.             path           slug
+.       ⊢-------^----⊣ ⊢------^-------⊣
+content/extras/indexes/category-example/index.html
+
+
+.       section              slug
+.       ⊢--^--⊣        ⊢------^-------⊣
+content/extras/indexes/category-example/index.html
+
+
+.       section  slug
+.       ⊢--^--⊣⊢--^--⊣
+content/extras/indexes/index.html
+</code></pre>
+
+<h3>Destination</h3>
+
+<pre><code>           permalink
+⊢--------------^-------------⊣
+http://spf13.com/projects/hugo
+
+
+   baseUrl       section  slug
+⊢-----^--------⊣ ⊢--^---⊣ ⊢-^⊣
+http://spf13.com/projects/hugo
+
+
+   baseUrl       section          slug
+⊢-----^--------⊣ ⊢--^--⊣        ⊢--^--⊣
+http://spf13.com/extras/indexes/example
+
+
+   baseUrl            path       slug
+⊢-----^--------⊣ ⊢------^-----⊣ ⊢--^--⊣
+http://spf13.com/extras/indexes/example
+
+
+   baseUrl            url
+⊢-----^--------⊣ ⊢-----^-----⊣
+http://spf13.com/projects/hugo
+
+
+   baseUrl               url
+⊢-----^--------⊣ ⊢--------^-----------⊣
+http://spf13.com/extras/indexes/example
+</code></pre>
+
+<p>section = which type the content is by default
+   based on content location
+   front matter overrides</p>
+
+<p>slug = name.ext or name/
+    based on content-name.md
+    front matter overrides</p>
+
+<p>path = section + path to file exluding slug
+    based on path to content location</p>
+
+<p>url = relative url
+    defined in front matter
+    overrides all the above</p>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <hr>
+      <footer id="footer">
+            <p class="pull-right"><a href="#top">Back to top</a></p>
+            Made by <a href="http://spf13.com">Steve Francia</a>.<br>
+            Code licensed under the <a href="https://github.com/spf13/hugo/blob/master/LICENSE.md">Simple Public License 2.0</a>.<br>
+      </footer>
+      </div>
+      <script src="http://localhost:1313/static/js/jquery.js"></script>
+      <script src="http://localhost:1313/static/js/bootstrap.min.js"></script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-7131036-4', 'spf13.com');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+</html>
+

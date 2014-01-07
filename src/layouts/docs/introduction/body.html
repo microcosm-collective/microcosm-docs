@@ -1,0 +1,33 @@
+<!-- Introduction -->
+<div class="bs-docs-section" id="introduction">
+  <div class="page-header">
+    <h1>Introduction</h1>
+  </div>
+
+  <p>The Microco.sm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
+
+  <p>Using the API is as easy as:</p>
+
+  <pre><code>curl -X GET https://dev1.microco.sm/api/v1/microcosms</code></pre>
+
+  <p>What we give you:</p>
+  <ul>
+    <li>A <a href="http://www.json.org/">JSON</a> interface of resources that you can manipulate via the most common HTTP verbs.</li>
+    <li>Token-based authentication to identify the user and client accessing the API.</li>
+    <li>Resources that compose together enough data (including links, associated data, and metadata) that you can do what you need with a minimal number of API calls.</li>
+    <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> inspired meta data to show the relation of a given resource to other resources, as well as a description of your user's permissions so that you know what state changing actions your user can perform.</li>
+  </ul>
+
+  <p>Deviations from pure REST and HATEOAS:</p>
+  <ul>
+    <li>We allow HTTP methods to be overridden.</li>
+    <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>), which means that our responses include meta data in addition to the resource itself.</li>
+    <li>We haven't created unique content types for each resource, we just use <code>application/json</code>.</li>
+    <li>We put our API version information in the URL rather than the HTTP headers.</li>
+    <li>We only serve JSON.</li>
+  </ul>
+
+  <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
+
+  <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
+</div>

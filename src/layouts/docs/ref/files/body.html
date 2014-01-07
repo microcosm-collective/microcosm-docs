@@ -1,0 +1,149 @@
+<!-- /files -->
+<div class="bs-docs-section" id="files">
+  <h2>/files</h2>
+
+  <p>This is the endpoint for uploading user-generated files such as images. The endpoint accepts POSTDATA encoded as <code>enctype/multipart-form</code> and returns an array of file metadata records for each file that is uploaded. The file metadata stores information about when the file was uploaded, by whom, a SHA-1 hash of the file content, and the file mime-type.</p>
+
+  <p>Note that images (png/gif/jpeg) are currently the only accepted file type.</p>
+
+  <p>To retrieve a file, it must be accessed using the SHA-1 hash of the file content as the identifier. Files cannot be retrieved by their file metadata ID. Note that
+    all files are accessible publicly via the SHA-1 identifier, so that links to files can be shared. However, the link itself will only be visible to users with the correct permission, giving the notion of "private URLs" to files.</p>
+
+  <h3 id="files-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/files</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/files</td>
+        <td>POST</td>
+        <td>Given a valid authentication token, accepts files encoded as a multipart form.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/files/{SHA-1:[0-9A-Za-z]+}</td>
+        <td>GET</td>
+        <td>Fetch a file by its SHA-1 hash of the file content.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="files-collection">Collection</h3>
+
+  <h4 id="files-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/files</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:34:15 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST</code></pre>
+
+  <h4 id="files-collection-post">POST</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X POST \
+  -F file=@red.jpg \
+  -F file=@blue.jpg \
+  https://dev1.microco.sm/api/v1/files</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:56:36 GMT
+Content-Type: application/json
+Content-Length: 465
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": [
+  {
+   "created": "2013-11-25T15:56:36.130607166Z",
+   "fileSize": 1044,
+   "fileHash": "6dfa7765c0426db8d27fda63fa9671794dd730a3",
+   "mimeType": "image/jpeg",
+   "width": 150,
+   "height": 150
+  },
+  {
+   "created": "2013-11-25T15:56:36.391334395Z",
+   "fileSize": 2887,
+   "fileHash": "f1f2f140aca0da4f49dce4fe5e92ffa3d5cfb19f",
+   "mimeType": "image/jpeg",
+   "width": 280,
+   "height": 280
+  }
+ ],
+ "error": null
+}
+</code></pre>
+
+  <h3 id="files-single">Single Resource</h3>
+
+  <h4 id="files-single-options">OPTIONS</h4>
+
+  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:59:06 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET</code></pre>
+
+  <h4 id="files-single-get">GET</h4>
+
+  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:01:50 GMT
+Content-Type: image/jpeg
+Content-Length: 1044
+Connection: keep-alive
+
+[binary image data that a browser would render or you could pass to a native image renderer]
+</code></pre>
+
+</div>

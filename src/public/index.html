@@ -1,0 +1,6163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Microco.sm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <base href="http://microcosm-cc.github.io/" />
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600,400italic,600italic|Ubuntu' rel='stylesheet' type='text/css'>
+    <link href="http://localhost:1313/static/css/bootstrap.css" rel="stylesheet" />
+    <link href="http://localhost:1313/static/css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="http://localhost:1313/static/css/docs.css" rel="stylesheet" />
+    <style type="text/css">
+      body {
+        padding-top: 30px;
+        padding-bottom: 20px;
+      }
+      .microcosm {
+        font-family: "Ubuntu", sans-serif;
+        font-weight: normal;
+      }
+      pre {
+        word-wrap: normal;
+        overflow: auto;
+      }
+      pre code {
+        white-space: pre;
+      }
+    </style>
+
+    
+    
+  </head>
+  <body class="bs-docs-docs" data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    
+    <div class="bs-docs-sidebar">
+      <ul class="nav bs-docs-sidenav">
+        <li><h3 class="bs-docs-sidenav-heading"><a href="http://localhost:1313/" class="microcosm">Microco.sm</a></h3></li>
+
+        <li><a class="nav-header" href="#introduction">Introduction</a></li>
+
+        <li><a class="nav-header" href="#basics">Basics</a>
+  <ul class="nav">
+    <li><a href="#basics-api-flow">API Flow</a></li>
+    <li><a href="#basics-terminology">Terminology</a></li>
+    <li><a href="#basics-boiler">Boiler Plate</a></li>
+    <li><a href="#basics-statuscodes">HTTP Status Codes</a></li>
+    <li><a href="#basics-callbacks">Calbacks</a></li>
+    <li><a href="#basics-urls">URL Patterns</a></li>
+    <li><a href="#basics-pagination">Pagination</a></li>
+    <li><a href="#basics-meta">Metadata</a>
+      <ul class="nav">
+        <li><a href="#basics-meta-author">Author Information</a></li>
+        <li><a href="#basics-meta-flags">Flags</a></li>
+        <li><a href="#basics-meta-links">Links</a></li>
+        <li><a href="#basics-meta-permissions">Permissions</a></li>
+      </ul>
+    </li>
+    <li><a href="#basics-authentication">Authentication</a></li>
+    <li><a href="#basics-errors">Error Handling</a></li>
+  </ul>
+</li>
+
+        <li><a class="nav-header" href="#tutorial">Tutorial</a></li>
+
+        <li><a class="nav-header" href="#ref">Reference</a></li>
+
+        <li><a href="#site">/site</a>
+  <ul class="nav">
+    <li><a href="#site-urls">URLS and Methods</a></li>
+    <li><a href="#site-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#site-single-options">OPTIONS</a></li>
+        <li><a href="#site-single-get">GET</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#microcosms">/microcosms</a>
+  <ul class="nav">
+    <li><a href="#microcosms-urls">URLS and Methods</a></li>
+    <li><a href="#microcosms-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#microcosms-collection-options">OPTIONS</a></li>
+        <li><a href="#microcosms-collection-post">POST</a></li>
+        <li><a href="#microcosms-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#microcosms-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#microcosms-single-options">OPTIONS</a></li>
+        <li><a href="#microcosms-single-get">GET</a></li>
+        <li><a href="#microcosms-single-put">PUT</a></li>
+        <li><a href="#microcosms-single-patch">PATCH</a></li>
+        <li><a href="#microcosms-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#conversations">/conversations</a>
+  <ul class="nav">
+    <li><a href="#conversations-urls">URLS and Methods</a></li>
+    <li><a href="#conversations-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#conversations-collection-options">OPTIONS</a></li>
+        <li><a href="#conversations-collection-post">POST</a></li>
+        <li><a href="#conversations-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#conversations-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#conversations-single-options">OPTIONS</a></li>
+        <li><a href="#conversations-single-get">GET</a></li>
+        <li><a href="#conversations-single-put">PUT</a></li>
+        <li><a href="#conversations-single-patch">PATCH</a></li>
+        <li><a href="#conversations-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#events">/events</a>
+  <ul class="nav">
+    <li><a href="#events-urls">URLS and Methods</a></li>
+    <li><a href="#events-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#events-collection-options">OPTIONS</a></li>
+        <li><a href="#events-collection-post">POST</a></li>
+        <li><a href="#events-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#events-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#events-single-options">OPTIONS</a></li>
+        <li><a href="#events-single-get">GET</a></li>
+        <li><a href="#events-single-put">PUT</a></li>
+        <li><a href="#events-single-patch">PATCH</a></li>
+        <li><a href="#events-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+
+<li><a href="#attendees">/events/{id}/attendees</a>
+  <ul class="nav">
+    <li><a href="#attendees-urls">URLS and Methods</a></li>
+    <li><a href="#attendees-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#attendees-collection-options">OPTIONS</a></li>
+        <li><a href="#attendees-collection-put">PUT</a></li>
+        <li><a href="#attendees-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#attendees-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#attendees-single-options">OPTIONS</a></li>
+        <li><a href="#attendees-single-get">GET</a></li>
+        <li><a href="#attendees-single-put">PUT</a></li>
+        <li><a href="#attendees-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#comments">/comments</a>
+  <ul class="nav">
+    <li><a href="#comments-urls">URLS and Methods</a></li>
+    <li><a href="#comments-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#comments-collection-options">OPTIONS</a></li>
+        <li><a href="#comments-collection-post">POST</a></li>
+      </ul>
+    </li>
+    <li><a href="#comments-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#comments-single-options">OPTIONS</a></li>
+        <li><a href="#comments-single-get">GET</a></li>
+        <li><a href="#comments-single-put">PUT</a></li>
+        <li><a href="#comments-single-patch">PATCH</a></li>
+        <li><a href="#comments-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+    <li><a href="#comments-single-incontext">Single Resource In Context</a>
+      <ul class="nav">
+        <li><a href="#comments-single-incontext-options">OPTIONS</a></li>
+        <li><a href="#comments-single-incontext-get">GET</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#profiles">/profiles</a>
+  <ul class="nav">
+    <li><a href="#profiles-urls">URLS and Methods</a></li>
+    <li><a href="#profiles-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#profiles-collection-options">OPTIONS</a></li>
+        <li><a href="#profiles-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#profiles-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#profiles-single-options">OPTIONS</a></li>
+        <li><a href="#profiles-single-get">GET</a></li>
+        <li><a href="#profiles-single-put">PUT</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#search">/search</a>
+  <ul class="nav">
+    <li><a href="#search-urls">URLS and Methods</a></li>
+    <li><a href="#search-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#search-collection-options">OPTIONS</a></li>
+        <li><a href="#search-collection-get">GET</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#updates">/updates</a>
+  <ul class="nav">
+    <li><a href="#updates-urls">URLS and Methods</a></li>
+    <li><a href="#updates-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#updates-collection-options">OPTIONS</a></li>
+        <li><a href="#updates-collection-post">POST</a></li>
+        <li><a href="#updates-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#updates-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#updates-single-options">OPTIONS</a></li>
+        <li><a href="#updates-single-get">GET</a></li>
+        <li><a href="#updates-single-put">PUT</a></li>
+        <li><a href="#updates-single-patch">PATCH</a></li>
+        <li><a href="#updates-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+    <li><a href="#updates-collection-unread">Count of Unread Updates</a>
+      <ul class="nav">
+        <li><a href="#updates-collection-unread-options">OPTIONS</a></li>
+        <li><a href="#updates-collection-unread-get">GET</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+
+<li><a href="#updateprefs">/updates/{id}/preferences</a>
+  <ul class="nav">
+    <li><a href="#updateprefs-urls">URLS and Methods</a></li>
+    <li><a href="#updateprefs-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#updateprefs-collection-options">OPTIONS</a></li>
+        <li><a href="#updateprefs-collection-put">PUT</a></li>
+        <li><a href="#updateprefs-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#updateprefs-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#updateprefs-single-options">OPTIONS</a></li>
+        <li><a href="#updateprefs-single-get">GET</a></li>
+        <li><a href="#updateprefs-single-put">PUT</a></li>
+        <li><a href="#updateprefs-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#whoami">/whoami</a>
+  <ul class="nav">
+    <li><a href="#whoami-urls">URLS and Methods</a></li>
+    <li><a href="#whoami-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#whoami-single-options">OPTIONS</a></li>
+        <li><a href="#whoami-single-get">GET</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+
+        <li><a href="#attributes">/{type}/{id}/attributes</a>
+  <ul class="nav">
+    <li><a href="#attributes-urls">URLS and Methods</a></li>
+    <li><a href="#attributes-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#attributes-collection-options">OPTIONS</a></li>
+        <li><a href="#attributes-collection-post">PUT</a></li>
+        <li><a href="#attributes-collection-get">GET</a></li>
+        <li><a href="#attributes-collection-delete">DELETE</a></li>
+      </ul>
+    </li>
+    <li><a href="#attributes-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#attributes-single-options">OPTIONS</a></li>
+        <li><a href="#attributes-single-put">PUT</a></li>
+        <li><a href="#attributes-single-get">GET</a></li>
+        <li><a href="#attributes-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#files">/files</a>
+  <ul class="nav">
+    <li><a href="#files-urls">URLS and Methods</a></li>
+    <li><a href="#files-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#files-collection-options">OPTIONS</a></li>
+        <li><a href="#files-collection-post">POST</a></li>
+      </ul>
+    </li>
+    <li><a href="#files-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#files-single-options">OPTIONS</a></li>
+        <li><a href="#files-single-get">GET</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#attachments">/attachments</a>
+  <ul class="nav">
+    <li><a href="#attachments-urls">URLS and Methods</a></li>
+    <li><a href="#attachments-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#attachments-collection-options">OPTIONS</a></li>
+        <li><a href="#attachments-collection-post">POST</a></li>
+        <li><a href="#attachments-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#attachments-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#attachments-single-options">OPTIONS</a></li>
+        <li><a href="#attachments-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+
+      </ul>
+    </div>
+
+
+    <div class="bs-docs-container">
+      <div class="row">
+
+        
+        <div class="bs-docs-section" id="welcome">
+          <div class="page-header">
+            <h1 class="microcosm"><a href="http://microco.sm/">Microco.sm</a></h1>
+          </div>
+
+          <p>Welcome to the API documentation for <a href="http://microco.sm/">Microco.sm</a>. On this single-page site we explain how to use the Microco.sm API. Print this page or bookmark, just keep it handy.</p>
+        </div>
+
+        
+<div class="bs-docs-section" id="introduction">
+  <div class="page-header">
+    <h1>Introduction</h1>
+  </div>
+
+  <p>The Microco.sm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
+
+  <p>Using the API is as easy as:</p>
+
+  <pre><code>curl -X GET https://dev1.microco.sm/api/v1/microcosms</code></pre>
+
+  <p>What we give you:</p>
+  <ul>
+    <li>A <a href="http://www.json.org/">JSON</a> interface of resources that you can manipulate via the most common HTTP verbs.</li>
+    <li>Token-based authentication to identify the user and client accessing the API.</li>
+    <li>Resources that compose together enough data (including links, associated data, and metadata) that you can do what you need with a minimal number of API calls.</li>
+    <li><a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> inspired meta data to show the relation of a given resource to other resources, as well as a description of your user's permissions so that you know what state changing actions your user can perform.</li>
+  </ul>
+
+  <p>Deviations from pure REST and HATEOAS:</p>
+  <ul>
+    <li>We allow HTTP methods to be overridden.</li>
+    <li>We include support for callbacks (including <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>), which means that our responses include meta data in addition to the resource itself.</li>
+    <li>We haven't created unique content types for each resource, we just use <code>application/json</code>.</li>
+    <li>We put our API version information in the URL rather than the HTTP headers.</li>
+    <li>We only serve JSON.</li>
+  </ul>
+
+  <p>Because of those deviations we are not a pure REST API (the lack of custom content types took care of that), and we are not a pure HATEOAS interface (the lack of XML-only support took care of making the links less discoverable). However, we do think that for the majority of developers these design decisions will help make the API easier to implement against.</p>
+
+  <p>The next bit covers conventions and standards within the API, if you just want to get to the nitty gritty and make an API call, then jump the conventions and go straight to the <a href="#site">/site</a> API to make your first call.</p>
+</div>
+
+        
+<div class="bs-docs-section" id="basics">
+  <div class="page-header">
+    <h1>Basics</h1>
+  </div>
+
+  <h2 id="basics-api-flow">API Flow</h2>
+  
+  <p>At the highest level you can imagine that the core flow through the API is this:
+    <img src="img/flow.png" alt="Image showing the high level flow through the API." />
+  </p>
+
+  <p>Sites have Microcosms. Microcosms have types of content that include Conversations, Events and Polls. Those types of content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
+
+  <p>That is overly simplistic, of course; Comments are made by Profiles, and an Event describes which Microco.sm it is in, etc. but as a high-level view it suffices.</p>
+
+  <h2 id="basics-terminology">Terminology</h2>
+
+  <p>If you're coming from other forum/community software then you can translate things in this way:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Common Terminology</th>
+        <th>Microco.sm Terminology</th>
+        <th>Differences</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Forum</td>
+        <td>Site</td>
+        <td>
+          <p>In vBulletin, phpBB, and so on, the 'forum' is the over-arching instance of the software and the software runs on a single web domain.</p>
+          <p>Microco.sm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Forums or subforums</td>
+        <td>Microcosms</td>
+        <td>
+          <p>Within traditional forum software many forums can exist and they may be nested (subforums inside forums). These 'forums' are created by administrators and the users create conversations within an individual forum.</p>
+          <p>We have Microcosms instead of forums, and these are provided as a list rather than a tree-structure. The name Microcosm was chosen as they can contain everything a group may need, the events, polls, conversations, etc... they represent a smaller microcosm of the whole community.</p>
+          <p>Users are able to create these Microcosms, the structure of the site is not necessarily dictated by the site administrator.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Threads</td>
+        <td>Conversations</td>
+        <td>
+          <p>Threads are the bread and butter of a traditional forum, and within a Microcosm we have a conversation as the direct equivalent.</p>
+          <p>A conversation is simply a collection of comments on a topic.</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Posts</td>
+        <td>Comments</td>
+        <td>
+          <p>Within traditional forum software threads have posts, and that's it.</p>
+          <p>Microco.sm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
+          <p>Comments are pieces of user generated content attached in the form of a list to some other content.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="basics-boiler">Boiler Plate</h2>
+
+  <p>Our responses are wrapped in boiler plate JSON that helps to describe what has happened. The purpose of this is to support callbacks, provide a really simple way of getting error/success information, and to additionally support the use of JSONP to those who need it.</p>
+
+  <p>All responses are wrapped in this:</p>
+
+<pre><code>{
+  "context": "",
+  "status": 200,
+  "data": null
+  "error": null
+}</code></pre>
+
+  <ul>
+    <li><code>context</code> = A string value given to the API via the querystring <code>?context=foo</code> would be returned to you here. This enables you to make asynchronous callbacks and to include a token that can identify which request this response relates to.</li>
+    <li><code>status</code> = The integer HTTP status of the response. You should use the HTTP header status, this is provided to help JSONP requests.</li>
+    <li><code>data</code> = The actual JSON representation of the resource requested.</li>
+    <li><code>error</code> = An array of strings that contain any error messages. If error is null, then no error has occurred.</li>
+  </ul>
+
+  <p>All of the above will be returned on every call, null and "" are used to represent an absense of data (no context supplied, no data retrieved, and no error).</p>
+
+  <p>The boiler plate can be disabled by ensuring <code>disableBoiler</code> is set in the querystring like this: <code>/api/version/resource?disableBoiler</code> or within a HTTP header like this: <code>X-Disable-Boiler: true</code>. With either of those set only the data object would be returned in the body of the response.</p>
+
+  <h2 id="basics-statuscodes">HTTP Status Codes</h2>
+
+  <p>We only return a few <a href="http://www.ietf.org/rfc/rfc2616.txt" title="RFC 2616">HTTP status codes</a> that generally describe the state of a request, your application need only handle these status codes:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>HTTP</th>
+        <th>Status</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>200</td>
+        <td>OK</td>
+        <td>Standard response for successful HTTP requests.</td>
+      </tr>
+      <tr>
+        <td>301</td>
+        <td>Permanently Moved</td>
+        <td>The requested resource is now to be found at the location described in the HTTP Location header, all future requests should be sent to that URL.</td>
+      </tr>
+      <tr>
+        <td>302</td>
+        <td>Found</td>
+        <td>The requested resource is now to be found at the location described in the HTTP Location header. After using a POST or UPDATE we may return a 302 to point you to the newly created resource. Your client should follow HTTP redirects, but future requests should not cache this redirect and should be sent to the original location.</td>
+      </tr>
+      <tr>
+        <td>303</td>
+        <td>See Other</td>
+        <td>The response to the request can be found under another URL using a separate GET method. When received in response to a POST (or PUT/DELETE), it should be assumed that the server has received the data OK and the new GET request starts a new request chain.</td>
+      </tr>
+      <tr>
+        <td>400</td>
+        <td>Bad Request</td>
+        <td>The client has made a bad request, which includes requests with malformed JSON, or invalid data values as well as requests in which the URL contains incorrect values (such as providing a string for an ID when an integer is expected).</td>
+      </tr>
+      <tr>
+        <td>401</td>
+        <td>Unauthorized</td>
+        <td>You lack the permission to do whatever you were trying to do. But, if you are able to authenticate as a user with that permission then you will be allowed to do this. That is, if your user is not logged in then prompt them to login, or if your user is logged in then they may need a different user or a higher privileged user to perform the task for them (such as editing content owned by someone else).</td>
+      </tr>
+      <tr>
+        <td>403</td>
+        <td>Forbidden</td>
+        <td>You aren't allowed to do what you were trying to do, and logging in is not going to help you. For example, you are not allowed to delete a whole collection of resources.</td>
+      </tr>
+      <tr>
+        <td>404</td>
+        <td>Not Found</td>
+        <td>We cannot find what you requested, though the request looks good. Note that we do not differentiate between resources that have never existed and ones that once existed but are now deleted... if we can't return it to you, then we return 'not found'.</td>
+      </tr>
+      <tr>
+        <td>405</td>
+        <td>Method Not Allowed</td>
+        <td>A request was made of a resource using a request method not supported by that resource; for example, using GET on a form which requires data to be presented via POST, or using PUT on a read-only resource.</td>
+      </tr>
+      <tr>
+        <td>500</td>
+        <td>Server Error</td>
+        <td>Something bad has happened at our end and it's not your fault. You made a good request, but we've failed you. Please try again later, or send us a bug report: <a href="mailto:hello@microcosm.cc">hello@microcosm.cc</a> with an example of both the request and response and we will definitely look into it.</td>
+      </tr>
+      <tr>
+        <td>501</td>
+        <td>Not Implemented</td>
+        <td>The server either does not recognize the request method, or it lacks the ability to fulfill the request. This is a very rare event and should not happen in normal circumstances, but may happen if we add a basic functionality for a new feature and a request is made to some unimplemented part of that feature.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="basics-callbacks">Callbacks</h2>
+
+  <p>We support callbacks using JSONP. To achieve that 3 things are needed:</p>
+  <ol>
+    <li>The ability to wrap the returned JSON in a callback function.</li>
+    <li>The ability to override the HTTP method so that you can perform the action of HTTP PUT and HTTP DELETE via HTTP POST.</li>
+    <li>The ability to only ever return a HTTP 200 OK status.</li>
+  </ol>
+
+  <p>To fulfil the first requirement you can wrap the response in a callback function name you provide by adding <code>callback=funcName</code> to the querystring of your request.</p>
+
+  <p>To fulfil the second requirement you can overload the HTTP method by making a HTTP POST request and adding <code>method=PUT</code> or <code>method=DELETE</code> as necessary to the querystring. You also have the option to use the standard <code>X-HTTP-Method-Override</code> HTTP header.</p>
+
+  <p class="well well-small">Note: If you are not using JSONP or have not proven that you require HTTP method overriding, then please do not do this. Instead just use the correct HTTP verb when you make your request. HTTP PUT and DELETE are <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications">idempotent</a> whereas HTTP POST is not, and this can create issues.</p>
+
+  <p>To fulfil the third requirement you may add <code>always200</code> to the querystring or <code>X-Always-200: true</code> to the HTTP headers and this will force the API to only ever return a HTTP 200 OK header regardless of what happened. The <code>status</code> property in the boiler plate JSON will still give the underlying HTTP status code so that you can handle the response appropriately.</p>
+
+  <p>This means that to make a JSONP request for GET and POST, you merely have made a request similar to <code>/api/version/resource?always200&amp;callback=funcName</code> and for PUT and DELETE you have additionally added <code>&amp;method=PUT</code> or <code>&amp;method=DELETE</code> as necessary to the querystring.</p>
+
+  <p class="well well-small">Note: You should not combine <code>disableBoiler</code> with the JSONP features, as the API will only ever be returning HTTP 200 OK, and you will need to check the <code>status</code> property of the boiler plate.</p>
+
+  <p>You are also able to provide <code>context</code> via the querystring and whatever the value of that parameter is will be provided back to you in the <code>context</code> property of the boiler plate.</p>
+
+  <h2 id="basics-urls">URL Patterns</h2>
+
+  <p>The base path of the API is <code>https://{subdomain}.microco.sm/api/v1</code>. Even if a site has a CNAMEd domain such as http://example.com , the API will always be served over SSL on a {subdomain}.microco.sm URL. All resources are children of that base path. Throughout this documentation you will see that base path written in shorthand as <code>/api/v1</code>.</p>
+
+  <p>There are two patterns of URLs, and which is used is determined by whether the resource name in the URL is pluralised or not. Resources that are pluralised represent collections <code>/api/v1/things</code>, and resources that are not pluralised represent a single resource <code>/api/v1/thing</code>.</p>
+
+  <p>Single resources tend to be descriptive meta-data only and will usually only respond successfully to a GET request.</p>
+
+  <p>Resource URLs never end in a trailing slash, as resources are themselves the entity you operate on, and a trailing slash would indicate a directory on the web server.</p>
+
+  <p>URLs and actions for a resource collection:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>HTTP Method</th>
+        <th>URL Pattern</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GET</td>
+        <td>/api/v1/things</td>
+        <td>Returns a collection of the resource called 'things'.</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/api/v1/things</td>
+        <td>Collection updating is largely forbidden, would return HTTP 403. Please update individual resources.</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/api/v1/things</td>
+        <td>Collection deletion is largely forbidden, would return HTTP 403. Please delete individual resources.</td>
+      </tr>
+      <tr>
+        <td>POST</td>
+        <td>/api/v1/things</td>
+        <td>Would create a new resource 'thing' and return a 301 to the GET method for the newly created 'thing'.</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/v1/things/{id}</td>
+        <td>Would read a single 'thing' for the given {id}.</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/api/v1/things/{id}</td>
+        <td>Would update a single 'thing' for the given {id}.</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/api/v1/things/{id}</td>
+        <td>Would delete a single 'thing' for the given {id}.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>URLs and actions for a single resource:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>HTTP Method</th>
+        <th>URL Pattern</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>POST</td>
+        <td>/api/v1/thing</td>
+        <td>Create the resource. May be forbidden depending on the type of resource and the permissions derived from your access token.</td>
+      </tr>
+      <tr>
+        <td>GET</td>
+        <td>/api/v1/thing</td>
+        <td>Read the resource.</td>
+      </tr>
+      <tr>
+        <td>PUT</td>
+        <td>/api/v1/thing</td>
+        <td>Update the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource unless you are the owner of the content.</td>
+      </tr>
+      <tr>
+        <td>PATCH</td>
+        <td>/api/v1/thing</td>
+        <td>Update part of the resource. Where this is available we use the format specified in <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a> to describe a list of operations that can modify the resource. We only support the <code>replace</code> operation, which allows you to make a request to replace a given value in the resource without needing knowledge of the whole resource.</td>
+      </tr>
+      <tr>
+        <td>DELETE</td>
+        <td>/api/v1/thing</td>
+        <td>Delete the resource. Likely to be forbidden in a single resource context as this tends to be a read-only resource unless you are the owner of the content.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">Note: If you add trailing slashes then the API returns a 404 Not Found response. Resources are not directories.</p>
+
+  <h2 id="basics-pagination">Pagination</h2>
+
+  <p>Pagination of collections is supported using the offset approach:</p>
+  <ul>
+    <li><code>limit</code> = <code>/api/v1/things?limit=10</code> would return up to 10 'things'.</li>
+    <li><code>offset</code> = <code>/api/v1/things?offset=50</code> would return up to the default number of 'things' starting at the 50th record.</li>
+    <li><code>limit</code> with <code>offset</code> = <code>/api/v1/things?limit=10&amp;offset=30</code> would return up to 10 'things' starting at the 30th record.</li>
+  </ul>
+
+  <p>The default value for <code>limit</code> is 25, and the default value for <code>offset</code> is 0. Meaning that if you do nothing, then you will get up to 25 records at the beginning of the collection.</p>
+
+  <p>The format of our collections is consistent, all resources that return a collection of resources will do so using this structure:</p>
+
+<pre><code>"collectionName": {
+  "total": 861,
+  "limit": 10,
+  "offset": 100,
+  "maxOffset" 860,
+  "totalPages": 87,
+  "page": 11,
+  "links": [
+    {"rel": "first", "href": "/api/v1/things?limit=10"},
+    {"rel": "prev", "href": "/api/v1/things?limit=10&offset=90"},
+    {"rel": "self", "href": "/api/v1/things?limit=10&offset=100"},
+    {"rel": "next", "href": "/api/v1/things?limit=10&offset=110"},
+    {"rel": "last", "href": "/api/v1/things?limit=10&offset=860"},
+  ],
+  "type": "/api/v1/things",
+  "items": [
+    ...
+  ]
+}</code></pre>
+
+  <p>Where:</p>
+  <ul>
+    <li><code>collectionName</code> = Will be replaced with the name of the collection.</li>
+    <li><code>total</code> = The total number of resources in the collection.</li>
+    <li><code>limit</code> = The maximum number of resources per page of the collection.</li>
+    <li><code>offset</code> = The current offset in the query.</li>
+    <li><code>maxOffset</code> = The maximum offset that will return a page.</li>
+    <li><code>totalPages</code> = The total number of pages in the collection.</li>
+    <li><code>page</code> = The current page in the collection.</li>
+    <li><code>links</code> = A pre-calculated array of links to navigate the collection. If you are on the last page then you will not receive the <code>"rel": ["next"]</code> link, and likewise if you are on the first page you will not receive the <code>"rel": ["prev"]</code></li>
+    <li><code>type</code> = Describes the type of record in the <code>items</code> array.</li>
+    <li><code>items</code> = Contains the resources being paginated.</li>
+  </ul>
+
+  <p class="well well-small">Note: A 400 Bad Request will be returned if: <code>limit</code> is not divisible by 5, <code>offset</code> is not a multiple of the limit, or the use of <code>offset</code> would navigate to a page outside of the bounds of the collection.</p>
+
+  <h2 id="basics-meta">Resource Metadata</h2>
+
+  <p>Most of the API calls will return a JSON object called <code>meta</code>, as part of the <code>data</code> object, that looks like this:</p>
+
+<pre><code>"meta":{
+   "created": "2013-04-11T05:52:46.362755Z",
+   "createdBy": {
+      "id": 1,
+      "userId": 1,
+      "profileName": "BillyPilgrim",
+      ...
+   },
+   "flags": {
+      "sticky": false,
+      "open": true,
+      "deleted": false,
+      "moderated": false,
+      "visible": false,
+      "unread": true
+   },
+   "links":[
+      {"rel":"self", "href":"/api/v1/site"},
+      {"rel":"microcosm", "href":"/api/v1/microcosms"},
+      {"rel":"profile", "href":"/api/v1/profiles"}
+   ],
+   "permissions":{
+      "create":false,
+      "read":true,
+      "update":false,
+      "delete":false,
+      "guest":true,
+      "superUser":false
+   }
+}</code></pre>
+
+  <h3 id="basics-meta-author">Author Information</h3>
+
+  <p>Where applicable (single items), author information will be presented in the form of:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>created</td>
+        <td>ISO8601 Datetime</td>
+        <td>When the resource was created.</td>
+      </tr>
+      <tr>
+        <td>createdBy</td>
+        <td>Profile summary object</td>
+        <td>Who created the resource and a link to that profile.</td>
+      </tr>
+      <tr>
+        <td>edited</td>
+        <td>ISO8601 Datetime</td>
+        <td>If the resource has been modified since creation, when the resource was last modified.</td>
+      </tr>
+      <tr>
+        <td>editedBy</td>
+        <td>Profile summary object</td>
+        <td>If the resource has been modified since creation, who modified the resource most recently and a link to that profile.</td>
+      </tr>
+      <tr>
+        <td>editReason</td>
+        <td>String</td>
+        <td>If the resource has been modified since creation, a one-line summary of the most recent modification.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="basics-meta-flags">Flags</h3>
+
+  <p>Where applicable (single items), generic boolean flags will be presented in a <code>flags</code> object:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>sticky</td>
+        <td>bool</td>
+        <td>Whether the item is stuck to the top of any lists of items. That is, a stuck Microco.sm would appear before all unstuck Microcosms in the list of Microcosms.</td>
+      </tr>
+      <tr>
+        <td>open</td>
+        <td>bool</td>
+        <td>Whether the item is can be POSTed to. That is, an open conversation can receive new comments as replies, whereas a closed conversation still has existing comments but is not accepting new comments.</td>
+      </tr>
+      <tr>
+        <td>deleted</td>
+        <td>bool</td>
+        <td>Whether the item is deleted. For most users these will not be visible, but for super users these may be visible and may be undeletable.</td>
+      </tr>
+      <tr>
+        <td>moderated</td>
+        <td>bool</td>
+        <td>Whether the item is in the moderation queue awaiting approval (to be unmoderated) or rejection (to be unmoderated but deleted).</td>
+      </tr>
+      <tr>
+        <td>visible</td>
+        <td>bool</td>
+        <td>Summarises <code>deleted</code> and <code>moderated</code> into a single flag indicating whether the resource is currently visible on the site to most users.</td>
+      </tr>
+      <tr>
+        <td>unread</td>
+        <td>bool</td>
+        <td>If the item has previously been read before by the user. The user needs to be logged in otherwise this will return false. An item (conversation, event, poll) is marked as read if the user has read all comments in it, and a microcosm is marked as read if all items within it are read.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="basics-meta-links">Links</h3>
+
+  <p>The <code>links</code> array contains a list of hypermedia links. The <code>rel</code> property describes the <a href="http://www.iana.org/assignments/link-relations/link-relations.xml">relation of the link</a> to the object that this <code>meta</code> object is attached to. The example above is taken from the <code>/site</code> API and shows that the link to itself is at <code>/api/v1/site</code>, and the link to Microcosms can be found at <code>/api/v1/microcosms</code>.</p>
+
+  <p>Links are there to describe to you the most obvious navigation actions that you can now perform given the context of the request and to provide you with that link so that you do not have to construct it yourself.</p>
+
+  <p>We currently support the following link relations:</p>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Relation</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>self</td>
+        <td>Indicates that the containing object contains a resource equivalent to the one found at the href URL. Basically: A link to itself.</td>
+      </tr>
+      <tr>
+        <td>first</td>
+        <td>In a pagination collection, refers to the resource furthest preceding the current resource.</td>
+      </tr>
+      <tr>
+        <td>prev</td>
+        <td>In a pagination collection, refers to the resource directly preceding the current resource.</td>
+      </tr>
+      <tr>
+        <td>next</td>
+        <td>In a pagination collection, refers to the resource directly following the current resource.</td>
+      </tr>
+      <tr>
+        <td>last</td>
+        <td>In a pagination collection, refers to the resource furthest following the current resource.</td>
+      </tr>
+      <tr>
+        <td>comment</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/comments</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>conversation</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/conversations</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>event</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/events</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>microcosm</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microco.sm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
+      </tr>
+      <tr>
+        <td>poll</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/polls</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>profile</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/profiles</code> URL or it's child resources.</td>
+      </tr>
+      <tr>
+        <td>site</td>
+        <td>Refers to the resource that represents the current site and that can be found at the <code>/api/v1/site</code> URL.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="basics-meta-permissions">Permissions</h3>
+
+  <p>Permissions on the other hand are there to describe to you the data-changing actions you can perform to the resource in the current context. You should interpret permissions alone these lines:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Permission</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>create</code></td>
+        <td>Whether you can perform a <code>POST</code> request in this context, and therefore whether you have permission to add resources to a collection.</td>
+      </tr>
+      <tr>
+        <td><code>read</code></td>
+        <td>Whether you can perform a <code>GET</code> request in this context. This will always be <code>true</code>, as you will have received a 401 or 403 error if you did not have permission to read this resource.</td>
+      </tr>
+      <tr>
+        <td><code>update</code></td>
+        <td>Whether you can perform a <code>PUT</code> request in this context. The general guideline is that you can only update your own content, unless you are authenticated as a super user.</td>
+      </tr>
+      <tr>
+        <td><code>delete</code></td>
+        <td>Whether you can perform a <code>DELETE</code> request in this context. In general, you can only delete your own content, unless you are authenticated as a super user.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The permissions themselves are always at the site level, microcosm level, or the item level. That is, if you are the owner of an item by virtue of authoring it, then you have certain permissions that stem from that. Otherwise your permissions are derived from a Microcosm (if the API call relates to something that relates to a Microcosm, or from the site.</p>
+
+  <p>Be sure to reflect this information within your client so that a user doesn't try to edit content when they will not have permission to do so.</p>
+
+  <h2 id="basics-authentication">Authentication</h2>
+
+  <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
+
+  <p>You can <a href="https://developer.mozilla.org/en-US/docs/Persona/Quick_Setup#Step_4.3A_Verify_the_user.E2.80.99s_credentials">read about assertions</a> on the Persona website or <a href="https://github.com/mozilla/browserid-cookbook">view example code</a>.</p>
+
+  <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
+
+  <p>To generate an access token, POST the following structure to <code>/auth</code>.
+
+  <pre><code>{
+  "Assertion": "suppliedByPersonaOnUserLogin",
+  "ClientSecret": "suppliedByMicrocosmDuringDevClientRegistration"
+}
+</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Assertion</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Assertion from Mozilla Persona signifying a successful user login for the site.</td>
+      </tr>
+      <tr>
+        <td><code>ClientSecret</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Client secret supplied when the API client was registered with Microco.sm.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <p>Example request</p>
+  <pre><code>curl -i \
+-X POST \
+-H "Content-Type: application/json" \
+-d '{"Assertion": "redacted", "ClientSecret": "redacted"}' \
+https://dev1.microco.sm/api/v1/auth
+</code></pre>
+
+          <p>Example response</p>
+
+          <pre><code>{
+    "status": 200,
+    "data": "theGeneratedAccessTokenToAuthenticateFutureRequestsByThisUser",
+    "context": "",
+    "error": null
+}
+</code></pre>
+
+  <p>The <code>data</code> attribute above contains a string which is the generated access token. You can supply this with a request to the API to authenticate the user.</p>
+
+  <p>Access tokens can be supplied as an HTTP header in the form <code>Authorization: Bearer {access_token}</code> or in the querystring in the form <code>access_token={redacted}</code>. If both header and querystring are provided, only the header will be examined. The header is the recommended way of providing the access token, the query string is made available to help support some clients which may not have access to the HTTP headers but the use of this is not encouraged.</p>
+
+  <p>Tokens do not currently expire, nor do they have a particular scope. These are earmarked for future development as is allowing users to revoke older access tokens whilst logged in with a more recent access token.</p>
+
+  <h2 id="basics-errors">Error Handling</h2>
+
+  <p>As a developer implementing against the API, you must rely on the <a href="#http">HTTP status codes</a> returned to handle errors.</p>
+
+  <p>If an error has occurred we will additionally inform you, the developer, of the cause of the error by populating the <code>error</code> property of the <a href="boiler">boiler plate</a>. The <code>error</code> property holds an array of strings to help you, the developer, to fix the issue.</p>
+  
+  <p class="well well-small">Note: The audience of the error string array is the developer implementing against the API. Please take care not to send error messages to the end user. Instead handle it in some elegant way in the UI that you present to the end user. To emphasise this: the error text is not localised, it will always be in English, it is designed to be understood by a developer and not an end user, it may change over time to be clearer to developers how to fix the error. Bottom line: Rely on HTTP status codes and nothing else.</p>
+  
+  <p>An example error (in this case for an invalid authentication access token):</p>
+  
+  <pre><code>HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{
+   "context":"",
+   "status":403,
+   "data":null,
+   "error":[
+      "You have supplied an invalid access token"
+   ]
+}
+</code></pre>
+
+  <p class="well well-small">Note: If you are making <a href="#jsonp">JSONP</a> requests and are making use of the <code>always200</code> flag, then you must look at the <code>status</code> property in the JSON response to ensure that you do not silently ignore errors.</p>
+
+</div>
+
+        <div class="bs-docs-section" id="tutorial">
+  <div class="page-header">
+    <h1>Tutorial</h1>
+  </div>
+
+  <p class="well well-small">We do not yet have a tutorial to share, but it is a TODO on our tasklist and we will prepare one before the public launch.</p>
+</div>
+
+        
+<div class="bs-docs-section" id="ref">
+  <div class="page-header">
+    <h1>Reference</h1>
+  </div>
+</div>
+
+        
+<div class="bs-docs-section" id="site">
+  <h2>/site</h2>
+
+  <p>Provides information about the site that you are currently on: the name of the site, the site logo, who created the site, and who owns the site.</p>
+
+  <h3 id="site-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/site</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/site</td>
+        <td>GET</td>
+        <td>Returns information about the current site.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="site-single">Single Resource</h3>
+  
+  <h4 id="site-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/site</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 14:12:26 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="site-single-get">GET</h4>
+
+  <p>There are no query string paramaters, the response of this API call describes the basic properties of a web site.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/site</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 14:12:57 GMT
+Content-Type: application/json
+Content-Length: 1716
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "siteId": 1,
+  "title": "Middle Earth",
+  "description": "Middle Earth is the central continent of the world in the third age.",
+  "subdomainKey": "dev1",
+  "domain": "",
+  "ownedBy": {
+   "id": 1,
+   "siteId": 1,
+   "userId": 1,
+   "profileName": "Frodo",
+   "visible": true,
+   "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+   "meta": {
+    "links": [
+     {
+      "rel": "self",
+      "href": "/api/v1/profiles/1"
+     },
+     {
+      "rel": "site",
+      "href": "/api/v1/sites/1"
+     }
+    ]
+   }
+  },
+  "themeId": 1,
+  "logoUrl": "https://dev1.microco.sm/api/v1/files/30ff6e4d33e1ff64deb3cc6f2be8a97e8abaa77f",
+  "headerBackgroundUrl": "/static/themes/1/background.png",
+  "meta": {
+   "created": "2013-11-21T11:34:01.857651Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/sites/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms"
+    },
+    {
+     "rel": "profile",
+     "href": "/api/v1/profiles"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+</div>
+        
+<div class="bs-docs-section" id="microcosms">
+  <h2>/microcosms</h2>
+
+  <p>Provides an interface to the microcosms that exist on a site and information on the items contained within them.</p>
+
+  <p>Conceptually a microcosm can be imagined as being like a 'forum' or 'sub-forum' on a traditional piece of forum software. The reason it is called a microcosm rather than a forum is that it is a container for all conversations, polls, and other resources such as events. In that regard it offers the full capabilities and features of the site within a small part of the site... a microcosm.</p>
+
+  <h3 id="microcosms-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/microcosms</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms</td>
+        <td>POST</td>
+        <td>Creates a new microcosm on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms</td>
+        <td>GET</td>
+        <td>Returns information about the microcosms that exist on the current site.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/microcosms/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the microcosm specified by the numeric identifier and a collection of items related to this microcosm.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the microcosm specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the microcosm specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms/markread</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/microcosms/markread</td>
+        <td>PUT</td>
+        <td>Marks the microcosm and all children items as read.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>microcosmId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc on that site).</p>
+
+  <h3 id="microcosms-collection">Collection</h3>
+  
+  <h4 id="microcosms-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/microcosms</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 14:45:58 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="microcosms-collection-post">POST</h4>
+
+  <p>Request:</p>
+
+  <p>The structure of the JSON to create a Microco.sm is:</p>
+
+<pre><code>{
+   "title": "Rivendell",
+   "description": "Refuge of the Elves, the House of Elrond lies within."
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual name for the microcosm, displayed everywhere the microcosm is mentioned. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A single line of text that provides information on the microcosm and provides the definition of what content is on-topic within the microcosm.</td>
+      </tr>
+      <tr>
+        <td><code>visibility</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>Must be one of 'public', or 'protected'. Where 'public' allows the microcosm to be accessed without limitation and be discoverable across other sites, 'protected' allows the microcosm to be found and displayed in the context of the current site. If no value is supplied, this defaults to 'public'.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Rivendell", "description":"Refuge of the Elves, the House of Elrond lies within."}' \
+  https://dev1.microco.sm/api/v1/microcosms</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 14:53:29 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/microcosms/2
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created microcosm.</p>
+
+  <h4 id="microcosms-collection-get">GET</h4>
+
+  <p>Fetches a collection of microcosms. If a valid <code>access_token</code> is provided then the collection may contain microcosms not visible to guests or that are private.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of microcosms returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/microcosms</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 14:55:26 GMT
+Content-Type: application/json
+Content-Length: 3046
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "microcosms": {
+   "total": 2,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms"
+    }
+   ],
+   "type": "/api/v1/microcosms",
+   "items": [
+    {
+     "id": 1,
+     "siteId": 1,
+     "visibility": "public",
+     "title": "The Shire",
+     "description": "Growing vegetables, brewing ale and smoking weed",
+     "moderators": null,
+     "totalItems": 0,
+     "totalComments": 0,
+     "mostRecentUpdate": null,
+     "meta": {
+      "created": "2013-11-21T13:20:32.823424Z",
+      "createdBy": {
+       "id": 5,
+       "siteId": 1,
+       "userId": 3,
+       "profileName": "Gandalf",
+       "visible": true,
+       "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/5"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": false,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/microcosms/1"
+       },
+       {
+        "rel": "site",
+        "href": "/api/v1/sites/1"
+       }
+      ]
+     }
+    },
+    {
+     "id": 2,
+     "siteId": 1,
+     "visibility": "public",
+     "title": "Rivendell",
+     "description": "Refuge of the Elves, the House of Elrond lies within.",
+     "moderators": null,
+     "totalItems": 0,
+     "totalComments": 0,
+     "mostRecentUpdate": null,
+     "meta": {
+      "created": "2013-11-21T14:53:29.638086Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": false,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/microcosms/2"
+       },
+       {
+        "rel": "site",
+        "href": "/api/v1/sites/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="microcosms-single">Single Resource</h3>
+
+  <h4 id="microcosms-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 15:05:24 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
+
+  <h4 id="microcosms-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single microcosm, including a collection of items contained within the microcosm. The pagination query string parameters allow to you traverse the collection of items. Items include conversations, events, polls, etc.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 15:05:52 GMT
+Content-Type: application/json
+Content-Length: 1533
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "siteId": 1,
+  "visibility": "public",
+  "title": "The Shire",
+  "description": "Growing vegetables, brewing ale and smoking weed",
+  "moderators": null,
+  "items": {
+   "total": 0,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 0,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms/1"
+    }
+   ],
+   "type": "/api/v1/comments",
+   "items": []
+  },
+  "meta": {
+   "created": "2013-11-21T13:20:32.823424Z",
+   "createdBy": {
+    "id": 5,
+    "siteId": 1,
+    "userId": 3,
+    "profileName": "Gandalf",
+    "visible": true,
+    "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/5"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "flags": {
+    "sticky": false,
+    "open": true,
+    "deleted": false,
+    "moderated": false,
+    "visible": false,
+    "unread": false,
+    "watched": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms/1"
+    },
+    {
+     "rel": "site",
+     "href": "/api/v1/sites/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+  
+  <h4 id="microcosms-single-put">PUT</h4>
+
+  <p>Updates a microcosm. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "title": "Rivendell",
+  "description": "Refuge of the Elves, also known as Imladris. The House of Elrond is within Rivendell.",
+  "meta": {"editReason": "Updated the description"}
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>visibility</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Must be one of 'public', 'protected' or 'private'. Where; 'public' allows the Microco.sm to be accessed without limitation and be discoverable across other sites, 'protected' allows the Microco.sm to be found and displayed publicly within the context of the current site, and 'private' means that the Microco.sm if fully private and won't be discoverable by guests.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual name for the Microco.sm, displayed everywhere the Microco.sm is mentioned. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A single line of text that provides information on the Microco.sm and provides the definition of what content is on-topic within the Micrcosm.</td>
+      </tr>
+      <tr>
+        <td><code>editReason</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A single line of text that provides information on the reason for the update, this usually encapsulates a description of the change made.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Rivendell","description": "Refuge of the Elves, also known as Imladris. The House of Elrond is within Rivendell.","meta":{"editReason": "Updated the description"}}' \
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 15:16:52 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/microcosms/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated microcosm.</p>
+
+  <h4 id="microcosms-single-patch">PATCH</h4>
+
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner of a microcosm or a super user (site admin) can delete a microcosm, but only a super user can undelete a microcosm.</p>
+
+  <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+  <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/sticky</code>, <code>/meta/flags/deleted</code>, <code>/meta/flags/moderated</code>, and <code>/meta/flags/open</code>.</p>
+
+  <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/sticky", "value": true},
+  {"op":"replace", "path":"/meta/flags/open", "value": true},
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+  <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+  <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
+
+          <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 15:18:35 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>That request will set the <code>sticky</code> property of a microcosm to <code>true</code>. You will need to perform a GET on the updated resource to see the change reflected.</p>
+
+  <p>Microcosm fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>Microcosm fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "edited": "2013-11-21T15:18:35.040362Z",
+      "editedBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+          "links": [
+          ...
+          ]
+        }
+      },
+      "editReason": "Set sticky to true",
+      "flags": {
+        "sticky": true,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+      },
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
+
+  <h4 id="microcosms-single-delete">DELETE</h4>
+
+  <p>Deletes a microcosm.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/microcosms/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 15:22:49 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+</div>
+        
+<div class="bs-docs-section" id="conversations">
+  <h2>/conversations</h2>
+
+  <p>Provides an interface to the conversations that exist on a site and the comments contained within them. A conversation is merely a titled (topical) collection of comments.</p>
+
+  <h3 id="conversations-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/conversations</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations</td>
+        <td>POST</td>
+        <td>Creates a new conversation on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations</td>
+        <td>GET</td>
+        <td>Returns information about the conversations that exist on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the conversation specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>PATCH</td>
+        <td>Updates specific fragments of a conversation resource specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the conversation specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}/lastcomment</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}/lastcomment</td>
+        <td>GET</td>
+        <td>Returns a redirect with a location linking to the last comment in the conversation.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}/newcomment</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}/newcomment</td>
+        <td>Get</td>
+        <td>Returns a redirect with a location linking to the first new comment in the conversation, or if there are no new comments then the last comment in the conversation.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}/markread</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/conversations/{id:[0-9]+}/markread</td>
+        <td>PUT</td>
+        <td>Marks the conversation as read.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>conversationId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc on the given site).</p>
+
+  <h3 id="conversations-collection">Collection</h3>
+  
+  <h4 id="conversations-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/conversations</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 15:53:05 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST</code></pre>
+
+  <h4 id="conversations-collection-post">POST</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating a conversation is to create the conversation item, and then to create comments against the conversation. A conversation is simply an empty container for a list of comments.</p>
+
+  <p>The structure of the JSON to create a conversation is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "There are whisperings that the Nazgûl are abroad"
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>microcosmId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which Microco.sm this conversation will reside in. This property is required as every conversation must reside in a single Microco.sm.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the conversation that usually encapsulates the topic of the conversation. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "There are whisperings that the Nazgûl are abroad"}' \
+  https://dev1.microco.sm/api/v1/conversations</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 16:10:01 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/conversations/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created conversation.</p>
+
+  <h4 id="conversations-collection-get">GET</h4>
+
+  <p>Fetches a collection of conversations across all microcosms. If a valid <code>access_token</code> is provided then the collection may contain conversations that exist in microcosms not visible to guests.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of conversations returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/conversations</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:10:53 GMT
+Content-Type: application/json
+Content-Length: 1770
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "conversations": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations"
+    }
+   ],
+   "type": "/api/v1/conversations",
+   "items": [
+    {
+     "id": 1,
+     "microcosmId": 1,
+     "title": "There are whisperings that the Nazgûl are abroad",
+     "meta": {
+      "created": "2013-11-21T16:10:01.851585Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/conversations/1"
+       },
+       {
+        "rel": "microcosm",
+        "href": "/api/v1/microcosms/1",
+        "title": "Rivendell"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="conversations-single">Single Resource</h3>
+
+  <h4 id="conversations-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:14:44 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
+
+  <h4 id="conversations-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow to you traverse the collection of comments.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:15:07 GMT
+Content-Type: application/json
+Content-Length: 1504
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "microcosmId": 1,
+  "title": "There are whisperings that the Nazgûl are abroad",
+  "comments": {
+   "total": 0,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 0,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations/1"
+    }
+   ],
+   "type": "/api/v1/comments",
+   "items": []
+  },
+  "meta": {
+   "created": "2013-11-21T16:10:01.851585Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "flags": {
+    "sticky": false,
+    "open": true,
+    "deleted": false,
+    "moderated": false,
+    "visible": true,
+    "unread": false,
+    "watched": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/conversations/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms/1",
+     "title": "Rivendell"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="conversations-single-put">PUT</h4>
+
+  <p>Updates a conversation. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "The Nazgûl have been sighted",
+  "meta": {"editReason": "Updated the title"}
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>microcosmId</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Indicates which Microco.sm this conversation belongs to, you can move a conversation from one Microco.sm to another by changing this value. The move will work according to the user permissions against the destination Microco.sm, and the visibility scope of the destination Microco.sm. That is, you cannot move a conversation to a private Microco.sm for which you do not have rights.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual name for the conversation, displayed everywhere the conversation is mentioned. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>editReason</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A single line of text that provides information on the reason for the update, this usually encapsulates a description of the change made.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "The Nazgûl have been sighted", "meta": {"editReason": "Updated the title"}}' \
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 16:17:05 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/conversations/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated conversation.</p>
+
+  <h4 id="conversations-single-patch">PATCH</h4>
+
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a conversation or a super user (microcosm moderator or site admin) can delete a conversation, but only a super user can undelete a conversation.</p>
+
+  <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+  <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/sticky</code>, <code>/meta/flags/deleted</code>, <code>/meta/flags/moderated</code>, and <code>/meta/flags/open</code>.</p>
+
+  <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/sticky", "value": true},
+  {"op":"replace", "path":"/meta/flags/open", "value": true},
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+  <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+  <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:22:01 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>That request will set the <code>sticky</code> property of a conversation to <code>true</code>. You will need to perform a GET on the updated resource to see the change reflected.</p>
+
+  <p>Conversation fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags":{
+        "sticky":false,
+        "open":true,
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>Conversation fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "edited": "2013-11-21T16:22:01.378813Z",
+      "editedBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         ...
+        ]
+       }
+      },
+      "editReason": "Set sticky to true",
+      "flags": {
+      "sticky": true,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
+
+  <h4 id="conversations-single-delete">DELETE</h4>
+
+  <p>Deletes a conversation.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:32:10 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+</div>
+        
+<div class="bs-docs-section" id="events">
+  <h2>/events</h2>
+
+  <p>Provides an interface to the events that exist on a site and the comments contained within them. An event describes some thing that happens some where at some time, and can be attended by some people. A collection of comments may be attached to an event.</p>
+
+  <h3 id="events-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/events</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events</td>
+        <td>POST</td>
+        <td>Creates a new event on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events</td>
+        <td>GET</td>
+        <td>Returns information about the events that exist on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the event specified by the numeric identifier and a collection of comments related to this event.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the event specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>PATCH</td>
+        <td>Updates specific fragments of a event resource specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the event specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/lastcomment</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/lastcomment</td>
+        <td>GET</td>
+        <td>Returns a redirect with a location linking to the last comment in the event.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/newcomment</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/newcomment</td>
+        <td>GET</td>
+        <td>Returns a redirect with a location linking to the first new comment in the event, or if there are no new comments then the last comment in the event.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>eventId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+
+  <h3 id="events-collection">Collection</h3>
+  
+  <h4 id="events-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:55:22 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="events-collection-post">POST</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating an event is to create the event item, and then to create comments against the event. An event is simply an empty container for a list of comments, but with additional structure to describe the event and manage attendees. An event is something that occurs at a moment in time, at some place in space. It is perfectly fine to create an event without knowing the location for it and/or when it occurs.</p>
+
+  <p>The structure of the JSON to create an event is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "rsvpLimit": 5
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>microcosmId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the event that usually encapsulates the topic of the event. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>when</code></td>
+        <td>ISO8601 Datetime</td>
+        <td>Optional</td>
+        <td>The scheduled date for that the event occurs on.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td>Integer</td>
+        <td>Optional</td>
+        <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 60 minutes = 1 hour.</td>
+      </tr>
+      <tr>
+        <td><code>where</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>A short textual description of the location of the event. This may be an address or just the title of the location. No geolocation will be done on this, it can be a useful label "Tower of London, UK" or a meaningless one "In the middle of a field".</td>
+      </tr>
+      <tr>
+        <td><code>lat</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The latitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>lon</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The longitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>north</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Northerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>east</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>An Easterly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>south</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Southerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>west</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Westerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>rsvpLimit</code></td>
+        <td>Integer</td>
+        <td>Optional</td>
+        <td>For events that are space constrained, this is the maximum number of people that can attend the event.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>If you supply a time then we expect a duration. Likewise if you supply a location then we expect all of the location fields to be valid and logical (the pin outside of the bounding box isn't helpful to a user, etc).</p>
+
+  <p>Example request to create a proposed event:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "Ale tasting?"}' \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example request to create a confirmed/upcoming event:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "Ale tasting", "when": "2013-11-22T20:00:00Z", "duration": 180, "where": "Green Dragon Inn", "lat": 51.674871, "lon": -0.216352, "north": 51.679581, "east": -0.208955, "south": 51.66984, "west": -0.227494, "rsvpLimit": 5}' \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example response for both scenarios:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Thu, 21 Nov 2013 17:35:14 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created event.</p>
+
+  <h4 id="events-collection-get">GET</h4>
+
+  <p>Fetches a collection of events across all Microcosms. If a valid <code>access_token</code> is provided then the collection may contain events that exist in private Microcosms not visible to guests.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:36:58 GMT
+Content-Type: application/json
+Content-Length: 1960
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "events": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events"
+    }
+   ],
+   "type": "/api/v1/events",
+   "items": [
+    {
+     "id": 1,
+     "microcosmId": 1,
+     "title": "Ale tasting",
+     "when": "2013-11-22T20:00:00Z",
+     "duration": 180,
+     "where": "Green Dragon Inn",
+     "lat": 51.674871,
+     "lon": -0.216352,
+     "north": 51.679581,
+     "east": -0.208955,
+     "south": 51.66984,
+     "west": -0.227494,
+     "status": "upcoming",
+     "meta": {
+      "created": "2013-11-22T10:28:46.261132Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "sticky": false,
+       "open": true,
+       "deleted": false,
+       "moderated": false,
+       "visible": true,
+       "unread": false,
+       "watched": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/events/1"
+       },
+       {
+        "rel": "microcosm",
+        "href": "/api/v1/microcosms/1",
+        "title": "Rivendell"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="events-single">Single Resource</h3>
+
+  <h4 id="events-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:40:42 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
+
+  <h4 id="events-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow to you traverse the collection of comments.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:41:03 GMT
+Content-Type: application/json
+Content-Length: 1722
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "status": "upcoming",
+  "rsvpLimit": 5,
+  "rsvpSpaces": 5,
+  "comments": {
+   "total": 0,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 0,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1"
+    }
+   ],
+   "type": "/api/v1/comments",
+   "items": []
+  },
+  "meta": {
+   "created": "2013-11-22T10:28:46.261132Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "flags": {
+    "sticky": false,
+    "open": true,
+    "deleted": false,
+    "moderated": false,
+    "visible": true,
+    "unread": false,
+    "watched": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1"
+    },
+    {
+     "rel": "microcosm",
+     "href": "/api/v1/microcosms/1",
+     "title": "Rivendell"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}</code></pre>
+  
+  <h4 id="events-single-put">PUT</h4>
+
+  <p>Updates an event. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "microcosmId": 1,
+  "title": "Ale tasting",
+  "when": "2013-11-22T20:00:00Z",
+  "duration": 180,
+  "where": "Green Dragon Inn",
+  "lat": 51.674871,
+  "lon": -0.216352,
+  "north": 51.679581,
+  "east": -0.208955,
+  "south": 51.66984,
+  "west": -0.227494,
+  "rsvpLimit": 25,
+  "meta": {
+    "editReason": "Increased attendee number"
+  }
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>microcosmId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the event that usually encapsulates the topic of the event. Should be as terse, yet descriptive as possible.</td>
+      </tr>
+      <tr>
+        <td><code>when</code></td>
+        <td>ISO8601 Datetime</td>
+        <td>Required</td>
+        <td>The scheduled date for that the event occurs on.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>How long the event runs for. The number is a time in minutes, so 180 = 3 hours. If no value is provided then we assume that an event has a duration of 60 minutes = 1 hour.</td>
+      </tr>
+      <tr>
+        <td><code>where</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>A short textual description of the location of the event. This may be an address, and this value will be mapped based on the first result from a Google maps search of this value.</td>
+      </tr>
+      <tr>
+        <td><code>lat</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The latitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>lon</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>The longitude where a pin should be displayed on a map.</td>
+      </tr>
+      <tr>
+        <td><code>north</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Northerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>east</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>An Easterly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>south</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Southerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>west</code></td>
+        <td>Float</td>
+        <td>Optional</td>
+        <td>A Westerly point that describes the limits of a bounding box, which in turn sets the zoom level of a map.</td>
+      </tr>
+      <tr>
+        <td><code>rsvpLimit</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>For events that are space constrained, this is the maximum number of people that can attend the event.</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>One of: 'proposed', 'upcoming', 'postponed' or 'cancelled'.</td>
+      </tr>
+      <tr>
+        <td><code>editReason</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>The reason the event is being updated.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "title": "Ale tasting", "when": "2013-11-22T20:00:00Z", "duration": 180, "where": "Green Dragon Inn", "lat": 51.674871, "lon": -0.216352, "north": 51.679581, "east": -0.208955, "south": 51.66984, "west": -0.227494, "rsvpLimit": 25, "meta": {"editReason": "Increased attendee number"}}' \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 10:43:28 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the updated event.</p>
+
+  <h4 id="events-single-patch">PATCH</h4>
+
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of an event or a super user (microcosm moderator or site admin) can delete an event, but only a super user can undelete an event.</p>
+
+  <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+  <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/sticky</code>, <code>/meta/flags/deleted</code>, <code>/meta/flags/moderated</code>, and <code>/meta/flags/open</code>.</p>
+
+  <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/sticky", "value": true},
+  {"op":"replace", "path":"/meta/flags/open", "value": true},
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+  <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+  <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
+  https://dev1.microco.sm/api/v1/events/1
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:45:52 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>That request will set the <code>sticky</code> property of an event to <code>true</code>. You will need to perform a GET of the updated resource to see the change.</p>
+
+  <p>Event fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags":{
+        "sticky":false,
+        "open":true,
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+        "isread": true
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>Event fragment after:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+     ...
+     "edited": "2013-11-22T10:45:52.3653Z",
+     "editedBy": {
+      "id": 1,
+      "siteId": 1,
+      "userId": 1,
+      "profileName": "Frodo",
+      "visible": true,
+      "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+      "meta": {
+       "links": [
+       ...
+       ]
+      }
+     },
+     "editReason": "Set sticky to true",
+     "flags": {
+      "sticky": true,
+      "open": true,
+      "deleted": false,
+      "moderated": false,
+      "visible": true,
+      "unread": false,
+      "watched": false
+     },
+     ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
+
+  <h4 id="events-single-delete">DELETE</h4>
+
+  <p>Deletes an event.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/events/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:47:40 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+</div>
+
+
+<div class="bs-docs-section" id="attendees">
+  <h2>/events/{id}/attendees</h2>
+
+  <p>Provides an interface to describe who is attending which events, who has been invited and who has declined invitations.</p>
+
+  <h3 id="attendees-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+        <td>PUT</td>
+        <td>Creates or updates a collection of attendees for the current event. Depending on the data sent, this is an invitation to an event, or a confirmation that someone will attend.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees</td>
+        <td>GET</td>
+        <td>Returns information about the attendees for event.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about a specific attendee for an event. The information returned describes whether this is an invite, a maybe, a declined invite, or a confirmation of attendance.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates attendance resource. This is how you change the status to reflect attendance, or not, of the attendee.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/events/{id:[0-9]+}/attendees/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the attendance resource specified.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">Whilst the <code>eventId</code> is based on a sequential number (that spans all sites in the microcosm network), the <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. This means that if you have profile 27 and event 86574, and even if there are no other attendees, the URL would be <code>/api/v1/events/86574/attendees/27</code>.</p>
+
+  <h3 id="attendees-collection">Collection</h3>
+  
+  <h4 id="attendees-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:25:48 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="attendees-collection-put">PUT</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating an attendee is to create the event item, and then to create attendees against the event.</p>
+
+  <p>The structure of the JSON to create an attendee is:</p>
+
+<pre><code>[{
+  "attendeeId": 1,
+  "rsvp": "yes",
+}]</code></pre>
+
+  <p>It's an array, feel free to provide many attendees at once.</p>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>attendeeId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>Identifies which profile is attending the event. The <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
+      </tr>
+      <tr>
+        <td><code>rsvpd</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>Describes the RSVP state of the attendee, may be one of <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite. If not supplied this defaults to "invited".</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request to create an invitation for an attendee:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"attendeeId": 1}]' \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example request to create a confirmation for the user whose authentication credentials token matches the <code>attendeeId</code>:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"attendeeId": 1, "rsvp": "yes"}]' \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example response for both scenarios:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:29:19 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attendee resource.</p>
+
+  <h4 id="attendees-collection-get">GET</h4>
+
+  <p>Fetches a collection of attendees for the current event.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events/1/attendees</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:29:40 GMT
+Content-Type: application/json
+Content-Length: 2044
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attendees": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees"
+    }
+   ],
+   "type": "/api/v1/events/0/attendees",
+   "items": [
+    {
+     "attendeeId": 1,
+     "attendee": {
+      "id": 1,
+      "siteId": 1,
+      "userId": 1,
+      "profileName": "Frodo",
+      "visible": true,
+      "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+      "meta": {
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/profiles/1"
+        },
+        {
+         "rel": "site",
+         "href": "/api/v1/sites/1"
+        }
+       ]
+      }
+     },
+     "rsvp": "invited",
+     "rsvpdOn": "2013-11-22T11:29:19.137938Z",
+     "meta": {
+      "created": "2013-11-22T11:29:19.137938Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/events/1/attendees/1"
+       },
+       {
+        "rel": "profile",
+        "href": "/api/v1/profiles/1"
+       },
+       {
+        "rel": "event",
+        "href": "/api/v1/events/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}</code></pre>
+
+  <h3 id="attendees-single">Single Resource</h3>
+
+  <h4 id="attendees-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:30:23 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,DELETE</code></pre>
+
+  <h4 id="attendees-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single attendee for an event.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:32:14 GMT
+Content-Type: application/json
+Content-Length: 1467
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attendeeId": 1,
+  "attendee": {
+   "id": 1,
+   "siteId": 1,
+   "userId": 1,
+   "profileName": "Frodo",
+   "visible": true,
+   "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+   "meta": {
+    "links": [
+     {
+      "rel": "self",
+      "href": "/api/v1/profiles/1"
+     },
+     {
+      "rel": "site",
+      "href": "/api/v1/sites/1"
+     }
+    ]
+   }
+  },
+  "rsvp": "invited",
+  "rsvpdOn": "2013-11-22T11:29:19.137938Z",
+  "meta": {
+   "created": "2013-11-22T11:29:19.137938Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/events/1/attendees/1"
+    },
+    {
+     "rel": "profile",
+     "href": "/api/v1/profiles/1"
+    },
+    {
+     "rel": "event",
+     "href": "/api/v1/events/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attendees-single-put">PUT</h4>
+
+  <p>Updates the attendee resource to reflect the new attendance state.</p>
+
+  <p>The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+   "rsvp": "maybe"
+}</code></pre>
+
+  <p>Where the <code>rsvp</code> property is one of: <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite.</p>
+
+  <p>Example request to set as attending:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"rsvp":"yes"}' \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example request to set as not attending:</p>
+  
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"rsvp":"no"}' \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example request to set as maybe attending:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"rsvp":"maybe"}' \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:33:17 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/events/1/attendees/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attendees-single-delete">DELETE</h4>
+
+  <p>Deletes an attendee resource.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/events/1/attendees/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:33:36 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+</div>
+        
+<div class="bs-docs-section" id="comments">
+  <h2>/comments</h2>
+
+  <p>Provides an interface to comments. These are the bread and butter of a community web site, each comment is a piece of content attached to some other item (a conversation, an event, a poll, etc.) that discusses the item. Comments can be generally in response to the item, or specifically in response to another comment.</p>
+
+  <p>The format for the body of a comment is <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, with some minor additions to do things link recognising usernames when preceded with an @ or +, and embedding rich content about linked items where we are able to. There are also some restrictions on unsafe HTML such as the use of JavaScript and CSS.</p>
+
+  <p>General rule of thumb: Take text through a standard textbox or textarea and send it to us and we'll worry about formatting it.</p>
+
+  <h3 id="comments-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/comments</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments</td>
+        <td>POST</td>
+        <td>Creates a new comment on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the comment specified by the numeric identifier and the HTML to show when rendering the comment.  Also includes the parents and children for the comment to enable a threaded view.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the comment specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>PATCH</td>
+        <td>Updates specific fragments of a comment resource specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the comment specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/comments/{id:[0-9]+}/incontext</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/comments/{id:[0-9]+}/incontext</td>
+        <td>GET</td>
+        <td>Returns a redirect to the API of the item that this comment belongs to, with the <code>offset</code> and <code>limit</code> set to ensure that the page on which this comment belongs is returned..</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>commentId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc).</p>
+
+  <h3 id="comments-collection">Collection</h3>
+  
+  <h4 id="comments-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:07:00 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST</code></pre>
+
+  <h4 id="comments-collection-post">POST</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating a comment is that you must already have some other item, and comments are attached to that. For this reason when you create a comment you also need to provide the <code>itemType</code> and <code>itemId</code> for the item that this comment will be attached to.</p>
+
+  <p>The structure of the JSON to create a comment is:</p>
+
+<pre><code>{
+   "itemType": "conversation",
+   "itemId": 1,
+   "markdown": "Some text and a link to [vBulletin](http://www.vbulletin.com/)"
+}</code></pre>
+
+  <p>And if you were creating a comment that is a direct reply to another comment, then you should additionally provide the identifier of the comment you are replying to:</p>
+
+<pre><code>{
+   "itemType": "conversation",
+   "itemId": 1,
+   "inReplyTo": 1,
+   "markdown": "A rebuttal and a link Some text and a link to [Microcosm](http://microco.sm/)"
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>itemType</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the type of item that this comment is attached to. Must be one of: <code>conversation</code>, <code>event</code>, <code>huddle</code> or <code>poll</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemType</code> is <code>conversation</code>.</td>
+      </tr>
+      <tr>
+        <td><code>itemId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>The identifier for the given type of item described by <code>itemType</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemId</code> is <code>1</code>.</td>
+      </tr>
+      <tr>
+        <td><code>inReplyTo</code></td>
+        <td>Integer</td>
+        <td>Optional</td>
+        <td>If the comment is an explicit response to an existing comment, then this is the identifier for that comment.</td>
+      </tr>
+      <tr>
+        <td><code>markdown</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>The textual content of the comment, markdown formatted. This will be converted automatically into HTML and any @mentions or links detected, HTML processed, etc. Note that all fields are scrubbed for bad input, and bad input is HTML or other formatting instructions that could affect the rendering of the content, or that makes a client vulnerable to cross-site scripting attacks.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"markdown": "I think we should get off the road"}' \
+  https://dev1.microco.sm/api/v1/comments</code></pre>
+
+  <p>And a reply to an existing comment:</p>
+
+<pre><code>
+curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"inReplyTo": 1, "markdown": "Get off the road! **Quick!**"}' \
+  https://dev1.microco.sm/api/v1/comments
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 13:27:27 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/comments/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created comment.</p>
+
+  <h3 id="comments-single">Single Resource</h3>
+
+  <h4 id="comments-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:42:20 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
+
+  <h4 id="comments-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single comment. If this comment was <code>inReplyTo</code> another comment then it will also fetch the parents of this comment. Additionally if other comments are <code>inReplyTo</code> this comment then it will fetch up to a maximum of 5 replies.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:44:00 GMT
+Content-Type: application/json
+Content-Length: 3617
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "itemType": "conversation",
+  "itemId": 1,
+  "revisions": 1,
+  "inReplyTo": 0,
+  "attachments": 0,
+  "firstLine": "",
+  "markdown": "I think we should get off the road",
+  "html": "\u003cp\u003eI think we should get off the road\u003c/p\u003e\n",
+  "meta": {
+   "created": "2013-11-22T13:28:09.094412Z",
+   "createdBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "edited": "2013-11-22T13:28:09.094412Z",
+   "editedBy": {
+    "id": 1,
+    "siteId": 1,
+    "userId": 1,
+    "profileName": "Frodo",
+    "visible": true,
+    "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+    "meta": {
+     "links": [
+      {
+       "rel": "self",
+       "href": "/api/v1/profiles/1"
+      },
+      {
+       "rel": "site",
+       "href": "/api/v1/sites/1"
+      }
+     ]
+    }
+   },
+   "parents": null,
+   "children": [
+    {
+     "id": 2,
+     "itemType": "conversation",
+     "itemId": 1,
+     "revisions": 1,
+     "inReplyTo": 1,
+     "markdown": "Get off the road! **Quick!**",
+     "html": "\u003cp\u003eGet off the road! \u003cstrong\u003eQuick!\u003c/strong\u003e\u003c/p\u003e\n",
+     "meta": {
+      "created": "2013-11-22T13:28:09.704428Z",
+      "createdBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "edited": "2013-11-22T13:28:09.704428Z",
+      "editedBy": {
+       "id": 1,
+       "siteId": 1,
+       "userId": 1,
+       "profileName": "Frodo",
+       "visible": true,
+       "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+       "meta": {
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/1"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/1"
+         }
+        ]
+       }
+      },
+      "flags": {
+       "deleted": false,
+       "moderated": false,
+       "visible": false,
+       "unread": false
+      },
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/comments/2"
+       },
+       {
+        "rel": "conversation",
+        "href": "/api/v1/conversations/1"
+       },
+       {
+        "rel": "up",
+        "href": "/api/v1/conversations/1"
+       }
+      ]
+     }
+    }
+   ],
+   "flags": {
+    "deleted": false,
+    "moderated": false,
+    "visible": false,
+    "unread": false
+   },
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/comments/1"
+    },
+    {
+     "rel": "conversation",
+     "href": "/api/v1/conversations/1"
+    },
+    {
+     "rel": "up",
+     "href": "/api/v1/conversations/1"
+    },
+    {
+     "rel": "commentPage",
+     "href": "/api/v1/conversations/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+  
+  <h4 id="comments-single-put">PUT</h4>
+
+  <p>Updates a comment. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+  "itemType": "conversation",
+  "itemId": 1,
+  "markdown": "The [ring](http://lotr.wikia.com/wiki/One_Ring) is taking me. If I put it on [he](http://lotr.wikia.com/wiki/Sauron) will find me."
+}</code></pre>
+
+  <p>You do not need to supply <code>inReplyTo</code> as it is immutable and it is not updated when you change the content of a comment nor the item that the comment is attached to. If you do supply it, it will be ignored.</p>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>itemType</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the type of item that this comment is attached to. Must be one of: <code>conversation</code>, <code>event</code>, <code>huddle</code> or <code>poll</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemType</code> is <code>conversation</code>.</td>
+      </tr>
+      <tr>
+        <td><code>itemId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>The identifier for the given type of item described by <code>itemType</code>. E.g. If the comment was attached to <code>/api/v1/conversations/1</code>, then the <code>itemId</code> is <code>1</code>.</td>
+      </tr>
+      <tr>
+        <td><code>markdown</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>The textual content of the comment, markdown formatted.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation","itemId": 1,"markdown": "The [ring](http://lotr.wikia.com/wiki/One_Ring) is taking me. If I put it on [he](http://lotr.wikia.com/wiki/Sauron) will find me."}' \
+  https://dev1.microco.sm/api/v1/comments/2</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 13:49:25 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/comments/2
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated comment.</p>
+
+  <h4 id="comments-single-patch">PATCH</h4>
+
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a comment or a super user (microcosm moderator or site admin) can delete a comment, but only a super user can undelete a comment.</p>
+
+  <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
+
+  <p>Our PATCH support is limited, but does provide an easy way to change small bits of meta data safely and without requiring you to construct a full PUT request. We support the use of the <code>"op":"replace"</code> for the JSON paths <code>/meta/flags/deleted</code>, and <code>/meta/flags/moderated</code>.</p>
+
+  <p>The JSON that you must send along with the PATCH request must be an array of PATCH instructions, like this:</p>
+
+<pre><code>[
+  {"op":"replace", "path":"/meta/flags/moderated", "value": false},
+  {"op":"replace", "path":"/meta/flags/deleted", "value": false},
+]</code></pre>
+
+  <p>The minimum number of acceptable PATCH instructions in the array is 1, a single replace instruction.</p>
+
+  <p>Example request:</p>
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"op":"replace", "path":"/meta/flags/moderated", "value": true}]' \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:49:47 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>That request will set the <code>moderated</code> property of a comment to <code>true</code>. You will need to GET the comment to see the change reflected.</p>
+
+  <p>Comment fragment before:</p>
+<pre><code>{
+  "context":"",
+  "status":200,
+  "data":{
+    "id":1,
+    ...
+    "meta":{
+      ...
+      "flags":{
+        "deleted":false,
+        "moderated":false,
+        "visible":true,
+      }
+      ...
+    }
+  },
+  "error":null
+}</code></pre>
+
+  <p>Comment fragment after:</p>
+<pre><code>HTTP/1.1 404 Not Found
+Date: Fri, 22 Nov 2013 13:50:33 GMT
+Content-Type: application/json
+Content-Length: 88
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 404,
+ "data": null,
+ "error": [
+  "Comment not found"
+ ]
+}
+</code></pre>
+
+  <p>As the modified comment now reflects <code>"moderated": true</code> the comment is not returned to an unauthenticated account or an account that does not have the right to view moderated comments.</p>
+
+  <h4 id="comments-single-delete">DELETE</h4>
+
+  <p>Deletes a comment.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/comments/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 13:52:10 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <h3 id="comments-single-incontext">Single Resource In Context</h3>
+
+  <h4 id="comments-single-incontext-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1/incontext</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 14:12:22 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD</code></pre>
+
+  <h4 id="comments-single-incontext-get">GET</h4>
+
+  <p>For a given comment ID, will return a Location header that redirects to the API for the item that the comment is attached to, with the applicable <code>limit</code> and <code>offset</code> querystring to ensure that the comment is visible in the page of comments on the item.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/comments/1/incontext</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 307 Temporary Redirect
+Date: Fri, 22 Nov 2013 14:14:18 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/conversations/1?comment_id=2
+
+{
+ "context": "",
+ "status": 307,
+ "data": null,
+ "error": null
+}
+</code></pre>
+</div>
+        
+<div class="bs-docs-section" id="profiles">
+  <h2>/profiles</h2>
+  <p>Provides an interface to the set of profiles associated with the site.</p>
+
+  <h3 id="profiles-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/profiles</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles</td>
+        <td>GET</td>
+        <td>Returns summaries for the profiles associated with the site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns the specified profile.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/profiles/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the specified profile.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="profiles-collection">Collection</h3>
+  <h4 id="profiles-collection-options">OPTIONS</h4>
+
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/profiles</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 14:43:50 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="profiles-collection-get">GET</h4>
+
+  <p>Fetches a collection of profiles for the given site.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned.  There are two additional options:  A boolean 'top' which will order the profiles by comment count (rather than the default alphanumerical ordering), and a string 'q' which filters the profiles returned by profile name.</p>
+
+  <p>Example request - usernames beginning with the letter 'u', ordered by comment count:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/profiles?q=u&top=true</code></pre>
+
+    <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 14:44:07 GMT
+Content-Type: application/json
+Content-Length: 1091
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "profiles": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles"
+    }
+   ],
+   "type": "/api/v1/profiles",
+   "items": [
+    {
+     "id": 1,
+     "siteId": 1,
+     "userId": 1,
+     "profileName": "Frodo",
+     "visible": true,
+     "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+     "meta": {
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/profiles/1"
+       },
+       {
+        "rel": "site",
+        "href": "/api/v1/sites/1"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="profiles-single">Single Resource</h3>
+  <h4 id="profiles-single-options">OPTIONS</h4>
+
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:01:09 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT,DELETE</code></pre>
+
+  <h4 id="profiles-single-get">GET</h4>
+
+  <p>Fetches the specified profile.</p>
+
+  <p>Example request:</p>
+
+  <pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+  <p>Example response:</p>
+
+  <pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:01:41 GMT
+Content-Type: application/json
+Content-Length: 853
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "siteId": 1,
+  "userId": 1,
+  "profileName": "Frodo",
+  "visible": true,
+  "styleId": 1,
+  "itemCount": 0,
+  "commentCount": 2,
+  "created": "2013-11-25T12:13:05.841628Z",
+  "lastActive": "2013-11-25T13:34:34.732561Z",
+  "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+  "banned": false,
+  "admin": true,
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/profiles/1"
+    },
+    {
+     "rel": "site",
+     "href": "/api/v1/sites/1"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="profiles-single-put">PUT</h4>
+
+  <p>Updates a profile. The structure of the JSON to perform the update is:</p>
+
+<pre><code>{"profileName": "NewProfileName"}</code></pre>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"microcosmId": 1, "profileName": "FrodoBaggins"}' \
+  https://dev1.microco.sm/api/v1/profiles/1</code></pre>
+
+  <p>Note that you do not need to supply the editedBy information as the only people that can update a profile are the owner of the profile and the owner of the site.</p>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 15:02:46 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/profiles/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated profile.</p>
+</div>
+        
+<div class="bs-docs-section" id="search">
+  <h2>/search</h2>
+
+  <p>A search interface to allow full-text queries to be performed against all things on the given site.</p>
+
+  <h3 id="search-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/search</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/search</td>
+        <td>GET</td>
+        <td>Performs a fulltext search for a given query, filtering the results according to search options.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="search-collection">Collection</h3>
+  <h4 id="search-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/search</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 04 Dec 2013 14:54:06 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="search-collection-get">GET</h4>
+
+  <p>A full-text search is performed by simply providing the search term(s) in the query string. The search can be further restricted by providing optional parameters, and a valid access token will return any non-public items that the given user has permission to see (conversations in a non-public microcosm, for example).</p>
+
+  <p>The following query string params are supported:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Querystring Key</th>
+        <th>Type</th>
+        <th>Default Value</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+      <tr>
+        <td>Key</td>
+        <td>Value</td>
+        <td>Default value if not supplied</td>
+        <td>Description</td>
+      </tr>
+      <tr>
+        <td>q</td>
+        <td>string</td>
+        <td>null</td>
+        <td>The user submitted search terms. This is a required field.</td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>[]string</td>
+        <td>null (search everything)</td>
+        <td>The capability to filter the search to only items of a given type.
+    type=conversations&amp;type=events would filter the results to *only* conversations AND events. Valid values for type are <code>comment</code>, <code>conversation</code>, <code>event</code>, <code>huddle</code>, <code>microcosm</code>, <code>poll</code>, and <code>profile</code>. If you filter to a commentable type such as <code>conversation</code> then the query includes the comments of that conversation.</td>
+      </tr>
+      <tr>
+        <td>inTitle</td>
+        <td>boolean</td>
+        <td>false</td>
+        <td>If <code>true</code> then the search will only be performed against the titles of entities. In the case of something like an event this means that only the event title is searched and not the event comments.</td>
+      </tr>
+      <tr>
+        <td>authorId</td>
+        <td>integer</td>
+        <td>null</td>
+        <td>If greater than 0 then the search will be restricted to all items authored by this profile ID. If the profile ID does not exist on this site, then nothing is returned.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Of the above, only <code>q</code> is required. If any of the others are supplied, then they will be applied to the search in addition to the search terms within <code>q</code>.</p>
+
+  <p>All of the query paramaters can also be supplied via the search parameter <code>q</code>. To do so simply format them as <code>key:value</code> and space separate them. So the query <code>?q=ale&amp;inTitle=true&amp;type=event</code> can also be represented as <code>ale inTitle:true type:event</code>. This functionality enables omnibox style searching, and permalink searching (the ability to link to a complex search and for that search to be re-run).</p>
+
+  <p>Example request showing all params:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  "https://dev1.microco.sm/api/v1/search?q=ale&inTitle=true&type=event&authorId=1"</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 04 Dec 2013 15:20:40 GMT
+Content-Type: application/json
+Content-Length: 2103
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "query": {
+   "q": "ale",
+   "type": [
+    "event"
+   ],
+   "inTitle": true,
+   "authorId": 1,
+   "searched": "ale inTitle:true type:event authorId:1"
+  },
+  "timeTakenInMs": 62,
+  "results": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/search?authorId=1\u0026inTitle=true\u0026q=ale\u0026type=event"
+    }
+   ],
+   "type": "result",
+   "items": [
+    {
+     "itemType": "event",
+     "item": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "Ale tasting",
+      "when": "2013-11-22T20:00:00Z",
+      "duration": 180,
+      "where": "Green Dragon Inn",
+      "lat": 51.674871,
+      "lon": -0.216352,
+      "north": 51.679581,
+      "east": -0.208955,
+      "south": 51.66984,
+      "west": -0.227494,
+      "status": "upcoming",
+      "rsvpLimit": 5,
+      "rsvpSpaces": 5,
+      "meta": {
+       "created": "2013-12-04T14:28:24.858836Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/events/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "Rivendell"
+        }
+       ]
+      }
+     },
+     "rank": 0.12618599832057953,
+     "lastModified": "2013-12-04T15:16:51.029779Z",
+     "highlight": "\u003cb\u003eAle\u003c/b\u003e tasting"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <p>Example request showing just the <code>q</code> param:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  "https://dev1.microco.sm/api/v1/search?q=road"</code></pre>
+
+  <p>Example response:</p>
+
+  <pre><code>HTTP/1.1 200 OK
+Date: Wed, 04 Dec 2013 15:32:45 GMT
+Content-Type: application/json
+Content-Length: 6571
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "query": {
+   "q": "road",
+   "searched": "road"
+  },
+  "timeTakenInMs": 68,
+  "results": {
+   "total": 2,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/search?q=road"
+    }
+   ],
+   "type": "result",
+   "items": [
+    {
+     "itemType": "comment",
+     "item": {
+      "id": 2,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "inReplyTo": 1,
+      "markdown": "Get off the road! **Quick!**",
+      "html": "\u003cp\u003eGet off the road! \u003cstrong\u003eQuick!\u003c/strong\u003e\u003c/p\u003e\n",
+      "meta": {
+       "created": "2013-12-04T14:28:30.235965Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "edited": "2013-12-04T14:28:30.235965Z",
+       "editedBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/2"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "There are whisperings that the Nazgûl are abroad",
+      "meta": {
+       "created": "2013-12-04T14:28:20.13916Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "Rivendell"
+        }
+       ]
+      }
+     },
+     "rank": 0.05000000074505806,
+     "lastModified": "2013-12-04T14:28:30.273775Z",
+     "highlight": "Get off the \u003cb\u003eroad\u003c/b\u003e! **Quick!**"
+    },
+    {
+     "itemType": "comment",
+     "item": {
+      "id": 1,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "markdown": "I think we should get off the road",
+      "html": "\u003cp\u003eI think we should get off the road\u003c/p\u003e\n",
+      "meta": {
+       "created": "2013-12-04T14:28:29.389481Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "edited": "2013-12-04T14:28:29.389481Z",
+       "editedBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/1"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "There are whisperings that the Nazgûl are abroad",
+      "meta": {
+       "created": "2013-12-04T14:28:20.13916Z",
+       "createdBy": {
+        "id": 1,
+        "siteId": 1,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/1"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/1"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true,
+        "unread": false,
+        "watched": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "Rivendell"
+        }
+       ]
+      }
+     },
+     "rank": 0.05000000074505806,
+     "lastModified": "2013-12-04T14:28:29.407767Z",
+     "highlight": "I think we should get off the \u003cb\u003eroad\u003c/b\u003e"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+</div>
+        
+<div class="bs-docs-section" id="whoami">
+  <h2>/whoami</h2>
+
+  <p>A convenience resource that will acts like the *nix <a href="http://linux.die.net/man/1/whoami">whoami</a> command by determining your identity from the authentication token and issuing a redirect to the <code>/api/v1/profiles</code> of the currently authenticated user.</p>
+
+  <h3 id="whoami-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/whoami</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/whoami</td>
+        <td>GET</td>
+        <td>Given a valid authentication token, will redirect to the applicable <code>/api/v1/profiles</code> for the authenticated user profiles.</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h3 id="whoami-single">Single</h3>
+  <h4 id="whoami-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/whoami</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:09:34 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET</code></pre>
+
+  <h4 id="whoami-single-get">GET</h4>
+
+  <p>If you call this without an access_token you should expect to deal with a <code>HTTP 401 Unauthorized</code> error.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X GET \
+  https://dev1.microco.sm/api/v1/whoami</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 307 Temporary Redirect
+Date: Mon, 25 Nov 2013 15:12:04 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/profiles/1
+
+{
+ "context": "",
+ "status": 307,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Visit the destination in the Location header to view your profile.</p>
+
+</div>
+
+        
+<div class="bs-docs-section" id="attributes">
+  <h2>/{type}/{id}/attributes</h2>
+
+  <p>Provides the ability to store arbritrary key:value pairs of data against the most common entities. For example, you could store "Location = London, UK" against a profile or "Type = Festival" against an event.</p>
+
+  <p>Attributes can be stored against any of these high-level types: Site, Microcosms, Conversations, Events, Polls, Comments and Profiles. You can store numbers, booleans, strings and dates that are in YYYY-MM-DD format (and provided as a string).</p>
+
+  <p>Attributes defined by the owner of an item are not secret and have no special permissions. If a user has access to an entity, then the user can read all of the properties of that entity. Likewise, if a user has the ability to update the entity, then the user can modify all of the existing attributes as well as add new ones.</p>
+
+  <h3 id="attributes-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>PUT</td>
+        <td>Creates or updates a collection of one or more attributes for the current entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>GET</td>
+        <td>Returns a collection of attributes for the given entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes</td>
+        <td>DELETE</td>
+        <td>Deletes a collection of attributes for the given entity.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>PUT</td>
+        <td>Creates or updates an attribute for the given entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>GET</td>
+        <td>Returns a specific attribute for the given entity.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type:[a-z]+}/{id:[0-9]+}/attributes/{key:[0-9a-zA-Z_-]+}</td>
+        <td>DELETE</td>
+        <td>Deletes an attribute for the given entity.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>type</code> is only ever one of: <code>site</code>|<code>microcosms</code>|<code>conversations</code>|<code>events</code>|<code>polls</code>|<code>comments</code>|<code>profiles</code>.</p>
+
+  <h3 id="attributes-collection">Collection</h3>
+  
+  <h4 id="attributes-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:22:56 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST,PUT,DELETE</code></pre>
+
+  <h4 id="attributes-collection-put">PUT</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating or updating a collection of attributes is to either create a single attribute or to create a whole collection at once. This method allows you to create one or more attributes at the same time, and if any attributes exist with the same key, then those attributes are updated to reflect the new values.</p>
+
+  <p>The structure of the JSON to create an attendee is:</p>
+
+<pre><code>[
+  {
+    "key": "MyString",
+    "value": "an example string",
+  },
+  {
+    "key": "MyDate",
+    "value": "2007-01-27",
+  },
+  {
+    "key": "MyBoolean",
+    "value": true,
+  },
+  {
+    "key": "MyInt",
+    "value": 42,
+  },
+  {
+    "key": "MyFloat",
+    "value": 3.14159265359,
+  }
+]</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>key</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the attribute. Needs to conform to the regular expression <code>[0-9a-zA-Z_-]+</code> as keys surface in URLs later.</td>
+      </tr>
+      <tr>
+        <td><code>value</code></td>
+        <td>String|Number|Boolean</td>
+        <td>Required</td>
+        <td>The value to store. Any JSON string, number or boolean value is acceptable. All values are displayed to end users, so you should not be tempted to store JSON objects in here as strings or other such data that the average person wouldn't be expected to see.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request to create a collection of attributes:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"key": "MyString","value": "an example string"},{"key": "MyDate","value": "2007-01-27"},{"key": "MyBoolean","value": true},{"key": "MyInt","value": 42},{"key": "MyFloat","value": 3.14159265359}]' \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:24:12 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>The response is effectively just a <code>200 OK</code>, no redirect happens in this scenario.</p>
+
+  <h4 id="attributes-collection-get">GET</h4>
+
+  <p>Fetches a collection of attributes for the given entity.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of events returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:24:36 GMT
+Content-Type: application/json
+Content-Length: 651
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attributes": {
+   "total": 5,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/microcosms/1/attributes"
+    }
+   ],
+   "type": "/api/v1/microcosms/0/attributes",
+   "items": [
+    {
+     "key": "MyBoolean",
+     "value": true
+    },
+    {
+     "key": "MyDate",
+     "value": "2007-01-27"
+    },
+    {
+     "key": "MyFloat",
+     "value": 3.141593
+    },
+    {
+     "key": "MyInt",
+     "value": 42
+    },
+    {
+     "key": "MyString",
+     "value": "an example string"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attributes-collection-delete">DELETE</h4>
+
+  <p>Request:</p>
+
+  <p>To delete attributes simply supply an array of the attributes to be deleted. You do not need to supply the <code>value</code>.</p>
+
+  <p>The structure of the JSON to delete one or more attributes is:</p>
+
+<pre><code>[
+  {
+    "key": "MyString",
+  },
+  {
+    "key": "MyDate",
+  },
+  {
+    "key": "MyBoolean",
+  },
+  {
+    "key": "MyInt",
+  },
+  {
+    "key": "MyFloat",
+  }
+]</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>key</code></td>
+        <td>String</td>
+        <td>Required</td>
+        <td>Identifies the attribute. Needs to conform to the regular expression <code>[0-9a-zA-Z_-]+</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request to delete one or more attributes:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '[{"key": "MyString"},{"key": "MyDate"},{"key": "MyBoolean"},{"key": "MyInt"},{"key": "MyFloat"}]' \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:25:11 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>The response is effectively just a <code>200 OK</code>, no redirect happens in this scenario.</p>
+
+  <h3 id="attributes-single">Single Resource</h3>
+
+  <h4 id="attributes-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:25:30 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST,PUT,DELETE</code></pre>
+
+  <h4 id="attributes-single-put">PUT</h4>
+
+  <p>Request:</p>
+
+  <p>The flow for creating or updating a single attribute is to either create a single attribute or to create a whole collection at once. This method allows you to a single attribute at a time, and if an attributes exist with the same key, then that attribute is updated to reflect the new value. Only one attribute can exist for a given key.</p>
+
+  <p>The structure of the JSON to create an attribute is:</p>
+
+<pre><code>{
+  "value": "an example string",
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td>String|Number|Boolean</td>
+        <td>Required</td>
+        <td>The value to store. Any JSON string, number or boolean value is acceptable. All values are displayed to end users, so you should not be tempted to store JSON objects in here as strings or other such data that the average person wouldn't be expected to see.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>The <code>key</code> is supplied via the URL, hence it is ignored if supplied in the JSON.</p>
+
+  <p>Example request to create an attribute:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"value": "an example string"}' \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 15:26:29 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/microcosms/1/attributes/MyString
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created attribute.</p>
+
+  <h4 id="attributes-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single attendee for an attribute.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:26:44 GMT
+Content-Type: application/json
+Content-Length: 118
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "key": "MyString",
+  "value": "an example string"
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attributes-single-delete">DELETE</h4>
+
+  <p>Deletes an attribute.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/microcosms/1/attributes/MyString</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:26:57 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+</div>
+
+        
+<div class="bs-docs-section" id="files">
+  <h2>/files</h2>
+
+  <p>This is the endpoint for uploading user-generated files such as images. The endpoint accepts POSTDATA encoded as <code>enctype/multipart-form</code> and returns an array of file metadata records for each file that is uploaded. The file metadata stores information about when the file was uploaded, by whom, a SHA-1 hash of the file content, and the file mime-type.</p>
+
+  <p>Note that images (png/gif/jpeg) are currently the only accepted file type.</p>
+
+  <p>To retrieve a file, it must be accessed using the SHA-1 hash of the file content as the identifier. Files cannot be retrieved by their file metadata ID. Note that
+    all files are accessible publicly via the SHA-1 identifier, so that links to files can be shared. However, the link itself will only be visible to users with the correct permission, giving the notion of "private URLs" to files.</p>
+
+  <h3 id="files-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/files</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/files</td>
+        <td>POST</td>
+        <td>Given a valid authentication token, accepts files encoded as a multipart form.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/files/{SHA-1:[0-9A-Za-z]+}</td>
+        <td>GET</td>
+        <td>Fetch a file by its SHA-1 hash of the file content.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="files-collection">Collection</h3>
+
+  <h4 id="files-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/files</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:34:15 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST</code></pre>
+
+  <h4 id="files-collection-post">POST</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  -X POST \
+  -F file=@red.jpg \
+  -F file=@blue.jpg \
+  https://dev1.microco.sm/api/v1/files</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:56:36 GMT
+Content-Type: application/json
+Content-Length: 465
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": [
+  {
+   "created": "2013-11-25T15:56:36.130607166Z",
+   "fileSize": 1044,
+   "fileHash": "6dfa7765c0426db8d27fda63fa9671794dd730a3",
+   "mimeType": "image/jpeg",
+   "width": 150,
+   "height": 150
+  },
+  {
+   "created": "2013-11-25T15:56:36.391334395Z",
+   "fileSize": 2887,
+   "fileHash": "f1f2f140aca0da4f49dce4fe5e92ffa3d5cfb19f",
+   "mimeType": "image/jpeg",
+   "width": 280,
+   "height": 280
+  }
+ ],
+ "error": null
+}
+</code></pre>
+
+  <h3 id="files-single">Single Resource</h3>
+
+  <h4 id="files-single-options">OPTIONS</h4>
+
+  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 15:59:06 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET</code></pre>
+
+  <h4 id="files-single-get">GET</h4>
+
+  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:01:50 GMT
+Content-Type: image/jpeg
+Content-Length: 1044
+Connection: keep-alive
+
+[binary image data that a browser would render or you could pass to a native image renderer]
+</code></pre>
+
+</div>
+        
+<div class="bs-docs-section" id="attachments">
+  <h2>/{type}/{id}/attachments</h2>
+
+  <p>An attachment represents a link between an item and a file. To create an attachment, the file must already have been uploaded to <code>/files</code> and the item must also exist.</p>
+
+  <p>Attachments can be created on a <code>comment</code> or a <code>profile</code> (in which case it becomes the profile's avatar). Attachments are always accessed through the path of the parent object, e.g. <code>/comments/1/attachments</code> or <code>/profiles/1/attachments</code>.</p>
+
+  <p>Once created on a comment or profile, the attachments can be listed by fetching <code>/{type}/{id}/attachments</code> which returns a paginated list of attachments on the item, e.g. <code>/profiles/1/attachments</code>.
+
+  <h3 id="attachments-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/files</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type}/{id}/attachments</td>
+        <td>POST</td>
+        <td>Given a valid access token with write permissions on the item, allows creation of an attachment (i.e. an association between a file and an item).</td>
+      </tr>
+      <tr>
+        <td>/api/v1/{type}/{id}/attachments</td>
+        <td>GET</td>
+        <td>Given a valid access token, fetch the attachments for a given item.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="attachments-collection">Collection</h3>
+
+  <h4 id="attachments-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1/attachments</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:19:47 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,POST,HEAD,GET</code></pre>
+
+  <h4 id="attachments-collection-post">POST</h4>
+
+  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3"}' \
+  https://dev1.microco.sm/api/v1/comments/1/attachments
+</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Mon, 25 Nov 2013 16:21:28 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/comments/1/attachments
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <h4 id="attachments-collection-get">GET</h4>
+
+  <p>Attachments are returned as a paginated list, with a <code>related</code> link that references the file directly and can be used to inline the image into HTML or a native control.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  https://dev1.microco.sm/api/v1/comments/1/attachments</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:22:40 GMT
+Content-Type: application/json
+Content-Length: 1069
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "attachments": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/comments/1/attachments"
+    }
+   ],
+   "type": "attachments",
+   "items": [
+    {
+     "profileId": 1,
+     "fileHash": "6dfa7765c0426db8d27fda63fa9671794dd730a3",
+     "created": "2013-11-25T16:21:28.134366Z",
+     "meta": {
+      "links": [
+       {
+        "rel": "related",
+        "href": "/api/v1/files/6dfa7765c0426db8d27fda63fa9671794dd730a3",
+        "title": "File resource"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/comments/1/attachments"
+    }
+   ],
+   "permissions": {
+    "create": false,
+    "read": true,
+    "update": false,
+    "delete": false,
+    "closeOwn": false,
+    "openOwn": false,
+    "readOthers": false,
+    "guest": true,
+    "banned": false,
+    "owner": false,
+    "moderator": false,
+    "siteOwner": false
+   }
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="attachments-single">Single Resource</h3>
+
+  <h4 id="attachments-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/comments/1/attachments/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:31:27 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,DELETE</code></pre>
+
+  <h4 id="attachments-single-delete">DELETE</h4>
+
+  <p>To remove an attachment from comment or profile, issue a DELETE request using the fileHash as the identifier.</p>
+
+<pre><code>curl -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/comments/1/attachments/6dfa7765c0426db8d27fda63fa9671794dd730a3</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Mon, 25 Nov 2013 16:32:14 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Currently attachments can't be deleted from profiles, so to replace an avatar upload the file and link it as an attachment to the appropriate profile. This will override the existing avatar. In future an avatar picker will allow users see previous avatars they have used and delete them if needed.</p>
+</div>
+
+        <a href="#welcome" class="bs-docs-top">
+          Back to top
+        </a>
+
+        <footer class="bs-docs-footer">
+          <p><a href="http://microco.sm">Microco.sm</a> documentation hosted by <a href="https://github.com/microcosm-cc/microcosm-cc.github.com">GitHub</a>, please <a href="https://github.com/microcosm-cc/microcosm-cc.github.com/issues">report any issues or inconsistencies</a>.</p>
+
+          <p>Designed and built using <a href="https://github.com/twitter/bootstrap">Twitter Bootstrap</a> (<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>), and the <a href="https://github.com/twitter/bootstrap/tree/master/docs">Twitter Bootstrap Docs</a> (<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>).</p>
+        </footer>
+
+      </div>
+    </div>
+
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+    <script src="/static/js/bootstrap-scrollspy.js"></script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-36931318-4', 'microcosm-cc.github.io');
+        ga('send', 'pageview');
+    </script>
+
+  </body>
+</html>
