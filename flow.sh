@@ -1,1 +1,1 @@
-dot -Tpng -o static/img/flow.png flow.dot
+dot -Tpng -o img/flow.png flow.dot
