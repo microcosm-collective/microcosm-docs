@@ -6,5 +6,5 @@ builddrafts: false
 indexes:
    category: "categories"
    tag: "tags"
-baseurl: "http://microcosm-cc.github.io"
+baseurl: ""
 ...

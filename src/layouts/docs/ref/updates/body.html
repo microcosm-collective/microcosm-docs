@@ -1,1 +1,1368 @@
-body.html
+<!-- /updates -->
+<div class="bs-docs-section" id="updates">
+  <h2>/updates</h2>
+
+  <p>Provides an interface to the updates that a user has either explicitly subscribed to, or implicitly receives as a consequence of their actions (posting a new comment in a conversation) or the actions of other users (someone replying to a comment or quoting you). The updates contain the summary information of the thing that the update has occurred on, and also information about who triggered the update and the type of update.</p>
+
+  <p>To reduce noise levels, updates may be rolled up where applicable. This means that if there are 10 new comments in a conversation that you are watching, that you will only see one update relating to the most recent comment that has been posted. This service only rolls up some of the types of updates, mentions, and replies are never rolled up due to the personal connection and nature of that data.</p>
+
+  <h3 id="updates-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/updates</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/updates</td>
+        <td>GET</td>
+        <td>Returns information about the updates that exist on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/updates/unread</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/updates/unread</td>
+        <td>GET</td>
+        <td>Returns the number of new updates since the last time /updates was viewed. Note: Any visit to /updates will reset this count, even if you view page 1,000 of the updates.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>updateId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc). The <code>updateId</code> is only provided to help developers refresh existing views without showing duplicates and cannot be used to access any other resource.</p>
+
+  <h3 id="updates-collection">Collection</h3>
+  
+  <h4 id="updates-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/updates</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Thu, 21 Nov 2013 16:55:22 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="updates-collection-get">GET</h4>
+
+  <p>Fetches a collection of updates applicable to the authenticated user. If no valid <code>access_token</code> is provided then this will fail with a 401 unauthorised error. If the user is new to the site, then the update list will be empty.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of updates returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/updates</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 08 Jan 2014 14:27:23 GMT
+Content-Type: application/json
+Content-Length: 22406
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "updates": {
+   "total": 5,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/updates"
+    }
+   ],
+   "type": "/api/v1/updates",
+   "items": [
+    {
+     "id": 23,
+     "updateType": "new_comment",
+     "itemType": "comment",
+     "item": {
+      "id": 10,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "markdown": "Just need a post so that I can update the comment count",
+      "html": "\u003cp\u003eJust need a post so that I can update the comment count\u003c/p\u003e\n",
+      "meta": {
+       "created": "2014-01-08T11:42:37.056354Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "edited": "2014-01-08T11:42:37.056354Z",
+       "editedBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/10"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1",
+         "title": "What type of leaf are you smoking?"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "What type of leaf are you smoking?",
+      "totalComments": 10,
+      "totalViews": 34,
+      "lastComment": {
+       "id": 10,
+       "created": "2014-01-08T11:42:37.056354Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       }
+      },
+      "meta": {
+       "created": "2014-01-08T10:44:09.114149Z",
+       "createdBy": {
+        "id": 5,
+        "siteId": 5,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/5"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "The Shire"
+        }
+       ]
+      }
+     },
+     "meta": {
+      "created": "2014-01-08T11:42:37.743665Z",
+      "createdBy": {
+       "id": 6,
+       "siteId": 5,
+       "userId": 3,
+       "profileName": "Gandalf",
+       "visible": true,
+       "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+       "meta": {
+        "flags": {},
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/6"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/5"
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "id": 18,
+     "updateType": "reply_to_comment",
+     "itemType": "comment",
+     "item": {
+      "id": 8,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "inReplyTo": 7,
+      "markdown": "You really do love your pipe-weed my boy.",
+      "html": "\u003cp\u003eYou really do love your pipe-weed my boy.\u003c/p\u003e\n",
+      "meta": {
+       "created": "2014-01-08T10:58:57.254604Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "edited": "2014-01-08T10:58:57.254604Z",
+       "editedBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/8"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1",
+         "title": "What type of leaf are you smoking?"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "inReplyTo",
+         "href": "/api/v1/comments/7"
+        },
+        {
+         "rel": "inReplyToAuthor",
+         "href": "/api/v1/profiles/5",
+         "title": "Frodo"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "What type of leaf are you smoking?",
+      "totalComments": 10,
+      "totalViews": 34,
+      "lastComment": {
+       "id": 10,
+       "created": "2014-01-08T11:42:37.056354Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       }
+      },
+      "meta": {
+       "created": "2014-01-08T10:44:09.114149Z",
+       "createdBy": {
+        "id": 5,
+        "siteId": 5,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/5"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "The Shire"
+        }
+       ]
+      }
+     },
+     "meta": {
+      "created": "2014-01-08T10:58:57.842597Z",
+      "createdBy": {
+       "id": 6,
+       "siteId": 5,
+       "userId": 3,
+       "profileName": "Gandalf",
+       "visible": true,
+       "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+       "meta": {
+        "flags": {},
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/6"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/5"
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "id": 10,
+     "updateType": "reply_to_comment",
+     "itemType": "comment",
+     "item": {
+      "id": 5,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "inReplyTo": 3,
+      "markdown": "It chills me out too much.",
+      "html": "\u003cp\u003eIt chills me out too much.\u003c/p\u003e\n",
+      "meta": {
+       "created": "2014-01-08T10:53:52.915307Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "edited": "2014-01-08T10:53:52.915307Z",
+       "editedBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/5"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1",
+         "title": "What type of leaf are you smoking?"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "inReplyTo",
+         "href": "/api/v1/comments/3"
+        },
+        {
+         "rel": "inReplyToAuthor",
+         "href": "/api/v1/profiles/5",
+         "title": "Frodo"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "What type of leaf are you smoking?",
+      "totalComments": 10,
+      "totalViews": 34,
+      "lastComment": {
+       "id": 10,
+       "created": "2014-01-08T11:42:37.056354Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       }
+      },
+      "meta": {
+       "created": "2014-01-08T10:44:09.114149Z",
+       "createdBy": {
+        "id": 5,
+        "siteId": 5,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/5"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "The Shire"
+        }
+       ]
+      }
+     },
+     "meta": {
+      "created": "2014-01-08T10:53:53.55172Z",
+      "createdBy": {
+       "id": 6,
+       "siteId": 5,
+       "userId": 3,
+       "profileName": "Gandalf",
+       "visible": true,
+       "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+       "meta": {
+        "flags": {},
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/6"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/5"
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "id": 7,
+     "updateType": "reply_to_comment",
+     "itemType": "comment",
+     "item": {
+      "id": 4,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "inReplyTo": 3,
+      "markdown": "Yes, but it's not as nice as Southlinch which is grown on the far side of Bree",
+      "html": "\u003cp\u003eYes, but it\u0026#39;s not as nice as Southlinch which is grown on the far side of Bree\u003c/p\u003e\n",
+      "meta": {
+       "created": "2014-01-08T10:48:27.56858Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "edited": "2014-01-08T10:48:27.56858Z",
+       "editedBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/4"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1",
+         "title": "What type of leaf are you smoking?"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "inReplyTo",
+         "href": "/api/v1/comments/3"
+        },
+        {
+         "rel": "inReplyToAuthor",
+         "href": "/api/v1/profiles/5",
+         "title": "Frodo"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "What type of leaf are you smoking?",
+      "totalComments": 10,
+      "totalViews": 34,
+      "lastComment": {
+       "id": 10,
+       "created": "2014-01-08T11:42:37.056354Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       }
+      },
+      "meta": {
+       "created": "2014-01-08T10:44:09.114149Z",
+       "createdBy": {
+        "id": 5,
+        "siteId": 5,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/5"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "The Shire"
+        }
+       ]
+      }
+     },
+     "meta": {
+      "created": "2014-01-08T10:48:28.145569Z",
+      "createdBy": {
+       "id": 6,
+       "siteId": 5,
+       "userId": 3,
+       "profileName": "Gandalf",
+       "visible": true,
+       "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+       "meta": {
+        "flags": {},
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/6"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/5"
+         }
+        ]
+       }
+      }
+     }
+    },
+    {
+     "id": 2,
+     "updateType": "reply_to_comment",
+     "itemType": "comment",
+     "item": {
+      "id": 2,
+      "itemType": "conversation",
+      "itemId": 1,
+      "revisions": 1,
+      "inReplyTo": 1,
+      "markdown": "Right now, Longbottom leaf is my favourite.",
+      "html": "\u003cp\u003eRight now, Longbottom leaf is my favourite.\u003c/p\u003e\n",
+      "meta": {
+       "created": "2014-01-08T10:46:51.650047Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "edited": "2014-01-08T10:46:51.650047Z",
+       "editedBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "deleted": false,
+        "moderated": false,
+        "visible": false,
+        "unread": false
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/comments/2"
+        },
+        {
+         "rel": "conversation",
+         "href": "/api/v1/conversations/1",
+         "title": "What type of leaf are you smoking?"
+        },
+        {
+         "rel": "up",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "inReplyTo",
+         "href": "/api/v1/comments/1"
+        },
+        {
+         "rel": "inReplyToAuthor",
+         "href": "/api/v1/profiles/5",
+         "title": "Frodo"
+        }
+       ]
+      }
+     },
+     "parentItemType": "conversation",
+     "parentItem": {
+      "id": 1,
+      "microcosmId": 1,
+      "title": "What type of leaf are you smoking?",
+      "totalComments": 10,
+      "totalViews": 34,
+      "lastComment": {
+       "id": 10,
+       "created": "2014-01-08T11:42:37.056354Z",
+       "createdBy": {
+        "id": 6,
+        "siteId": 5,
+        "userId": 3,
+        "profileName": "Gandalf",
+        "visible": true,
+        "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/6"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       }
+      },
+      "meta": {
+       "created": "2014-01-08T10:44:09.114149Z",
+       "createdBy": {
+        "id": 5,
+        "siteId": 5,
+        "userId": 1,
+        "profileName": "Frodo",
+        "visible": true,
+        "avatar": "/api/v1/files/66cca61feb8001cb71a9fb7062ff94c9d2543340",
+        "meta": {
+         "flags": {},
+         "links": [
+          {
+           "rel": "self",
+           "href": "/api/v1/profiles/5"
+          },
+          {
+           "rel": "site",
+           "href": "/api/v1/sites/5"
+          }
+         ]
+        }
+       },
+       "flags": {
+        "sticky": false,
+        "open": true,
+        "deleted": false,
+        "moderated": false,
+        "visible": true
+       },
+       "links": [
+        {
+         "rel": "self",
+         "href": "/api/v1/conversations/1"
+        },
+        {
+         "rel": "microcosm",
+         "href": "/api/v1/microcosms/1",
+         "title": "The Shire"
+        }
+       ]
+      }
+     },
+     "meta": {
+      "created": "2014-01-08T10:46:52.326072Z",
+      "createdBy": {
+       "id": 6,
+       "siteId": 5,
+       "userId": 3,
+       "profileName": "Gandalf",
+       "visible": true,
+       "avatar": "/api/v1/files/122cf255cb3a5360355ac6cf6bb3f1107db3892a",
+       "meta": {
+        "flags": {},
+        "links": [
+         {
+          "rel": "self",
+          "href": "/api/v1/profiles/6"
+         },
+         {
+          "rel": "site",
+          "href": "/api/v1/sites/5"
+         }
+        ]
+       }
+      }
+     }
+    }
+   ]
+  },
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/updates"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+
+</code></pre>
+
+  <h3 id="updates-collection-unread">Single Resource</h3>
+
+  <h4 id="updates-collection-unread-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/updates/unread</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 10:40:42 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="updates-collection-unread-get">GET</h4>
+
+  <p>Fetches a count of the number of updates that have been created since the last time /updates was visited. You can use this to show an indication to the user as to whether there are any new updates for them.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/updates/unread</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 08 Jan 2014 14:30:01 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": 5,
+ "error": null
+}
+
+</code></pre>
+  
+</div>
+
+<!-- /updates/{id}/preferences -->
+<div class="bs-docs-section" id="updateprefs">
+  <h2>/updates/preferences</h2>
+
+  <p>Provides an interface to see the type of updates that the user can receive and managing the default notification settings for these update types.</p>
+
+  <h3 id="updateprefs-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/updates/preferences</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/updates/{id:[0-9]+}/preferences</td>
+        <td>GET</td>
+        <td>Returns information about the preferences for all update types.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/updates/preferences/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/updates/preferences/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about a specific preference for an update type. This includes the email and SMS preferences for the given user for this update type.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/updates/preferences/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the preference for an update type. This is how you change the email notification options for a given type of update.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="updateprefs-collection">Collection</h3>
+  
+  <h4 id="updateprefs-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/updates/preferences</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:25:48 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET</code></pre>
+
+  <h4 id="updateprefs-collection-get">GET</h4>
+
+  <p>Fetches a collection of preferences for all of the update types.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of updates returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/updates/preferences</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 08 Jan 2014 14:45:05 GMT
+Content-Type: application/json
+Content-Length: 1383
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": [
+  {
+   "profileId": 5,
+   "id": 1,
+   "description": "When a comment has been posted in an item you are watching",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 2,
+   "description": "When a comment of yours is replied to",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 3,
+   "description": "When you are @mentioned in a comment",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 4,
+   "description": "When you receive a new huddle comment",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 5,
+   "description": "When an attendee added to an event you are watching",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 6,
+   "description": "When a vote is cast in a poll you are watching",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 7,
+   "description": "When an event you are attending is imminent",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  },
+  {
+   "profileId": 5,
+   "id": 8,
+   "description": "When a new item is created in a microcosm you are watching",
+   "sendEmail": true,
+   "sendSMS": false,
+   "meta": {}
+  }
+ ],
+ "error": null
+}
+</code></pre>
+
+  <h3 id="updateprefs-single">Single Resource</h3>
+
+  <h4 id="updateprefs-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/updates/preferences/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 22 Nov 2013 11:30:23 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,HEAD,GET,PUT</code></pre>
+
+  <h4 id="updateprefs-single-get">GET</h4>
+
+  <p>Fetches the detailed information about an update type.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/updates/preferences/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Wed, 08 Jan 2014 14:46:26 GMT
+Content-Type: application/json
+Content-Length: 228
+Connection: keep-alive
+Access-Control-Allow-Origin: *
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "profileId": 5,
+  "id": 1,
+  "description": "When a comment has been posted in an item you are watching",
+  "sendEmail": true,
+  "sendSMS": false,
+  "meta": {}
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="updateprefs-single-put">PUT</h4>
+
+  <p>Updates the update type prefers to reflect the new communication options.</p>
+
+  <p>The structure of the JSON to perform the update is:</p>
+
+<pre><code>{
+   "rsvp": "maybe"
+}</code></pre>
+
+  <p>Where the <code>rsvp</code> property is one of: <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite.</p>
+
+  <p>Example request to set it such that no notifications are sent:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"sendEmail": false, "sendSMS": false}' \
+  https://dev1.microco.sm/api/v1/updates/preferences/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 22 Nov 2013 11:33:17 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/updates/1/preferences/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Update preferences are the default preferences for any new watchers created for items that can issue these types of updates.</p>
+
+</div>

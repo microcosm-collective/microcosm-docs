@@ -1,1 +1,1 @@
-hugo server --source=src --watch
+hugo server --watch=true --source=src 
