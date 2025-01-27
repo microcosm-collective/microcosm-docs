@@ -1,4 +1,4 @@
-This is the API documentation website previously hosted at http://microcosm-cc.github.com
+This is the documentation for the [Microcosm API](https://github.com/microcosm-collective/microcosm).
 
 Pull requests welcome
 

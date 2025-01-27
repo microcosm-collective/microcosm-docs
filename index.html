@@ -3,7 +3,7 @@
   <head>
 	<meta name="generator" content="Hugo 0.142.0">
     <meta charset="utf-8">
-    <title>Microco.sm</title>
+    <title>Microcosm</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600,400italic,600italic|Ubuntu' rel='stylesheet' type='text/css'>
@@ -36,7 +36,7 @@
     
     <div class="bs-docs-sidebar">
       <ul class="nav bs-docs-sidenav">
-        <li><h3 class="bs-docs-sidenav-heading"><a href="/" class="microcosm">Microco.sm</a></h3></li>
+        <li><h3 class="bs-docs-sidenav-heading"><a href="/" class="microcosm">Microcosm</a></h3></li>
 
         <li><a class="nav-header" href="#introduction">Introduction</a></li>
 
@@ -349,10 +349,10 @@
         
         <div class="bs-docs-section" id="welcome">
           <div class="page-header">
-            <h1 class="microcosm"><a href="http://microco.sm/">Microco.sm</a></h1>
+            <h1 class="microcosm"><a href="https://microcosm.app/">Microcosm</a></h1>
           </div>
 
-          <p>Welcome to the API documentation for <a href="http://microco.sm/">Microco.sm</a>. On this single-page site we explain how to use the Microco.sm API. Print this page or bookmark, just keep it handy.</p>
+          <p>Welcome to the API documentation for <a href="https://microcosm.app/">Microcosm</a>. On this single-page site we explain how to use the Microcosm API. Print this page or bookmark, just keep it handy.</p>
         </div>
 
         
@@ -361,7 +361,7 @@
     <h1>Introduction</h1>
   </div>
 
-  <p>The Microco.sm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
+  <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
 
   <p>Using the API is as easy as:</p>
 
@@ -403,7 +403,7 @@
 
   <p>Sites have Microcosms. Microcosms have types of content that include Conversations, Events and Polls. Those types of content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
 
-  <p>That is overly simplistic, of course; Comments are made by Profiles, and an Event describes which Microco.sm it is in, etc. but as a high-level view it suffices.</p>
+  <p>That is overly simplistic, of course; Comments are made by Profiles, and an Event describes which Microcosm it is in, etc. but as a high-level view it suffices.</p>
 
   <h2 id="basics-terminology">Terminology</h2>
 
@@ -412,7 +412,7 @@
     <thead>
       <tr>
         <th>Common Terminology</th>
-        <th>Microco.sm Terminology</th>
+        <th>Microcosm Terminology</th>
         <th>Differences</th>
       </tr>
     </thead>
@@ -422,7 +422,7 @@
         <td>Site</td>
         <td>
           <p>In vBulletin, phpBB, and so on, the 'forum' is the over-arching instance of the software and the software runs on a single web domain.</p>
-          <p>Microco.sm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
+          <p>Microcosm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
         </td>
       </tr>
       <tr>
@@ -447,7 +447,7 @@
         <td>Comments</td>
         <td>
           <p>Within traditional forum software threads have posts, and that's it.</p>
-          <p>Microco.sm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
+          <p>Microcosm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
           <p>Comments are pieces of user generated content attached in the form of a list to some other content.</p>
         </td>
       </tr>
@@ -810,7 +810,7 @@
       <tr>
         <td>sticky</td>
         <td>bool</td>
-        <td>Whether the item is stuck to the top of any lists of items. That is, a stuck Microco.sm would appear before all unstuck Microcosms in the list of Microcosms.</td>
+        <td>Whether the item is stuck to the top of any lists of items. That is, a stuck Microcosm would appear before all unstuck Microcosms in the list of Microcosms.</td>
       </tr>
       <tr>
         <td>open</td>
@@ -889,7 +889,7 @@
       </tr>
       <tr>
         <td>microcosm</td>
-        <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microco.sm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microcosm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
       </tr>
       <tr>
         <td>poll</td>
@@ -977,7 +977,7 @@
         <td><code>ClientSecret</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Client secret supplied when the API client was registered with Microco.sm.</td>
+        <td>Client secret supplied when the API client was registered with Microcosm.</td>
       </tr>
     </tbody>
   </table>
@@ -1297,7 +1297,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
   <p>Request:</p>
 
-  <p>The structure of the JSON to create a Microco.sm is:</p>
+  <p>The structure of the JSON to create a Microcosm is:</p>
 
 <pre><code>{
    "title": "Rivendell",
@@ -1693,19 +1693,19 @@ Cache-Control: no-cache, max-age=0
         <td><code>visibility</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Must be one of 'public', 'protected' or 'private'. Where; 'public' allows the Microco.sm to be accessed without limitation and be discoverable across other sites, 'protected' allows the Microco.sm to be found and displayed publicly within the context of the current site, and 'private' means that the Microco.sm if fully private and won't be discoverable by guests.</td>
+        <td>Must be one of 'public', 'protected' or 'private'. Where; 'public' allows the Microcosm to be accessed without limitation and be discoverable across other sites, 'protected' allows the Microcosm to be found and displayed publicly within the context of the current site, and 'private' means that the Microcosm if fully private and won't be discoverable by guests.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>A short textual name for the Microco.sm, displayed everywhere the Microco.sm is mentioned. Should be as terse, yet descriptive as possible.</td>
+        <td>A short textual name for the Microcosm, displayed everywhere the Microcosm is mentioned. Should be as terse, yet descriptive as possible.</td>
       </tr>
       <tr>
         <td><code>description</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>A single line of text that provides information on the Microco.sm and provides the definition of what content is on-topic within the Micrcosm.</td>
+        <td>A single line of text that provides information on the Microcosm and provides the definition of what content is on-topic within the Micrcosm.</td>
       </tr>
       <tr>
         <td><code>editReason</code></td>
@@ -2022,7 +2022,7 @@ Allow: OPTIONS,GET,HEAD,POST</code></pre>
         <td><code>microcosmId</code></td>
         <td>Integer</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this conversation will reside in. This property is required as every conversation must reside in a single Microco.sm.</td>
+        <td>Identifies which Microcosm this conversation will reside in. This property is required as every conversation must reside in a single Microcosm.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -2329,7 +2329,7 @@ Cache-Control: no-cache, max-age=0
         <td><code>microcosmId</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Indicates which Microco.sm this conversation belongs to, you can move a conversation from one Microco.sm to another by changing this value. The move will work according to the user permissions against the destination Microco.sm, and the visibility scope of the destination Microco.sm. That is, you cannot move a conversation to a private Microco.sm for which you do not have rights.</td>
+        <td>Indicates which Microcosm this conversation belongs to, you can move a conversation from one Microcosm to another by changing this value. The move will work according to the user permissions against the destination Microcosm, and the visibility scope of the destination Microcosm. That is, you cannot move a conversation to a private Microcosm for which you do not have rights.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -2652,7 +2652,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
         <td><code>microcosmId</code></td>
         <td>Integer</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+        <td>Identifies which Microcosm this event will reside in. This property is required as every event must reside in a single Microcosm.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -3075,7 +3075,7 @@ Cache-Control: no-cache, max-age=0
         <td><code>microcosmId</code></td>
         <td>Integer</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+        <td>Identifies which Microcosm this event will reside in. This property is required as every event must reside in a single Microcosm.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -3925,7 +3925,7 @@ Allow: OPTIONS,POST</code></pre>
    "itemType": "conversation",
    "itemId": 1,
    "inReplyTo": 1,
-   "markdown": "A rebuttal and a link Some text and a link to [Microcosm](http://microco.sm/)"
+   "markdown": "A rebuttal and a link Some text and a link to [Microcosm](https://microcosm.app/)"
 }</code></pre>
 
   <p>Where:</p>
@@ -7642,7 +7642,7 @@ Connection: keep-alive
         </a>
 
         <footer class="bs-docs-footer">
-          <p><a href="http://microco.sm">Microco.sm</a> documentation hosted by <a href="https://github.com/microcosm-cc/microcosm-cc.github.com">GitHub</a>, please <a href="https://github.com/microcosm-cc/microcosm-cc.github.com/issues">report any issues or inconsistencies</a>.</p>
+          <p><a href="https://microcosm.app">Microcosm</a> documentation hosted by <a href="https://github.com/microcosm-collective/microcosm-docs">GitHub</a>, please <a href="https://github.com/microcosm-collective/microcosm-docs/issues">report any issues or inconsistencies</a>.</p>
 
           <p>Designed and built using <a href="https://github.com/twitter/bootstrap">Twitter Bootstrap</a> (<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>), and the <a href="https://github.com/twitter/bootstrap/tree/master/docs">Twitter Bootstrap Docs</a> (<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>).</p>
         </footer>
@@ -7654,18 +7654,6 @@ Connection: keep-alive
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-
     <script src="/static/js/bootstrap-scrollspy.js"></script>
-
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-36931318-4', 'microcosm-cc.github.io');
-        ga('send', 'pageview');
-    </script>
-
   </body>
 </html>
