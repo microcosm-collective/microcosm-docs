@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+	<meta name="generator" content="Hugo 0.142.0">
     <meta charset="utf-8">
     <title>Microco.sm</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -315,6 +316,24 @@
       <ul class="nav">
         <li><a href="#attachments-single-options">OPTIONS</a></li>
         <li><a href="#attachments-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
+        <li><a href="#watchers">/watchers</a>
+  <ul class="nav">
+    <li><a href="#watchers-urls">URLS and Methods</a></li>
+    <li><a href="#watchers-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#watchers-collection-options">OPTIONS</a></li>
+        <li><a href="#watchers-collection-post">POST</a></li>
+        <li><a href="#watchers-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#watchers-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#watchers-single-options">OPTIONS</a></li>
+        <li><a href="#watchers-single-delete">DELETE</a></li>
       </ul>
     </li>
   </ul>
@@ -924,16 +943,14 @@
 
   <h2 id="basics-authentication">Authentication</h2>
 
-  <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
+  <p>We use <a href="https://auth0.com/docs/">Auth0</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Auth0, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
 
-  <p>You can <a href="https://developer.mozilla.org/en-US/docs/Persona/Quick_Setup#Step_4.3A_Verify_the_user.E2.80.99s_credentials">read about assertions</a> on the Persona website or <a href="https://github.com/mozilla/browserid-cookbook">view example code</a>.</p>
-
-  <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
+  <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Auth0 assertion to generate an <code>access token</code> for a user.</p>
 
   <p>To generate an access token, POST the following structure to <code>/auth</code>.
 
   <pre><code>{
-  "Assertion": "suppliedByPersonaOnUserLogin",
+  "Assertion": "suppliedByAuth0OnUserLogin",
   "ClientSecret": "suppliedByMicrocosmDuringDevClientRegistration"
 }
 </code></pre>
@@ -954,7 +971,7 @@
         <td><code>Assertion</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Assertion from Mozilla Persona signifying a successful user login for the site.</td>
+        <td>Assertion from Auth0 signifying a successful user login for the site.</td>
       </tr>
       <tr>
         <td><code>ClientSecret</code></td>
@@ -1546,7 +1563,7 @@ Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="microcosms-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single microcosm, including a collection of items contained within the microcosm. The pagination query string parameters allow to you traverse the collection of items. Items include conversations, events, polls, etc.</p>
+  <p>Fetches the detailed information about a single microcosm, including a collection of items contained within the microcosm. The pagination query string parameters allow you to traverse the collection of items. Items include conversations, events, polls, etc.</p>
 
   <p>Example request:</p>
 
@@ -1905,7 +1922,7 @@ Connection: keep-alive
       <tr>
         <td>/api/v1/conversations/{id:[0-9]+}</td>
         <td>GET</td>
-        <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation.</td>
+        <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation. Marks the comments as read.</td>
       </tr>
       <tr>
         <td>/api/v1/conversations/{id:[0-9]+}</td>
@@ -1939,7 +1956,7 @@ Connection: keep-alive
       </tr>
       <tr>
         <td>/api/v1/conversations/{id:[0-9]+}/newcomment</td>
-        <td>Get</td>
+        <td>GET</td>
         <td>Returns a redirect with a location linking to the first new comment in the conversation, or if there are no new comments then the last comment in the conversation.</td>
       </tr>
       <tr>
@@ -2184,7 +2201,7 @@ Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="conversations-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow to you traverse the collection of comments.</p>
+  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow you to traverse the collection of comments. If a valid <code>access_token</code> is present, the page of comments will be marked as read.</p>
 
   <p>Example request:</p>
 
@@ -2605,9 +2622,11 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 <pre><code>{
   "microcosmId": 1,
   "title": "Ale tasting",
-  "when": "2013-11-22T20:00:00Z",
+  "when": "2024-07-22T20:00:00Z",
+  "whentz": "2024-07-22T19:00:00Z",
   "duration": 180,
   "where": "Green Dragon Inn",
+  "tz": "Europe/London",
   "lat": 51.674871,
   "lon": -0.216352,
   "north": 51.679581,
@@ -2643,9 +2662,15 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
       </tr>
       <tr>
         <td><code>when</code></td>
-        <td>ISO8601 Datetime</td>
+        <td>ISO 8601 Datetime</td>
         <td>Optional</td>
-        <td>The scheduled date for that the event occurs on.</td>
+        <td>The scheduled date for that the event occurs on. Presented as a UTC timestamp, but actually represents the local offset time. E.g. "2024-07-22T20:00:00Z"</td>
+      </tr>
+      <tr>
+        <td><code>whentz</code></td>
+        <td>ISO 8601 Datetime</td>
+        <td>Optional</td>
+        <td>The scheduled date for that the event occurs on, in UTC, E.g. "2024-07-22T19:00:00Z"</td>
       </tr>
       <tr>
         <td><code>duration</code></td>
@@ -2658,6 +2683,12 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
         <td>String</td>
         <td>Optional</td>
         <td>A short textual description of the location of the event. This may be an address or just the title of the location. No geolocation will be done on this, it can be a useful label "Tower of London, UK" or a meaningless one "In the middle of a field".</td>
+      </tr>
+      <tr>
+        <td><code>tz</code></td>
+        <td>IANA/Olson timezone</td>
+        <td>Optional</td>
+        <td>The timezone of the event, e.g. "Europe/London", or "Australia/Sydney"</td>
       </tr>
       <tr>
         <td><code>lat</code></td>
@@ -2893,7 +2924,7 @@ Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="events-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow to you traverse the collection of comments.</p>
+  <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow you to traverse the collection of comments.</p>
 
   <p>Example request:</p>
 
@@ -3403,7 +3434,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
         <td>Identifies which profile is attending the event. The <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
       </tr>
       <tr>
-        <td><code>rsvpd</code></td>
+        <td><code>rsvp</code></td>
         <td>String</td>
         <td>Optional</td>
         <td>Describes the RSVP state of the attendee, may be one of <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite. If not supplied this defaults to "invited".</td>
@@ -4789,6 +4820,69 @@ Allow: OPTIONS,HEAD,GET</code></pre>
         <td>integer</td>
         <td>null</td>
         <td>If greater than 0 then the search will be restricted to all items authored by this profile ID. If the profile ID does not exist on this site, then nothing is returned.</td>
+      </tr>
+
+      <tr>
+        <td>following</td>
+        <td>boolean</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>hasAttachment</td>
+        <td>boolean</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>hashtags</td>
+        <td>[]string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>since</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>until</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>eventAfter</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>eventBefore</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>attendee</td>
+        <td>boolean</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>has</td>
+        <td>[]string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>sort</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -7227,7 +7321,7 @@ Connection: keep-alive
 
   <h4 id="files-single-options">OPTIONS</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -7247,7 +7341,7 @@ Allow: OPTIONS,GET</code></pre>
 
   <h4 id="files-single-get">GET</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -7327,7 +7421,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
   <h4 id="attachments-collection-post">POST</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -7335,7 +7429,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3"}' \
+  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3", "FileName":"image.jpeg"}' \
   https://dev1.microco.sm/api/v1/comments/1/attachments
 </code></pre>
 
@@ -7482,6 +7576,66 @@ Connection: keep-alive
 
   <p>Currently attachments can't be deleted from profiles, so to replace an avatar upload the file and link it as an attachment to the appropriate profile. This will override the existing avatar. In future an avatar picker will allow users see previous avatars they have used and delete them if needed.</p>
 </div>
+        
+<div class="bs-docs-section" id="watchers">
+  <h2>/watchers</h2>
+
+  <p>Subscribe to a particular item. Perhaps a Conversation, maybe a Microcosm?</p>
+
+  <p>This section is incomplete.</p>
+
+  <p>Watchers can be created on <code>conversations</code>, <code>microcosms</code> or <code>events</code>. Communication preferences can also optionally be set, e.g. whether you want email updates or not.</p>
+
+  <h3 id="watchers-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/watchers</td>
+        <td>POST</td>
+        <td>Create a new watcher.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/watchers/delete</td>
+        <td>DELETE</td>
+        <td>Delete a watcher.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="watchers-single">Single Resource</h3>
+
+  <h4 id="watchers-collection-post">POST</h4>
+
+  <p>Create a watcher on a given resource.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation", "itemId": 12345, "updateTypeId": 1}' \
+  https://dev1.microco.sm/api/v1/watchers</code></pre>
+
+  <h4 id="watchers-single-delete">DELETE</h4>
+
+  <p>To remove a watcher from a conversation, issue a DELETE request using the itemId as the identifier.</p>
+
+<pre><code>curl -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemId": 12345, "itemType": "conversation", "updateTypeId": "1"}' \
+  https://dev1.microco.sm/api/v1/watchers/delete</code></pre>
+
+</div>
 
         <a href="#welcome" class="bs-docs-top">
           Back to top
@@ -7496,18 +7650,22 @@ Connection: keep-alive
       </div>
     </div>
 
+    
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-    <script src="/static/js/bootstrap-scrollspy.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-36951023-1', 'auto');
-      ga('send', 'pageview');
+    <script src="/static/js/bootstrap-scrollspy.js"></script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-36931318-4', 'microcosm-cc.github.io');
+        ga('send', 'pageview');
     </script>
+
   </body>
 </html>

@@ -1,10 +1,10 @@
-<!-- /conversations -->
-<div class="bs-docs-section" id="conversations">
-  <h2>/conversations</h2>
+<!-- /huddles -->
+<div class="bs-docs-section" id="huddles">
+  <h2>/huddles</h2>
 
-  <p>Provides an interface to the conversations that exist on a site and the comments contained within them. A conversation is merely a titled (topical) collection of comments.</p>
+  <p>Provides an interface to the huddles that exist on a site and the comments contained within them. A huddle is merely a titled (topical) collection of comments.</p>
 
-  <h3 id="conversations-urls">URLs and Methods</h3>
+  <h3 id="huddles-urls">URLs and Methods</h3>
 
   <table class="table table-hover">
     <thead>
@@ -16,89 +16,89 @@
     </thead>
     <tbody>
       <tr>
-        <td>/api/v1/conversations</td>
+        <td>/api/v1/huddles</td>
         <td>OPTIONS</td>
         <td>The <code>Allow:</code> header lists the methods available.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations</td>
+        <td>/api/v1/huddles</td>
         <td>POST</td>
-        <td>Creates a new conversation on the current site.</td>
+        <td>Creates a new huddle on the current site.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations</td>
+        <td>/api/v1/huddles</td>
         <td>GET</td>
-        <td>Returns information about the conversations that exist on the current site.</td>
+        <td>Returns information about the huddles that exist on the current site.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>/api/v1/huddles/{id:[0-9]+}</td>
         <td>OPTIONS</td>
         <td>The <code>Allow:</code> header lists the methods available.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>/api/v1/huddles/{id:[0-9]+}</td>
         <td>GET</td>
-        <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation. Marks the comments as read.</td>
+        <td>Returns information about the huddle specified by the numeric identifier and a collection of comments related to this huddle.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>/api/v1/huddles/{id:[0-9]+}</td>
         <td>PUT</td>
-        <td>Updates the conversation specified by the numeric identifier.</td>
+        <td>Updates the huddle specified by the numeric identifier.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>/api/v1/huddles/{id:[0-9]+}</td>
         <td>PATCH</td>
-        <td>Updates specific fragments of a conversation resource specified by the numeric identifier.</td>
+        <td>Updates specific fragments of a huddle resource specified by the numeric identifier.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}</td>
+        <td>/api/v1/huddles/{id:[0-9]+}</td>
         <td>DELETE</td>
-        <td>Deletes the conversation specified by the numeric identifier.</td>
+        <td>Deletes the huddle specified by the numeric identifier.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}/lastcomment</td>
+        <td>/api/v1/huddles/{id:[0-9]+}/lastcomment</td>
         <td>OPTIONS</td>
         <td>The <code>Allow:</code> header lists the methods available.</td>
       </tr>
       <tr>
-        <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}/lastcomment</td>
+        <td style="white-space:nowrap;">/api/v1/huddles/{id:[0-9]+}/lastcomment</td>
         <td>GET</td>
-        <td>Returns a redirect with a location linking to the last comment in the conversation.</td>
+        <td>Returns a redirect with a location linking to the last comment in the huddle.</td>
       </tr>
       <tr>
-        <td style="white-space:nowrap;">/api/v1/conversations/{id:[0-9]+}/newcomment</td>
+        <td style="white-space:nowrap;">/api/v1/huddles/{id:[0-9]+}/newcomment</td>
         <td>OPTIONS</td>
         <td>The <code>Allow:</code> header lists the methods available.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}/newcomment</td>
-        <td>GET</td>
-        <td>Returns a redirect with a location linking to the first new comment in the conversation, or if there are no new comments then the last comment in the conversation.</td>
+        <td>/api/v1/huddles/{id:[0-9]+}/newcomment</td>
+        <td>Get</td>
+        <td>Returns a redirect with a location linking to the first new comment in the huddle, or if there are no new comments then the last comment in the huddle.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}/markread</td>
+        <td>/api/v1/huddles/{id:[0-9]+}/markread</td>
         <td>OPTIONS</td>
         <td>The <code>Allow:</code> header lists the methods available.</td>
       </tr>
       <tr>
-        <td>/api/v1/conversations/{id:[0-9]+}/markread</td>
+        <td>/api/v1/huddles/{id:[0-9]+}/markread</td>
         <td>PUT</td>
-        <td>Marks the conversation as read.</td>
+        <td>Marks the huddle as read.</td>
       </tr>
     </tbody>
   </table>
 
-  <p class="well well-small">The <code>conversationId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc on the given site).</p>
+  <p class="well well-small">The <code>huddleId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc on the given site).</p>
 
-  <h3 id="conversations-collection">Collection</h3>
-  
-  <h4 id="conversations-collection-options">OPTIONS</h4>
+  <h3 id="huddles-collection">Collection</h3>
+
+  <h4 id="huddles-collection-options">OPTIONS</h4>
 
   <p>Example request:</p>
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://dev1.microco.sm/api/v1/conversations</code></pre>
+  https://dev1.microco.sm/api/v1/huddles</code></pre>
 
   <p>Example response:</p>
 
@@ -109,17 +109,17 @@ Content-Length: 0
 Connection: keep-alive
 Allow: OPTIONS,GET,HEAD,POST</code></pre>
 
-  <h4 id="conversations-collection-post">POST</h4>
+  <h4 id="huddles-collection-post">POST</h4>
 
   <p>Request:</p>
 
-  <p>The flow for creating a conversation is to create the conversation item, and then to create comments against the conversation. A conversation is simply an empty container for a list of comments.</p>
+  <p>The flow for creating a huddle is to create the huddle item, create comments against the huddle, then "invite" participants to the huddle. A huddle is simply an empty container for a list of comments.</p>
 
-  <p>The structure of the JSON to create a conversation is:</p>
+  <p>The structure of the JSON to create a huddle is:</p>
 
 <pre><code>{
-  "microcosmId": 1,
-  "title": "There are whisperings that the Nazgûl are abroad"
+  "title": "There are whisperings that the Nazgûl are abroad",
+  "isConfidential": false
 }</code></pre>
 
   <p>Where:</p>
@@ -135,16 +135,16 @@ Allow: OPTIONS,GET,HEAD,POST</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><code>microcosmId</code></td>
-        <td>Integer</td>
+        <td><code>isConfidential</code></td>
+        <td>Boolean</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this conversation will reside in. This property is required as every conversation must reside in a single Microco.sm.</td>
+        <td>Not implemented yet(?)</td>
       </tr>
       <tr>
         <td><code>title</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>A short textual description of the conversation that usually encapsulates the topic of the conversation. Should be as terse, yet descriptive as possible.</td>
+        <td>A short textual description of the huddle that usually encapsulates the topic of the huddle. Should be as terse, yet descriptive as possible.</td>
       </tr>
     </tbody>
   </table>
@@ -155,8 +155,8 @@ Allow: OPTIONS,GET,HEAD,POST</code></pre>
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"microcosmId": 1, "title": "There are whisperings that the Nazgûl are abroad"}' \
-  https://dev1.microco.sm/api/v1/conversations</code></pre>
+  -d '{"title": "There are whisperings that the Nazgûl are abroad", isConfidential: false}' \
+  https://dev1.microco.sm/api/v1/huddles</code></pre>
 
   <p>Example response:</p>
 
@@ -165,7 +165,7 @@ Date: Thu, 21 Nov 2013 16:10:01 GMT
 Content-Type: application/json
 Content-Length: 66
 Connection: keep-alive
-Location: /api/v1/conversations/1
+Location: /api/v1/huddles/1
 
 {
  "context": "",
@@ -175,21 +175,21 @@ Location: /api/v1/conversations/1
 }
 </code></pre>
 
-  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created conversation.</p>
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created huddle.</p>
 
-  <h4 id="conversations-collection-get">GET</h4>
+  <h4 id="huddles-collection-get">GET</h4>
 
-  <p>Fetches a collection of conversations across all microcosms. If a valid <code>access_token</code> is provided then the collection may contain conversations that exist in microcosms not visible to guests.</p>
+  <p>Fetches a collection of huddles across all microcosms. If a valid <code>access_token</code> is provided then the collection may contain huddles that exist in microcosms not visible to guests.</p>
 
   <p>Request:</p>
 
-  <p>The pagination query string parameters allow you to paginate the collection of conversations returned:</p>
+  <p>The pagination query string parameters allow you to paginate the collection of huddles returned:</p>
 
   <p>Example request:</p>
 
 <pre><code>curl -i \
   -X GET \
-  https://dev1.microco.sm/api/v1/conversations</code></pre>
+  https://dev1.microco.sm/api/v1/huddles</code></pre>
 
   <p>Example response:</p>
 
@@ -204,7 +204,7 @@ Cache-Control: no-cache, max-age=0
  "context": "",
  "status": 200,
  "data": {
-  "conversations": {
+  "huddles": {
    "total": 1,
    "limit": 25,
    "offset": 0,
@@ -214,10 +214,10 @@ Cache-Control: no-cache, max-age=0
    "links": [
     {
      "rel": "self",
-     "href": "/api/v1/conversations"
+     "href": "/api/v1/huddles"
     }
    ],
-   "type": "/api/v1/conversations",
+   "type": "/api/v1/huddles",
    "items": [
     {
      "id": 1,
@@ -257,7 +257,7 @@ Cache-Control: no-cache, max-age=0
       "links": [
        {
         "rel": "self",
-        "href": "/api/v1/conversations/1"
+        "href": "/api/v1/huddles/1"
        },
        {
         "rel": "microcosm",
@@ -273,7 +273,7 @@ Cache-Control: no-cache, max-age=0
    "links": [
     {
      "rel": "self",
-     "href": "/api/v1/conversations"
+     "href": "/api/v1/huddles"
     }
    ],
    "permissions": {
@@ -296,15 +296,15 @@ Cache-Control: no-cache, max-age=0
 }
 </code></pre>
 
-  <h3 id="conversations-single">Single Resource</h3>
+  <h3 id="huddles-single">Single Resource</h3>
 
-  <h4 id="conversations-single-options">OPTIONS</h4>
+  <h4 id="huddles-single-options">OPTIONS</h4>
 
   <p>Example request:</p>
 
 <pre><code>curl -i \
   -X OPTIONS \
-  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/huddles/1</code></pre>
 
   <p>Example response:</p>
 
@@ -315,15 +315,15 @@ Content-Length: 0
 Connection: keep-alive
 Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
 
-  <h4 id="conversations-single-get">GET</h4>
+  <h4 id="huddles-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow you to traverse the collection of comments. If a valid <code>access_token</code> is present, the page of comments will be marked as read.</p>
+  <p>Fetches the detailed information about a single huddle, including a collection of comments contained within the huddle. The pagination query string parameters allow you to traverse the collection of comments.</p>
 
   <p>Example request:</p>
 
 <pre><code>curl -i \
   -X GET \
-  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/huddles/1</code></pre>
 
   <p>Example response:</p>
 
@@ -351,7 +351,7 @@ Cache-Control: no-cache, max-age=0
    "links": [
     {
      "rel": "self",
-     "href": "/api/v1/conversations/1"
+     "href": "/api/v1/huddles/1"
     }
    ],
    "type": "/api/v1/comments",
@@ -391,7 +391,7 @@ Cache-Control: no-cache, max-age=0
    "links": [
     {
      "rel": "self",
-     "href": "/api/v1/conversations/1"
+     "href": "/api/v1/huddles/1"
     },
     {
      "rel": "microcosm",
@@ -419,9 +419,9 @@ Cache-Control: no-cache, max-age=0
 }
 </code></pre>
 
-  <h4 id="conversations-single-put">PUT</h4>
+  <h4 id="huddles-single-put">PUT</h4>
 
-  <p>Updates a conversation. The structure of the JSON to perform the update is:</p>
+  <p>Updates a huddle. The structure of the JSON to perform the update is:</p>
 
 <pre><code>{
   "microcosmId": 1,
@@ -445,13 +445,13 @@ Cache-Control: no-cache, max-age=0
         <td><code>microcosmId</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Indicates which Microco.sm this conversation belongs to, you can move a conversation from one Microco.sm to another by changing this value. The move will work according to the user permissions against the destination Microco.sm, and the visibility scope of the destination Microco.sm. That is, you cannot move a conversation to a private Microco.sm for which you do not have rights.</td>
+        <td>Indicates which Microco.sm this huddle belongs to, you can move a huddle from one Microco.sm to another by changing this value. The move will work according to the user permissions against the destination Microco.sm, and the visibility scope of the destination Microco.sm. That is, you cannot move a huddle to a private Microco.sm for which you do not have rights.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>A short textual name for the conversation, displayed everywhere the conversation is mentioned. Should be as terse, yet descriptive as possible.</td>
+        <td>A short textual name for the huddle, displayed everywhere the huddle is mentioned. Should be as terse, yet descriptive as possible.</td>
       </tr>
       <tr>
         <td><code>editReason</code></td>
@@ -469,7 +469,7 @@ Cache-Control: no-cache, max-age=0
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '{"microcosmId": 1, "title": "The Nazgûl have been sighted", "meta": {"editReason": "Updated the title"}}' \
-  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/huddles/1</code></pre>
 
   <p>Example response:</p>
 
@@ -478,7 +478,7 @@ Date: Thu, 21 Nov 2013 16:17:05 GMT
 Content-Type: application/json
 Content-Length: 66
 Connection: keep-alive
-Location: /api/v1/conversations/1
+Location: /api/v1/huddles/1
 
 {
  "context": "",
@@ -488,11 +488,11 @@ Location: /api/v1/conversations/1
 }
 </code></pre>
 
-  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated conversation.</p>
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly updated huddle.</p>
 
-  <h4 id="conversations-single-patch">PATCH</h4>
+  <h4 id="huddles-single-patch">PATCH</h4>
 
-  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a conversation or a super user (microcosm moderator or site admin) can delete a conversation, but only a super user can undelete a conversation.</p>
+  <p>PATCH allows partial updates to a resource. This is best used when some fragments of metadata require different or complex permissions. An example of this may be that the owner (author) of a huddle or a super user (microcosm moderator or site admin) can delete a huddle, but only a super user can undelete a huddle.</p>
 
   <p>The body of a PATCH request is implemented according to <a href="http://tools.ietf.org/html/rfc6902">RFC 6902</a>, though it should be noted that the Content-Type remains <code>application/json</code>.</p>
 
@@ -515,7 +515,7 @@ Location: /api/v1/conversations/1
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
   -d '[{"op":"replace", "path":"/meta/flags/sticky", "value": true}]' \
-  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/huddles/1</code></pre>
 
   <p>Example response:</p>
 
@@ -533,9 +533,9 @@ Connection: keep-alive
 }
 </code></pre>
 
-  <p>That request will set the <code>sticky</code> property of a conversation to <code>true</code>. You will need to perform a GET on the updated resource to see the change reflected.</p>
+  <p>That request will set the <code>sticky</code> property of a huddle to <code>true</code>. You will need to perform a GET on the updated resource to see the change reflected.</p>
 
-  <p>Conversation fragment before:</p>
+  <p>Huddle fragment before:</p>
 <pre><code>{
   "context":"",
   "status":200,
@@ -557,7 +557,7 @@ Connection: keep-alive
   "error":null
 }</code></pre>
 
-  <p>Conversation fragment after:</p>
+  <p>Huddle fragment after:</p>
 <pre><code>{
   "context":"",
   "status":200,
@@ -598,16 +598,16 @@ Connection: keep-alive
 
   <p>The modified resource now reflects <code>"sticky": true</code> and the edited properties are populated describing the change to the resource.</p>
 
-  <h4 id="conversations-single-delete">DELETE</h4>
+  <h4 id="huddles-single-delete">DELETE</h4>
 
-  <p>Deletes a conversation.</p>
+  <p>Deletes a huddle.</p>
 
   <p>Example request:</p>
 
 <pre><code>curl -i \
   -X DELETE \
   -H "Authorization: Bearer letmein" \
-  https://dev1.microco.sm/api/v1/conversations/1</code></pre>
+  https://dev1.microco.sm/api/v1/huddles/1</code></pre>
 
   <p>Example response:</p>
 
