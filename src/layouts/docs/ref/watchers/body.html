@@ -1,0 +1,60 @@
+<!-- /watchers -->
+<div class="bs-docs-section" id="watchers">
+  <h2>/watchers</h2>
+
+  <p>Subscribe to a particular item. Perhaps a Conversation, maybe a Microcosm?</p>
+
+  <p>This section is incomplete.</p>
+
+  <p>Watchers can be created on <code>conversations</code>, <code>microcosms</code> or <code>events</code>. Communication preferences can also optionally be set, e.g. whether you want email updates or not.</p>
+
+  <h3 id="watchers-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/watchers</td>
+        <td>POST</td>
+        <td>Create a new watcher.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/watchers/delete</td>
+        <td>DELETE</td>
+        <td>Delete a watcher.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="watchers-single">Single Resource</h3>
+
+  <h4 id="watchers-collection-post">POST</h4>
+
+  <p>Create a watcher on a given resource.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation", "itemId": 12345, "updateTypeId": 1}' \
+  https://dev1.microco.sm/api/v1/watchers</code></pre>
+
+  <h4 id="watchers-single-delete">DELETE</h4>
+
+  <p>To remove a watcher from a conversation, issue a DELETE request using the itemId as the identifier.</p>
+
+<pre><code>curl -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemId": 12345, "itemType": "conversation", "updateTypeId": "1"}' \
+  https://dev1.microco.sm/api/v1/watchers/delete</code></pre>
+
+</div>

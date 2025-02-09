@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+	<meta name="generator" content="Hugo 0.142.0">
     <meta charset="utf-8">
-    <title>Microco.sm</title>
+    <title>Microcosm</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600,400italic,600italic|Ubuntu' rel='stylesheet' type='text/css'>
@@ -35,7 +36,7 @@
     
     <div class="bs-docs-sidebar">
       <ul class="nav bs-docs-sidenav">
-        <li><h3 class="bs-docs-sidenav-heading"><a href="/" class="microcosm">Microco.sm</a></h3></li>
+        <li><h3 class="bs-docs-sidenav-heading"><a href="/" class="microcosm">Microcosm</a></h3></li>
 
         <li><a class="nav-header" href="#introduction">Introduction</a></li>
 
@@ -319,6 +320,24 @@
     </li>
   </ul>
 </li>
+        <li><a href="#watchers">/watchers</a>
+  <ul class="nav">
+    <li><a href="#watchers-urls">URLS and Methods</a></li>
+    <li><a href="#watchers-collection">Collection</a>
+      <ul class="nav">
+        <li><a href="#watchers-collection-options">OPTIONS</a></li>
+        <li><a href="#watchers-collection-post">POST</a></li>
+        <li><a href="#watchers-collection-get">GET</a></li>
+      </ul>
+    </li>
+    <li><a href="#watchers-single">Single Resource</a>
+      <ul class="nav">
+        <li><a href="#watchers-single-options">OPTIONS</a></li>
+        <li><a href="#watchers-single-delete">DELETE</a></li>
+      </ul>
+    </li>
+  </ul>
+</li>
 
       </ul>
     </div>
@@ -330,10 +349,10 @@
         
         <div class="bs-docs-section" id="welcome">
           <div class="page-header">
-            <h1 class="microcosm"><a href="http://microco.sm/">Microco.sm</a></h1>
+            <h1 class="microcosm"><a href="https://microcosm.app/">Microcosm</a></h1>
           </div>
 
-          <p>Welcome to the API documentation for <a href="http://microco.sm/">Microco.sm</a>. On this single-page site we explain how to use the Microco.sm API. Print this page or bookmark, just keep it handy.</p>
+          <p>Welcome to the API documentation for <a href="https://microcosm.app/">Microcosm</a>. On this single-page site we explain how to use the Microcosm API. Print this page or bookmark, just keep it handy.</p>
         </div>
 
         
@@ -342,7 +361,7 @@
     <h1>Introduction</h1>
   </div>
 
-  <p>The Microco.sm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
+  <p>The Microcosm API is a <a href="https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs">RESTful</a> API. We acknowledge that the users of an API are the developers who implement against the API, and with that in mind we have sought to make pragmatic choices that help and assist you, the developer. We offer an API that we believe has the best of REST without limiting the ways in which you may implement a solution using our API.</p>
 
   <p>Using the API is as easy as:</p>
 
@@ -384,7 +403,7 @@
 
   <p>Sites have Microcosms. Microcosms have types of content that include Conversations, Events and Polls. Those types of content can additionally have Comments. Sites also have Profiles, and as a convenience method we provide WhoAmI to redirect you to the profile of the authenticated user.</p>
 
-  <p>That is overly simplistic, of course; Comments are made by Profiles, and an Event describes which Microco.sm it is in, etc. but as a high-level view it suffices.</p>
+  <p>That is overly simplistic, of course; Comments are made by Profiles, and an Event describes which Microcosm it is in, etc. but as a high-level view it suffices.</p>
 
   <h2 id="basics-terminology">Terminology</h2>
 
@@ -393,7 +412,7 @@
     <thead>
       <tr>
         <th>Common Terminology</th>
-        <th>Microco.sm Terminology</th>
+        <th>Microcosm Terminology</th>
         <th>Differences</th>
       </tr>
     </thead>
@@ -403,7 +422,7 @@
         <td>Site</td>
         <td>
           <p>In vBulletin, phpBB, and so on, the 'forum' is the over-arching instance of the software and the software runs on a single web domain.</p>
-          <p>Microco.sm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
+          <p>Microcosm being a platform can power thousands of web domains with the same software, and a single web domain is just one 'site' on this platform.</p>
         </td>
       </tr>
       <tr>
@@ -428,7 +447,7 @@
         <td>Comments</td>
         <td>
           <p>Within traditional forum software threads have posts, and that's it.</p>
-          <p>Microco.sm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
+          <p>Microcosm has comments that exist within a conversation, but additionally other types of content like an event or poll can also have comments.</p>
           <p>Comments are pieces of user generated content attached in the form of a list to some other content.</p>
         </td>
       </tr>
@@ -791,7 +810,7 @@
       <tr>
         <td>sticky</td>
         <td>bool</td>
-        <td>Whether the item is stuck to the top of any lists of items. That is, a stuck Microco.sm would appear before all unstuck Microcosms in the list of Microcosms.</td>
+        <td>Whether the item is stuck to the top of any lists of items. That is, a stuck Microcosm would appear before all unstuck Microcosms in the list of Microcosms.</td>
       </tr>
       <tr>
         <td>open</td>
@@ -870,7 +889,7 @@
       </tr>
       <tr>
         <td>microcosm</td>
-        <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microco.sm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
+        <td>Refers to a resource that can be found within the <code>/api/v1/microcosms</code> URL or it's child resources. In the case of a link to a single Microcosm it will usually also include the optional 'title' property to give a displayable name of the linked resource.</td>
       </tr>
       <tr>
         <td>poll</td>
@@ -924,16 +943,14 @@
 
   <h2 id="basics-authentication">Authentication</h2>
 
-  <p>We use <a href="https://developer.mozilla.org/en-US/docs/persona">Mozilla Persona</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Persona, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
+  <p>We use <a href="https://auth0.com/docs/">Auth0</a> to authenticate users. This supplies us with a verified email address for each user but doesn't require any other personal information. When a user logs in with Auth0, you (the API client) are provided with an <code>Assertion</code> for the user which signifies that the user has successfully logged in to your application.</p>
 
-  <p>You can <a href="https://developer.mozilla.org/en-US/docs/Persona/Quick_Setup#Step_4.3A_Verify_the_user.E2.80.99s_credentials">read about assertions</a> on the Persona website or <a href="https://github.com/mozilla/browserid-cookbook">view example code</a>.</p>
-
-  <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Persona assertion to generate an <code>access token</code> for a user.</p>
+  <p>When you sign up as an API client we will provide you with a client secret. This is used in conjunction with a Auth0 assertion to generate an <code>access token</code> for a user.</p>
 
   <p>To generate an access token, POST the following structure to <code>/auth</code>.
 
   <pre><code>{
-  "Assertion": "suppliedByPersonaOnUserLogin",
+  "Assertion": "suppliedByAuth0OnUserLogin",
   "ClientSecret": "suppliedByMicrocosmDuringDevClientRegistration"
 }
 </code></pre>
@@ -954,13 +971,13 @@
         <td><code>Assertion</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Assertion from Mozilla Persona signifying a successful user login for the site.</td>
+        <td>Assertion from Auth0 signifying a successful user login for the site.</td>
       </tr>
       <tr>
         <td><code>ClientSecret</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Client secret supplied when the API client was registered with Microco.sm.</td>
+        <td>Client secret supplied when the API client was registered with Microcosm.</td>
       </tr>
     </tbody>
   </table>
@@ -1280,7 +1297,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
   <p>Request:</p>
 
-  <p>The structure of the JSON to create a Microco.sm is:</p>
+  <p>The structure of the JSON to create a Microcosm is:</p>
 
 <pre><code>{
    "title": "Rivendell",
@@ -1546,7 +1563,7 @@ Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="microcosms-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single microcosm, including a collection of items contained within the microcosm. The pagination query string parameters allow to you traverse the collection of items. Items include conversations, events, polls, etc.</p>
+  <p>Fetches the detailed information about a single microcosm, including a collection of items contained within the microcosm. The pagination query string parameters allow you to traverse the collection of items. Items include conversations, events, polls, etc.</p>
 
   <p>Example request:</p>
 
@@ -1676,19 +1693,19 @@ Cache-Control: no-cache, max-age=0
         <td><code>visibility</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Must be one of 'public', 'protected' or 'private'. Where; 'public' allows the Microco.sm to be accessed without limitation and be discoverable across other sites, 'protected' allows the Microco.sm to be found and displayed publicly within the context of the current site, and 'private' means that the Microco.sm if fully private and won't be discoverable by guests.</td>
+        <td>Must be one of 'public', 'protected' or 'private'. Where; 'public' allows the Microcosm to be accessed without limitation and be discoverable across other sites, 'protected' allows the Microcosm to be found and displayed publicly within the context of the current site, and 'private' means that the Microcosm if fully private and won't be discoverable by guests.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>A short textual name for the Microco.sm, displayed everywhere the Microco.sm is mentioned. Should be as terse, yet descriptive as possible.</td>
+        <td>A short textual name for the Microcosm, displayed everywhere the Microcosm is mentioned. Should be as terse, yet descriptive as possible.</td>
       </tr>
       <tr>
         <td><code>description</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>A single line of text that provides information on the Microco.sm and provides the definition of what content is on-topic within the Micrcosm.</td>
+        <td>A single line of text that provides information on the Microcosm and provides the definition of what content is on-topic within the Micrcosm.</td>
       </tr>
       <tr>
         <td><code>editReason</code></td>
@@ -1905,7 +1922,7 @@ Connection: keep-alive
       <tr>
         <td>/api/v1/conversations/{id:[0-9]+}</td>
         <td>GET</td>
-        <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation.</td>
+        <td>Returns information about the conversation specified by the numeric identifier and a collection of comments related to this conversation. Marks the comments as read.</td>
       </tr>
       <tr>
         <td>/api/v1/conversations/{id:[0-9]+}</td>
@@ -1939,7 +1956,7 @@ Connection: keep-alive
       </tr>
       <tr>
         <td>/api/v1/conversations/{id:[0-9]+}/newcomment</td>
-        <td>Get</td>
+        <td>GET</td>
         <td>Returns a redirect with a location linking to the first new comment in the conversation, or if there are no new comments then the last comment in the conversation.</td>
       </tr>
       <tr>
@@ -2005,7 +2022,7 @@ Allow: OPTIONS,GET,HEAD,POST</code></pre>
         <td><code>microcosmId</code></td>
         <td>Integer</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this conversation will reside in. This property is required as every conversation must reside in a single Microco.sm.</td>
+        <td>Identifies which Microcosm this conversation will reside in. This property is required as every conversation must reside in a single Microcosm.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -2184,7 +2201,7 @@ Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="conversations-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow to you traverse the collection of comments.</p>
+  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow you to traverse the collection of comments. If a valid <code>access_token</code> is present, the page of comments will be marked as read.</p>
 
   <p>Example request:</p>
 
@@ -2312,7 +2329,7 @@ Cache-Control: no-cache, max-age=0
         <td><code>microcosmId</code></td>
         <td>String</td>
         <td>Required</td>
-        <td>Indicates which Microco.sm this conversation belongs to, you can move a conversation from one Microco.sm to another by changing this value. The move will work according to the user permissions against the destination Microco.sm, and the visibility scope of the destination Microco.sm. That is, you cannot move a conversation to a private Microco.sm for which you do not have rights.</td>
+        <td>Indicates which Microcosm this conversation belongs to, you can move a conversation from one Microcosm to another by changing this value. The move will work according to the user permissions against the destination Microcosm, and the visibility scope of the destination Microcosm. That is, you cannot move a conversation to a private Microcosm for which you do not have rights.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -2605,9 +2622,11 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 <pre><code>{
   "microcosmId": 1,
   "title": "Ale tasting",
-  "when": "2013-11-22T20:00:00Z",
+  "when": "2024-07-22T20:00:00Z",
+  "whentz": "2024-07-22T19:00:00Z",
   "duration": 180,
   "where": "Green Dragon Inn",
+  "tz": "Europe/London",
   "lat": 51.674871,
   "lon": -0.216352,
   "north": 51.679581,
@@ -2633,7 +2652,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
         <td><code>microcosmId</code></td>
         <td>Integer</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+        <td>Identifies which Microcosm this event will reside in. This property is required as every event must reside in a single Microcosm.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -2643,9 +2662,15 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
       </tr>
       <tr>
         <td><code>when</code></td>
-        <td>ISO8601 Datetime</td>
+        <td>ISO 8601 Datetime</td>
         <td>Optional</td>
-        <td>The scheduled date for that the event occurs on.</td>
+        <td>The scheduled date for that the event occurs on. Presented as a UTC timestamp, but actually represents the local offset time. E.g. "2024-07-22T20:00:00Z"</td>
+      </tr>
+      <tr>
+        <td><code>whentz</code></td>
+        <td>ISO 8601 Datetime</td>
+        <td>Optional</td>
+        <td>The scheduled date for that the event occurs on, in UTC, E.g. "2024-07-22T19:00:00Z"</td>
       </tr>
       <tr>
         <td><code>duration</code></td>
@@ -2658,6 +2683,12 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
         <td>String</td>
         <td>Optional</td>
         <td>A short textual description of the location of the event. This may be an address or just the title of the location. No geolocation will be done on this, it can be a useful label "Tower of London, UK" or a meaningless one "In the middle of a field".</td>
+      </tr>
+      <tr>
+        <td><code>tz</code></td>
+        <td>IANA/Olson timezone</td>
+        <td>Optional</td>
+        <td>The timezone of the event, e.g. "Europe/London", or "Australia/Sydney"</td>
       </tr>
       <tr>
         <td><code>lat</code></td>
@@ -2893,7 +2924,7 @@ Allow: OPTIONS,HEAD,GET,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="events-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow to you traverse the collection of comments.</p>
+  <p>Fetches the detailed information about a single event, including a collection of comments contained within the event. The pagination query string parameters allow you to traverse the collection of comments.</p>
 
   <p>Example request:</p>
 
@@ -3044,7 +3075,7 @@ Cache-Control: no-cache, max-age=0
         <td><code>microcosmId</code></td>
         <td>Integer</td>
         <td>Required</td>
-        <td>Identifies which Microco.sm this event will reside in. This property is required as every event must reside in a single Microco.sm.</td>
+        <td>Identifies which Microcosm this event will reside in. This property is required as every event must reside in a single Microcosm.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -3403,7 +3434,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
         <td>Identifies which profile is attending the event. The <code>attendeeId</code> is the <code>profileId</code> of the person attending the event. Users may <em>not</em> randomly invite others, only the event owner or a super user (admin or moderator) can invite people to an event, though anyone can state that they are attending.</td>
       </tr>
       <tr>
-        <td><code>rsvpd</code></td>
+        <td><code>rsvp</code></td>
         <td>String</td>
         <td>Optional</td>
         <td>Describes the RSVP state of the attendee, may be one of <code>invited</code>, <code>yes</code> (for attendance), <code>maybe</code> (for tentative) or <code>no</code> to decline the invite. If not supplied this defaults to "invited".</td>
@@ -3894,7 +3925,7 @@ Allow: OPTIONS,POST</code></pre>
    "itemType": "conversation",
    "itemId": 1,
    "inReplyTo": 1,
-   "markdown": "A rebuttal and a link Some text and a link to [Microcosm](http://microco.sm/)"
+   "markdown": "A rebuttal and a link Some text and a link to [Microcosm](https://microcosm.app/)"
 }</code></pre>
 
   <p>Where:</p>
@@ -4789,6 +4820,69 @@ Allow: OPTIONS,HEAD,GET</code></pre>
         <td>integer</td>
         <td>null</td>
         <td>If greater than 0 then the search will be restricted to all items authored by this profile ID. If the profile ID does not exist on this site, then nothing is returned.</td>
+      </tr>
+
+      <tr>
+        <td>following</td>
+        <td>boolean</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>hasAttachment</td>
+        <td>boolean</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>hashtags</td>
+        <td>[]string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>since</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>until</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>eventAfter</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>eventBefore</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>attendee</td>
+        <td>boolean</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>has</td>
+        <td>[]string</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>sort</td>
+        <td>string</td>
+        <td></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -7227,7 +7321,7 @@ Connection: keep-alive
 
   <h4 id="files-single-options">OPTIONS</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -7247,7 +7341,7 @@ Allow: OPTIONS,GET</code></pre>
 
   <h4 id="files-single-get">GET</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -7327,7 +7421,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
   <h4 id="attachments-collection-post">POST</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -7335,7 +7429,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3"}' \
+  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3", "FileName":"image.jpeg"}' \
   https://dev1.microco.sm/api/v1/comments/1/attachments
 </code></pre>
 
@@ -7482,13 +7576,73 @@ Connection: keep-alive
 
   <p>Currently attachments can't be deleted from profiles, so to replace an avatar upload the file and link it as an attachment to the appropriate profile. This will override the existing avatar. In future an avatar picker will allow users see previous avatars they have used and delete them if needed.</p>
 </div>
+        
+<div class="bs-docs-section" id="watchers">
+  <h2>/watchers</h2>
+
+  <p>Subscribe to a particular item. Perhaps a Conversation, maybe a Microcosm?</p>
+
+  <p>This section is incomplete.</p>
+
+  <p>Watchers can be created on <code>conversations</code>, <code>microcosms</code> or <code>events</code>. Communication preferences can also optionally be set, e.g. whether you want email updates or not.</p>
+
+  <h3 id="watchers-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/watchers</td>
+        <td>POST</td>
+        <td>Create a new watcher.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/watchers/delete</td>
+        <td>DELETE</td>
+        <td>Delete a watcher.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="watchers-single">Single Resource</h3>
+
+  <h4 id="watchers-collection-post">POST</h4>
+
+  <p>Create a watcher on a given resource.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemType": "conversation", "itemId": 12345, "updateTypeId": 1}' \
+  https://dev1.microco.sm/api/v1/watchers</code></pre>
+
+  <h4 id="watchers-single-delete">DELETE</h4>
+
+  <p>To remove a watcher from a conversation, issue a DELETE request using the itemId as the identifier.</p>
+
+<pre><code>curl -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"itemId": 12345, "itemType": "conversation", "updateTypeId": "1"}' \
+  https://dev1.microco.sm/api/v1/watchers/delete</code></pre>
+
+</div>
 
         <a href="#welcome" class="bs-docs-top">
           Back to top
         </a>
 
         <footer class="bs-docs-footer">
-          <p><a href="http://microco.sm">Microco.sm</a> documentation hosted by <a href="https://github.com/microcosm-cc/microcosm-cc.github.com">GitHub</a>, please <a href="https://github.com/microcosm-cc/microcosm-cc.github.com/issues">report any issues or inconsistencies</a>.</p>
+          <p><a href="https://microcosm.app">Microcosm</a> documentation hosted by <a href="https://github.com/microcosm-collective/microcosm-docs">GitHub</a>, please <a href="https://github.com/microcosm-collective/microcosm-docs/issues">report any issues or inconsistencies</a>.</p>
 
           <p>Designed and built using <a href="https://github.com/twitter/bootstrap">Twitter Bootstrap</a> (<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>), and the <a href="https://github.com/twitter/bootstrap/tree/master/docs">Twitter Bootstrap Docs</a> (<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>).</p>
         </footer>
@@ -7496,18 +7650,10 @@ Connection: keep-alive
       </div>
     </div>
 
+    
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="/static/js/bootstrap-scrollspy.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-36951023-1', 'auto');
-      ga('send', 'pageview');
-    </script>
   </body>
 </html>

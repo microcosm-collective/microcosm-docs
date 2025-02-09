@@ -58,7 +58,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
 
   <h4 id="attachments-collection-post">POST</h4>
 
-  <p>The URL for a created file is the SHA1 has of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
+  <p>The URL for a created file is the SHA1 hash of the file content. This is returned as <code>fileHash</code> when you create an image and is used to then refer to the image.</p>
 
   <p>Example request:</p>
 
@@ -66,7 +66,7 @@ Allow: OPTIONS,POST,HEAD,GET</code></pre>
   -X POST \
   -H "Authorization: Bearer letmein" \
   -H "Content-Type: application/json" \
-  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3"}' \
+  -d '{"FileHash":"6dfa7765c0426db8d27fda63fa9671794dd730a3", "FileName":"image.jpeg"}' \
   https://dev1.microco.sm/api/v1/comments/1/attachments
 </code></pre>
 
