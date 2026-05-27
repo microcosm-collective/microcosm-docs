@@ -1,0 +1,346 @@
+<!-- /bans -->
+<div class="bs-docs-section" id="bans">
+  <h2>/bans</h2>
+
+  <p>Provides an interface to the bans that exist on the current site. This endpoint is restricted to site owners and moderators of the site's root microcosm.</p>
+
+  <p>Bans are applied to site members. A ban can be temporary or permanent, and can include both a public-facing reason and a private administrative reason.</p>
+
+  <h3 id="bans-urls">URLs and Methods</h3>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>URL Pattern</th>
+        <th>Method</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>/api/v1/bans</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/bans</td>
+        <td>POST</td>
+        <td>Creates a new ban on the current site.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/bans</td>
+        <td>GET</td>
+        <td>Returns information about the bans that exist on the current site.</td>
+      </tr>
+      <tr>
+        <td style="white-space:nowrap;">/api/v1/bans/{id:[0-9]+}</td>
+        <td>OPTIONS</td>
+        <td>The <code>Allow:</code> header lists the methods available.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/bans/{id:[0-9]+}</td>
+        <td>GET</td>
+        <td>Returns information about the ban specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/bans/{id:[0-9]+}</td>
+        <td>PUT</td>
+        <td>Updates the ban specified by the numeric identifier.</td>
+      </tr>
+      <tr>
+        <td>/api/v1/bans/{id:[0-9]+}</td>
+        <td>DELETE</td>
+        <td>Deletes the ban specified by the numeric identifier.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="well well-small">The <code>banId</code> is based on a sequential number (that spans all sites in the microcosm network). You should not make any assumptions in your code that on a given site the identifiers will be contiguous (that the existence of id=17 infers the existence of id=16, id=15, etc on that site).</p>
+
+  <h3 id="bans-collection">Collection</h3>
+
+  <h4 id="bans-collection-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/bans</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 27 May 2026 12:00:00 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,POST</code></pre>
+
+  <h4 id="bans-collection-post">POST</h4>
+
+  <p>Creates a new ban on the current site. The structure of the JSON to create a ban is:</p>
+
+<pre><code>{
+  "userId": 2,
+  "expires": "2026-06-27T12:00:00Z",
+  "displayReason": "Repeated spam postings",
+  "adminReason": "Warned twice already"
+}</code></pre>
+
+  <p>Where:</p>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Optional?</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>userId</code></td>
+        <td>Integer</td>
+        <td>Required</td>
+        <td>The identifier of the site member to ban. The user must already belong to the current site.</td>
+      </tr>
+      <tr>
+        <td><code>expires</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>The time when the ban ends, in RFC3339 format. If omitted, the ban is permanent. When supplied on create, the time must be in the future.</td>
+      </tr>
+      <tr>
+        <td><code>displayReason</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>A public-facing reason that can be shown to the banned user.</td>
+      </tr>
+      <tr>
+        <td><code>adminReason</code></td>
+        <td>String</td>
+        <td>Optional</td>
+        <td>An internal note for site owners and moderators.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"userId": 2,"expires": "2026-06-27T12:00:00Z","displayReason": "Repeated spam postings","adminReason": "Warned twice already"}' \
+  https://dev1.microco.sm/api/v1/bans</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 27 May 2026 12:00:01 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/bans/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the newly created ban.</p>
+
+  <h4 id="bans-collection-get">GET</h4>
+
+  <p>Fetches a collection of bans on the current site.</p>
+
+  <p>Request:</p>
+
+  <p>The pagination query string parameters allow you to paginate the collection of bans returned:</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/bans</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 27 May 2026 12:00:02 GMT
+Content-Type: application/json
+Content-Length: 548
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "bans": {
+   "total": 1,
+   "limit": 25,
+   "offset": 0,
+   "maxOffset": 0,
+   "totalPages": 1,
+   "page": 1,
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/bans"
+    }
+   ],
+   "type": "/api/v1/bans",
+   "items": [
+    {
+     "id": 1,
+     "siteId": 1,
+     "userId": 2,
+     "created": "2026-05-27T12:00:01Z",
+     "expires": "2026-06-27T12:00:00Z",
+     "displayReason": "Repeated spam postings",
+     "adminReason": "Warned twice already",
+     "meta": {
+      "links": [
+       {
+        "rel": "self",
+        "href": "/api/v1/bans/1"
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h3 id="bans-single">Single Resource</h3>
+
+  <h4 id="bans-single-options">OPTIONS</h4>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X OPTIONS \
+  https://dev1.microco.sm/api/v1/bans/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 27 May 2026 12:00:03 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Allow: OPTIONS,GET,HEAD,PUT,DELETE</code></pre>
+
+  <h4 id="bans-single-get">GET</h4>
+
+  <p>Fetches the detailed information about a single ban.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X GET \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/bans/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 27 May 2026 12:00:04 GMT
+Content-Type: application/json
+Content-Length: 316
+Connection: keep-alive
+Cache-Control: no-cache, max-age=0
+
+{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 1,
+  "siteId": 1,
+  "userId": 2,
+  "created": "2026-05-27T12:00:01Z",
+  "expires": "2026-06-27T12:00:00Z",
+  "displayReason": "Repeated spam postings",
+  "adminReason": "Warned twice already",
+  "meta": {
+   "links": [
+    {
+     "rel": "self",
+     "href": "/api/v1/bans/1"
+    }
+   ]
+  }
+ },
+ "error": null
+}
+</code></pre>
+
+  <h4 id="bans-single-put">PUT</h4>
+
+  <p>Updates the ban specified by the numeric identifier. The structure of the JSON to perform the update is the same as create, but <code>userId</code> cannot be changed.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X PUT \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"userId": 2,"expires": "2026-07-27T12:00:00Z","displayReason": "Repeated spam postings","adminReason": "Extended after second review"}' \
+  https://dev1.microco.sm/api/v1/bans/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Date: Fri, 27 May 2026 12:00:05 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+Location: /api/v1/bans/1
+
+{
+ "context": "",
+ "status": 302,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+  <p>Your client should follow the <code>Location</code> header to retrieve detailed information about the updated ban.</p>
+
+  <h4 id="bans-single-delete">DELETE</h4>
+
+  <p>Deletes the ban specified by the numeric identifier. This operation is idempotent, so deleting a ban that no longer exists still returns success.</p>
+
+  <p>Example request:</p>
+
+<pre><code>curl -i \
+  -X DELETE \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/bans/1</code></pre>
+
+  <p>Example response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Date: Fri, 27 May 2026 12:00:06 GMT
+Content-Type: application/json
+Content-Length: 66
+Connection: keep-alive
+
+{
+ "context": "",
+ "status": 200,
+ "data": null,
+ "error": null
+}
+</code></pre>
+
+</div>
