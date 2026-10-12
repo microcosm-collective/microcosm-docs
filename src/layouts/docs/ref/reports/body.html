@@ -1,0 +1,105 @@
+<!-- /reports -->
+<div class="bs-docs-section" id="reports">
+  <h2>/reports</h2>
+
+  <p>Reports are moderation cases for comments. Each comment can have one case, and each profile can be recorded once as a reporter. Submitting another report for an existing case adds the reporter without changing the case state, including when the case is closed.</p>
+
+  <p>Moderator queue and case endpoints are available to site owners and moderators of the site's root microcosm.</p>
+
+  <h3 id="reports-types">Categories</h3>
+
+  <p><code>GET /api/v1/reports/types</code> returns the active categories available to reporters.</p>
+
+<pre><code>curl -i https://dev1.microco.sm/api/v1/reports/types</code></pre>
+
+<pre><code>{
+ "context": "",
+ "status": 200,
+ "data": {
+  "reportTypes": [
+   {"id": 1, "key": "hate_speech", "title": "Hate speech"},
+   {"id": 2, "key": "nudity", "title": "Nudity or sexual activity"}
+  ]
+ },
+ "error": null
+}</code></pre>
+
+  <h3 id="reports-submit">Submit a report</h3>
+
+  <p><code>POST /api/v1/reports</code> requires an authenticated profile. The <code>commentId</code> identifies the comment and <code>type</code> is a category key from the types endpoint.</p>
+
+<pre><code>curl -i \
+  -X POST \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"commentId": 123, "type": "harassment"}' \
+  https://dev1.microco.sm/api/v1/reports</code></pre>
+
+  <p>The response data contains the case ID, current state, comment link, and the submitting reporter. A repeated submission for the same case does not reopen it.</p>
+
+<pre><code>{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 42,
+  "commentId": 123,
+  "commentLink": "/api/v1/comments/123",
+  "state": "open",
+  "createdAt": "2026-10-12T10:00:00Z",
+  "updatedAt": "2026-10-12T10:00:00Z",
+  "reporters": [
+   {
+    "profileId": 7,
+    "profileName": "Example",
+    "type": {"id": 3, "key": "harassment", "title": "Harassment or bullying"},
+    "createdAt": "2026-10-12T10:00:00Z"
+   }
+  ]
+ },
+ "error": null
+}</code></pre>
+
+  <h3 id="reports-queue">Moderator queue and case details</h3>
+
+  <p><code>GET /api/v1/reports</code> returns a paginated queue. The optional <code>state</code> parameter accepts <code>open</code>, <code>reviewing</code>, or <code>closed</code>; use <code>limit</code> and <code>offset</code> to paginate.</p>
+
+<pre><code>curl -i \
+  -H "Authorization: Bearer letmein" \
+  "https://dev1.microco.sm/api/v1/reports?state=open&amp;limit=25&amp;offset=0"
+
+curl -i \
+  -H "Authorization: Bearer letmein" \
+  https://dev1.microco.sm/api/v1/reports/42</code></pre>
+
+  <p>The list response contains a paginated <code>reports</code> collection. Each report includes its comment, state, timestamps, and reporters. A single case response also includes <code>stateChanges</code>, in chronological order.</p>
+
+<pre><code>{
+ "context": "",
+ "status": 200,
+ "data": {
+  "id": 42,
+  "commentId": 123,
+  "commentLink": "/api/v1/comments/123",
+  "state": "reviewing",
+  "createdAt": "2026-10-12T10:00:00Z",
+  "updatedAt": "2026-10-12T11:00:00Z",
+  "reporters": [],
+  "stateChanges": [
+   {"id": 1, "changedByProfileId": 7, "toState": "open", "createdAt": "2026-10-12T10:00:00Z"},
+   {"id": 2, "changedByProfileId": 9, "fromState": "open", "toState": "reviewing", "createdAt": "2026-10-12T11:00:00Z"}
+  ]
+ },
+ "error": null
+}</code></pre>
+
+  <h3 id="reports-update">Change case state</h3>
+
+  <p><code>PATCH /api/v1/reports/{report_id}</code> is restricted to site owners and root microcosm moderators. Set <code>state</code> to <code>open</code>, <code>reviewing</code>, or <code>closed</code>. An optional <code>note</code> is recorded in the state change history. A successful update returns an OK response.</p>
+
+<pre><code>curl -i \
+  -X PATCH \
+  -H "Authorization: Bearer letmein" \
+  -H "Content-Type: application/json" \
+  -d '{"state": "closed", "note": "Reviewed and actioned"}' \
+  https://dev1.microco.sm/api/v1/reports/42</code></pre>
+</div>
