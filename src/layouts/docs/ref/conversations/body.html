@@ -317,7 +317,7 @@ Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
 
   <h4 id="conversations-single-get">GET</h4>
 
-  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow you to traverse the collection of comments. If a valid <code>access_token</code> is present, the page of comments will be marked as read.</p>
+  <p>Fetches the detailed information about a single conversation, including a collection of comments contained within the conversation. The pagination query string parameters allow you to traverse the collection of comments. Each comment includes <code>attachmentDetails</code> when it has attachments. If a valid <code>access_token</code> is present, the page of comments will be marked as read.</p>
 
   <p>Example request:</p>
 

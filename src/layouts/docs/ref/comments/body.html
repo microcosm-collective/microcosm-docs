@@ -212,6 +212,8 @@ Allow: OPTIONS,GET,HEAD,PUT,PATCH,DELETE</code></pre>
 
   <p>Fetches the detailed information about a single comment. If this comment was <code>inReplyTo</code> another comment then it will also fetch the parents of this comment. Additionally if other comments are <code>inReplyTo</code> this comment then it will fetch up to a maximum of 5 replies.</p>
 
+  <p>The response includes <code>attachmentDetails</code> when the comment has attachments. It is an array of attachment objects with the file hash, name, extension, creation time, profile ID, and a related file link in <code>meta.links</code>.</p>
+
   <p>Example request:</p>
 
 <pre><code>curl -i \
@@ -237,6 +239,7 @@ Cache-Control: no-cache, max-age=0
   "revisions": 1,
   "inReplyTo": 0,
   "attachments": 0,
+  "attachmentDetails": [],
   "firstLine": "",
   "markdown": "I think we should get off the road",
   "html": "\u003cp\u003eI think we should get off the road\u003c/p\u003e\n",
